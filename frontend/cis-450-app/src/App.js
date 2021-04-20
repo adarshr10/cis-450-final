@@ -18,6 +18,9 @@ function App() {
         >
           Learn React nah don't learn it
         </a>
+        <p>
+          Daniel is going to write this whole website!
+        </p>
       </header>
     </div>
   );
