@@ -20,7 +20,25 @@ connection.connect(function(err) {
   console.log('Connected to database.');
 });
 
+
+const lyricInformation = (req, res) => {
+  const songId = req.params.songId;
+  var query = `
+    SELECT h.word, h.count, l.popularity
+    FROM HasLyrics h JOIN Lyric l ON h.word = l.word
+    WHERE h.song_id = '${songId}'
+  `;
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 connection.end();
+
+
 
 
 
