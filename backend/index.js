@@ -1,10 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const PORT = 8080
-const arouters = require('adarshRouter')
-const drouters = require('danielRouter')
-const jrouters = require('jeffreyRouter')
-const lrouters = require('laurenRouter')
+const arouters = require('./Routes/adarshRouter')
+const drouters = require('./Routes/danielRouter')
+const jrouters = require('./Routes/jeffreyRouter')
+const lrouters = require('./Routes/laurenRouter')
 
 const app = express()
 
