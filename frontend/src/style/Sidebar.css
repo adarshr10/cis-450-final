@@ -1,0 +1,16 @@
+
+.nav-link {
+    color:white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+div.sidebar div.nav-pills div.nav-item a.nav-link.active {
+    color: black;
+    background-color: rgb(200, 200, 200);
+}
+
+.nav-item:hover {
+    background-color: rgb(200, 200, 200);
+    color:black;
+}

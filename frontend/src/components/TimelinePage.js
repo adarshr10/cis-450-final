@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PageNavbar from './PageNavbar';
 import KeywordButton from './KeywordButton';
 import DashboardMovieRow from './DashboardMovieRow';
+
+import '../style/PageLayout.css'
+import Sidebar from './Sidebar';
+
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class TimelinePage extends React.Component {
   constructor(props) {
@@ -82,32 +86,14 @@ export default class TimelinePage extends React.Component {
 
   render() {    
     return (
-      <div className="Dashboard">
+      <div className="pageContainer">
+        <Sidebar curPage="/timeline" className="sidebarContainer"></Sidebar>
 
-        <PageNavbar active="dashboard" />
-
-        <br />
-        <div className="container movies-container">
-          <div className="jumbotron">
-            <div className="h5">Keywords</div>
-            <div className="keywords-container">
-              {this.state.keywords}
-            </div>
-          </div>
-
-          <br />
-          <div className="jumbotron">
-            <div className="movies-container">
-              <div className="movies-header">
-                <div className="header-lg"><strong>Title</strong></div>
-                <div className="header"><strong>Rating</strong></div>
-                <div className="header"><strong>Vote Count</strong></div>
-              </div>
-              <div className="results-container" id="results">
-                {this.state.movies}
-              </div>
-            </div>
-          </div>
+        <div className="timelineContainer">
+          Here's the timeline.
+        </div>
+        <div className="statsContainer">
+          Here are the stats.
         </div>
       </div>
     );
