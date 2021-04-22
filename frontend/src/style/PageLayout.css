@@ -1,0 +1,25 @@
+.pageContainer {
+    display: grid;
+    grid-template-columns: 20% 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "sidebarContainer timelineContainer timelineContainer timelineContainer"
+      "sidebarContainer statsContainer statsContainer statsContainer"
+      "sidebarContainer statsContainer statsContainer statsContainer";
+    background-color: black;
+    color: white;
+}
+
+.sidebarContainer {
+    grid-area: sidebarContainer;
+}
+
+.timelineContainer {
+    grid-area: timelineContainer;
+    border: white 2px solid;
+}
+
+.statsContainer {
+    grid-area: statsContainer;
+}

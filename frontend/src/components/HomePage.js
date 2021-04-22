@@ -4,6 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PageNavbar from './PageNavbar';
 import KeywordButton from './KeywordButton';
 import DashboardMovieRow from './DashboardMovieRow';
+import Sidebar from './Sidebar';
+
+import '../style/PageLayout.css'
+
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class HomePage extends React.Component {
   constructor(props) {
@@ -82,6 +86,17 @@ export default class HomePage extends React.Component {
 
   render() {    
     return (
+      <div className="pageContainer">
+        <Sidebar curPage="/" className="sidebarContainer"></Sidebar>
+
+        <div className="timelineContainer">
+          Here's the timeline.
+        </div>
+        <div className="statsContainer">
+          Here are the stats.
+        </div>
+        
+        {/*
       <div className="Dashboard">
 
         <PageNavbar active="dashboard" />
@@ -109,6 +124,7 @@ export default class HomePage extends React.Component {
             </div>
           </div>
         </div>
+    </div>*/}
       </div>
     );
   };
