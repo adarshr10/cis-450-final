@@ -18,6 +18,8 @@ import LyricPage from './components/LyricPage';
 import GenrePage from './components/GenrePage';
 import ArtistPage from './components/ArtistPage';
 
+import './style/PageLayout.css'
+
 function App() {
   return (
     <div className="App">
