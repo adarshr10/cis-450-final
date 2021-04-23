@@ -14,3 +14,7 @@ div.sidebar div.nav-pills div.nav-item a.nav-link.active {
     background-color: rgb(200, 200, 200);
     color:black;
 }
+
+a:hover{
+  color:#1db954;
+}

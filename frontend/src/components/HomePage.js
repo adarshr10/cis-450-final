@@ -4,9 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PageNavbar from './PageNavbar';
 import KeywordButton from './KeywordButton';
 import DashboardMovieRow from './DashboardMovieRow';
-import Sidebar from './Sidebar';
-
-import '../style/PageLayout.css'
+import Sidebar from './Sidebar'; 
 
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class HomePage extends React.Component {
