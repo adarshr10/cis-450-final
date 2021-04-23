@@ -196,29 +196,4 @@ const topPosOfGenre = (req, res) => {
 connection.end();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-WITH cte AS (SELECT SUBSTR(category, 0, LENGTH(category) - 1) FROM Genre)
-SELECT category
-FROM cte
-WHERE category = "teen pop"
-
-
 module.exports = router
