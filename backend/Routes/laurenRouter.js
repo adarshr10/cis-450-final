@@ -177,58 +177,53 @@ const topPosOfGenre = (req, res) => {
 
 
 // Search for everything
-
 // SELECT DISTINCT p.title, p.performer
-// FROM Song s, Genre g, BillboardAppearance b, HasLyric l, PerformerTitle p
+// FROM Song s JOIN Genre g ON s.id = g.song_id
+//             JOIN BillboardAppearance b ON s.id = b.song_id
+//             JOIN HasLyric l ON s.id = l.song_id
+//             JOIN PerformerTitle p ON s.id = p.song_id
 // WHERE 
-// ('pop' IS NULL OR (s.id = g.song_id AND g.category = 'pop')) AND
-// (1950 IS NULL OR (s.id = b.song_id AND YEAR(b.week) >= 1950)) AND 
-// (2020 IS NULL OR (s.id = b.song_id AND YEAR(b.week) <= 2020)) AND 
-// (10 IS NULL OR (s.id = b.song_id AND b.position <= 10)) AND 
-// ("britney spears" IS NULL OR (s.id = p.song_id AND p.performer LIKE "britney spears%")) AND 
-// ("gimme more" IS NULL OR (s.id = p.song_id AND p.title LIKE "gimme more%")) AND 
-// (NULL IS NULL OR (s.album LIKE "lover%")) AND
-// ("i" IS NULL OR (s.id = l.song_id AND l.word = "i")) 
+// ('pop' IS NULL OR g.category = 'pop') AND
+// (1950 IS NULL OR YEAR(b.week) >= 1950) AND 
+// (2020 IS NULL OR YEAR(b.week) <= 2020) AND 
+// (10 IS NULL OR b.position <= 10) AND 
+// ("britney spears" IS NULL OR 
+//   p.performer = "britney spears" OR  
+//   p.title = "britney spears" OR  
+//   s.album = "britney spears" OR
+//   l.word = "britney spears"
+// )
 // LIMIT 10;
 
-// SELECT DISTINCT s.id, s.album
-// FROM Song s, Genre g, BillboardAppearance b, HasLyric l, PerformerTitle p
-// WHERE 
-// (NULL IS NULL OR (s.id = g.song_id AND g.category = 'pop')) AND
-// (NULL IS NULL OR (s.id = g.song_id AND g.category = 'pop')) AND
-// (NULL IS NULL OR (s.id = b.song_id AND YEAR(b.week) >= 1950)) AND 
-// (NULL IS NULL OR (s.id = b.song_id AND YEAR(b.week) <= 2020)) AND 
-// (NULL IS NULL OR (s.id = b.song_id AND b.position <= 10)) AND 
-// ("britney spears" IS NULL OR (s.id = p.song_id AND p.performer LIKE "britney spears%")) AND 
-// (NULL IS NULL OR (s.id = p.song_id AND p.title LIKE "you need to calm down%")) AND 
-// (NULL IS NULL OR (s.album LIKE "lover%")) AND
-// ("i" IS NULL OR (s.id = l.song_id AND l.word = "i")) 
-// LIMIT 10;
 const searchEverything = (req, res) => {
   const limit = 100;
   const genre = 'pop';
   const lower = 2000;
   const upper = 2010;
   const pos = 10;
-  const performer = 'britney spears';
-  const title = 'gimme more'; 
-  const album = 'blackout'; 
-  const lyric = 'i'; // req.params.lyric;
+  const keyword = 'britney spears'; // req.params.keyword;
 
   var query = `
     SELECT DISTINCT p.title, p.performer
-    FROM Song s, Genre g, BillboardAppearance b, HasLyric l, PerformerTitle p
+    FROM Song s JOIN Genre g ON s.id = g.song_id
+                JOIN BillboardAppearance b ON s.id = b.song_id
+                JOIN HasLyric l ON s.id = l.song_id
+                JOIN PerformerTitle p ON s.id = p.song_id
     WHERE 
-    ('${genre}' IS NULL OR (s.id = g.song_id AND g.category = '${genre}')) AND
-    (${lower} IS NULL OR (s.id = b.song_id AND YEAR(b.week) >= ${lower})) AND 
-    (${upper} IS NULL OR (s.id = b.song_id AND YEAR(b.week) <= ${upper})) AND 
-    (${pos} IS NULL OR (s.id = b.song_id AND b.position <= ${pos})) AND 
-    ('${performer}' IS NULL OR (s.id = p.song_id AND p.performer LIKE '${performer}' + '%')) AND 
-    ('${title}' IS NULL OR (s.id = p.song_id AND p.title LIKE '${title}' + '%')) AND 
-    ('${album}' IS NULL OR (s.album LIKE '${album}' + '%')) AND
-    ('${lyric}' IS NULL OR (s.id = l.song_id AND l.word LIKE '${lyric}' + '%')) 
+    ('${genre}' IS NULL OR g.category = '${genre}') AND
+    (${lower} IS NULL OR YEAR(b.week) >= ${lower}) AND 
+    (${upper} IS NULL OR YEAR(b.week) <= ${upper}) AND 
+    (${pos} IS NULL OR b.position <= ${pos}) AND 
+    ('${keyword}' IS NULL OR 
+      p.performer = "'${keyword}' OR  
+      p.title = '${keyword}' OR  
+      s.album = '${keyword}' OR
+      l.word = '${keyword}'
+    )
     LIMIT ${limit}
   `;
+
+  
 
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -237,8 +232,6 @@ const searchEverything = (req, res) => {
     }
   });
 };
-
-
 
 
 connection.end();
