@@ -55,29 +55,29 @@ const topWordsByGenre = (req, res) => {
 // GROUP BY l.word
 // ORDER BY COUNT(l.word) DESC
 // LIMIT 20;
-const topWordsByRankAndTime = (req, res) => {
-  const limit = 10;
-  const num = 10;
-  const lower = 2000;
-  const upper = 2010;
+// const topWordsByRankAndTime = (req, res) => {
+//   const limit = 10;
+//   const num = 10;
+//   const lower = 2000;
+//   const upper = 2010;
 
-  var query = `
-    SELECT l.word, COUNT(l.word) as count
-    FROM Lyric l JOIN HasLyric h ON l.word = h.word
-    JOIN BillboardAppearance b ON b.song_id = h.song_id
-    WHERE b.position <= ${num} AND YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper}
-    GROUP BY l.word
-    ORDER BY COUNT(l.word) DESC
-    LIMIT ${limit}
-  `;
+//   var query = `
+//     SELECT l.word, COUNT(l.word) as count
+//     FROM Lyric l JOIN HasLyric h ON l.word = h.word
+//     JOIN BillboardAppearance b ON b.song_id = h.song_id
+//     WHERE b.position <= ${num} AND YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper}
+//     GROUP BY l.word
+//     ORDER BY COUNT(l.word) DESC
+//     LIMIT ${limit}
+//   `;
 
-  connection.query(query, (err, rows, fields) => {
-    if  (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
-};
+//   connection.query(query, (err, rows, fields) => {
+//     if  (err) console.log(err);
+//     else {
+//       res.json(rows);
+//     }
+//   });
+// };
 
 // What portion of Top 100 songs dominated by a specific genre?
 // Percentage of songs from each genre (top {limit}) in time range {lower} to {upper}
@@ -234,7 +234,6 @@ const searchEverything = (req, res) => {
 };
 
 
-connection.end();
 
 
 module.exports = router

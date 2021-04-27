@@ -22,10 +22,10 @@ connection.connect(function(err) {
 });
 
 const songBillboardInformation = (req, res) => {
-  const songId = req.params.songId;
+  const songId = req.params.songId.replace("'", "\\'");
   var query = `
-    SELECT week, position FROM BillboardAppearance
-    WHERE s.song_id = '${songId}'
+    SELECT week, position FROM BillboardAppearance b
+    WHERE b.song_id = '${songId}'
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -35,12 +35,26 @@ const songBillboardInformation = (req, res) => {
   });
 };
 
-
 const songOverviewInformation = (req, res) => {
-  const songId = req.params.songId;
+  const songId = req.params.songId.replace("'", "\\'");
   var query = `
-    SELECT * 
-    FROM Song s JOIN PerformerTitle p ON s.id = p.song_id JOIN Genre g ON s.id = g.song_id
+    SELECT DISTINCT * 
+    FROM Song s JOIN PerformerTitle p ON s.id = p.song_id
+    WHERE s.id = '${songId}'
+  `;
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+const songGenres = (req, res) => {
+  const songId = req.params.songId.replace("'", "\\'");
+  var query = `
+    SELECT DISTINCT g.category 
+    FROM Song s JOIN Genre g ON s.id = g.song_id
     WHERE s.id = '${songId}'
   `;
   connection.query(query, (err, rows, fields) => {
@@ -52,11 +66,11 @@ const songOverviewInformation = (req, res) => {
 };
 
 const songLyricInformation = (req, res) => {
-  const songId = req.params.songId;
+  const songId = req.params.songId.replace("'", "\\'");
   var query = `
     SELECT h.word, h.count, l.popularity
-    FROM HasLyrics h JOIN Lyric l ON h.word = l.word
-    WHERE h.song_id = '${songId}'
+    FROM HasLyric h JOIN Lyric l ON h.word = l.word
+    WHERE h.song_id = '${songId}' ORDER BY h.count DESC
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -73,7 +87,7 @@ const songLyricInformation = (req, res) => {
  */
 
 const songSimilarSongs = (req, res) => {
-  const songId = req.params.songId;
+  const songId = req.params.songId.replace("'", "\\'");
   var checkQuery = `
     SELECT count(*) as num FROM HasLyric h WHERE h.song_id = '${songId}';
   `
@@ -98,7 +112,7 @@ const songSimilarSongs = (req, res) => {
             WHERE gm.song_id != tl.id
             GROUP BY gm.song_id HAVING count(gm.song_id) > 5
           )
-          SELECT * FROM similar_songs;
+          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id;
         `;
       } else {
         query = `
@@ -109,7 +123,7 @@ const songSimilarSongs = (req, res) => {
             WHERE g.song_id != sg.id
             GROUP BY g.song_id HAVING count(g.song_id) > 1
           )
-          SELECT * FROM similar_songs;
+          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id;
         `;
       }
       connection.query(query, (err, rows, fields) => {
@@ -178,7 +192,6 @@ const genreBillboardInformation = (req, res) => {
 };
 
 
-connection.end();
 
 
 
@@ -197,9 +210,10 @@ connection.end();
 
 
 
-
-
-
-
-
-module.exports = router
+module.exports = {
+  songOverviewInformation: songOverviewInformation,
+  songSimilarSongs: songSimilarSongs,
+  songLyricInformation: songLyricInformation,
+  songBillboardInformation: songBillboardInformation,
+  songGenres: songGenres
+}
