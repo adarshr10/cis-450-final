@@ -17,7 +17,8 @@ export default class SongPage extends React.Component {
       lyrics: [],
       songs: [],
       info: "",
-      billboard: ""
+      billboard: "",
+      songId: ""
     };
 
     this.showLyrics = this.showLyrics.bind(this);
@@ -35,6 +36,7 @@ export default class SongPage extends React.Component {
     } else {
       songId = id;
     }
+    this.setState({songId: songId})
     this.showInformation(songId);
     this.showLyrics(songId);
     this.showSongs(songId);
