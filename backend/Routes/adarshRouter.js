@@ -1,7 +1,7 @@
 
 var {Router} = require('express')
 var router = Router();
-const db = require('../database')
+const db = require('../db_func/db_adarsh')
 
 router.get('/songOverview/:songId', db.songOverviewInformation);
 router.get('/songGenres/:songId', db.songGenres);

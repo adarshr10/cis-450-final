@@ -1,4 +1,4 @@
-const connection = require('./config')
+const connection = require('../config')
 
 const songBillboardInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");

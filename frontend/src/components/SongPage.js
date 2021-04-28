@@ -219,7 +219,6 @@ export default class SongPage extends React.Component {
                   </tr>
                   {this.state.songs}
                 </tbody>
-                
               </table>
             </ContentCol>
           </Row>
