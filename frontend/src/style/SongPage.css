@@ -1,5 +1,6 @@
 .contentDiv::-webkit-scrollbar {
   width: 0.5em;
+  height: 0.5em;
 }
 
 .contentDiv::-webkit-scrollbar-track {
@@ -13,9 +14,38 @@ outline: 1px solid slategrey;
 
 .contentDiv{
   font-size: 1.2em;
-  padding: 0.5em;
   max-height: 100vh;
   overflow-y:auto; 
   height: 100%;
   background-color: #535353
+}
+
+.col-pad{
+  padding: 0.75em;
+}
+
+table{
+  color: white !important;
+  text-align: center;
+}
+
+tr:not(.headerRow):hover{
+  background-color: rgb(200, 200, 200);
+}
+
+th{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: #1DB954;;
+}
+
+.title a{
+  color: white;
+}
+
+.title a:hover{
+  color:#1db954;
+  text-decoration: none;
 }

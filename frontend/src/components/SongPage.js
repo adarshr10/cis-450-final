@@ -1,6 +1,6 @@
 import React from 'react';
 import "../style/SongPage.css"
-import { Row } from 'react-bootstrap';
+import { Row, Table } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
 import SongInformationDiv from './SongInformationDiv';
@@ -29,12 +29,11 @@ export default class SongPage extends React.Component {
   componentDidMount() {
     var songId = "";
     const url = decodeURIComponent(window.location.pathname)
-    var id = url.substring(url.lastIndexOf("/")+1).split('/')
-    console.log(id)
-    if (id.length === 1) {
+    var id = url.substring(url.lastIndexOf("/")+1)
+    if (id === "song") {
       songId = 'love storytaylor swift';
     } else {
-      songId = id[1];
+      songId = id;
     }
     this.showInformation(songId);
     this.showLyrics(songId);
@@ -195,31 +194,31 @@ export default class SongPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{height: "100%", margin: 0}}>
-            <ContentCol title="Information" subtitle="no wya">
+            <ContentCol title="Information" subtitle="no wya" padding={true}>
               {this.state.info}
             </ContentCol>
-            <ContentCol title="Top Lyrics" subtitle="Words">
-              <table>
+            <ContentCol title="Top Lyrics">
+              <Table borderless responsive="sm">
                 <tbody>
-                  <tr>
+                  <tr className='headerRow'>
                     <th>Word</th>
                     <th>Frequency</th>
                     <th>Popularity</th>
                   </tr>
                   {this.state.lyrics}
                 </tbody>
-              </table>
+              </Table>
             </ContentCol>
-            <ContentCol title="Similar Songs" subtitle="Titles">
-              <table>
+            <ContentCol title="Similar Songs">
+              <Table borderless responsive="sm">
                 <tbody>
-                  <tr>
+                  <tr className='headerRow'>
                     <th>Title</th>
                     <th>Artist</th>
                   </tr>
                   {this.state.songs}
                 </tbody>
-              </table>
+              </Table>
             </ContentCol>
           </Row>
         </div>

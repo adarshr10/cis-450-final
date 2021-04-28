@@ -2,11 +2,12 @@ html, body{
   height: 100%;
   width: 100%;
   background-color: #121212;
+  overflow-x: hidden;
 }
 
 .pageContainer {
     display: grid;
-    grid-template-columns: 20% 1fr 1fr 1fr;
+    grid-template-columns: 15% 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     gap: 0px 0px;
     grid-template-areas:
@@ -28,5 +29,5 @@ html, body{
 
 .statsContainer {
     grid-area: statsContainer;
-    padding: 4% 0 4% 0;
+    padding: 3% 0 4% 0;
 }
