@@ -28,11 +28,13 @@ export default class SongPage extends React.Component {
 
   componentDidMount() {
     var songId = "";
-    var id = window.location.pathname.split('/')
-    if (id.length === 2) {
+    const url = decodeURIComponent(window.location.pathname)
+    var id = url.substring(url.lastIndexOf("/")+1).split('/')
+    console.log(id)
+    if (id.length === 1) {
       songId = 'love storytaylor swift';
     } else {
-      songId = id[2];
+      songId = id[1];
     }
     this.showInformation(songId);
     this.showLyrics(songId);
