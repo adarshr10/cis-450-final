@@ -1,6 +1,7 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import Plot from 'react-plotly.js';
+import Plotly from "plotly.js"
+import createPlotlyComponent from 'react-plotly.js/factory';
+const Plot = createPlotlyComponent(Plotly);
 
 export default class SongSimilarDiv extends React.Component {
 	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */

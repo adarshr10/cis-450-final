@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import React from 'react';
 import './App.css';
 import {
@@ -6,9 +5,6 @@ import {
 	Route,
 	Switch
 } from 'react-router-dom';
-import Dashboard from './components/Dashboard';
-import Recommendations from './components/Recommendations';
-import BestMovies from './components/BestMovies';
 
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
@@ -19,6 +15,7 @@ import GenrePage from './components/GenrePage';
 import ArtistPage from './components/ArtistPage';
 
 import './style/PageLayout.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
