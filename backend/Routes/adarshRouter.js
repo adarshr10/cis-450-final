@@ -1,5 +1,6 @@
-var express = require('express')
-var router = express.Router();
+
+var {Router} = require('express')
+var router = Router();
 const db = require('../database')
 
 router.get('/songOverview/:songId', db.songOverviewInformation);

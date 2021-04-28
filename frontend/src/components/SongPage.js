@@ -29,7 +29,7 @@ export default class SongPage extends React.Component {
   componentDidMount() {
     var songId = "";
     var id = window.location.pathname.split('/')
-    if (id.length == 1) {
+    if (id.length === 2) {
       songId = 'love storytaylor swift';
     } else {
       songId = id[2];
@@ -54,7 +54,7 @@ export default class SongPage extends React.Component {
     }).then(songStuff => {
       if (!songStuff) return;
       songOverview = songStuff[0]
-      if (songOverview.explicit == 1) {
+      if (songOverview.explicit === 1) {
         songOverview.explicit = "Y";
       } else {
         songOverview.explicit = "N";
@@ -110,6 +110,7 @@ export default class SongPage extends React.Component {
       if (!songLyrics) return;
       var lyricsInfo = songLyrics.map((obj, i) =>
         <SongLyricDiv 
+          key={i}
           id={`${obj.word}-${obj.count}`} 
           word={obj.word}
           frequency={obj.count}
@@ -136,6 +137,7 @@ export default class SongPage extends React.Component {
       if (!songSimilar) return;
       var similar = songSimilar.map((obj, i) =>
         <SongSimilarDiv 
+          key={i}
           id={`${obj.song_id}`} 
           title={obj.title}
           performer={obj.performer}
@@ -161,7 +163,7 @@ export default class SongPage extends React.Component {
       if (!billboardData) return;
       let weeks = [];
       let positions = [];
-      var data = billboardData.map((obj, i) => {
+      billboardData.forEach((obj, i) => {
         weeks.push(obj.week);
         positions.push(obj.position);
       });
