@@ -1,5 +1,5 @@
 const express = require('express')
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const cors = require('cors');
 
 const PORT = 8080
@@ -15,11 +15,8 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 /**
  * Song page routes
  */
-app.get('/songOverview/:songId', arouters.songOverviewInformation);
-app.get('/songGenres/:songId', arouters.songGenres);
-app.get('/songLyrics/:songId', arouters.songLyricInformation);
-app.get('/songSimilar/:songId', arouters.songSimilarSongs);
-app.get('/songBillboard/:songId', arouters.songBillboardInformation);
+app.use(arouters);
+
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
