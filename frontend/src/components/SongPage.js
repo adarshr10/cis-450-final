@@ -18,7 +18,8 @@ export default class SongPage extends React.Component {
       songs: [],
       info: "",
       billboard: "",
-      songId: ""
+      songId: "",
+      songName: ""
     };
 
     this.showLyrics = this.showLyrics.bind(this);
@@ -36,8 +37,8 @@ export default class SongPage extends React.Component {
     } else {
       songId = id;
     }
-    this.setState({songId: songId})
     this.showInformation(songId);
+    this.setState({songId: songId})
     this.showLyrics(songId);
     this.showSongs(songId);
     this.showBillboard(songId);
@@ -62,6 +63,10 @@ export default class SongPage extends React.Component {
       } else {
         songOverview.explicit = "N";
       }
+      let title = songOverview.title;
+      this.setState({
+        songName: title
+      });
 
       fetch(`http://localhost:8080/songGenres/${id}`, {
         method: 'GET' // The type of HTTP request.
@@ -174,11 +179,46 @@ export default class SongPage extends React.Component {
         x: weeks,
         y: positions,
         type: "scatter",
-        mode: "lines"
+        mode: "lines", 
+        line: {
+          color: '#7F7F7F'
+        }
       }
+      
+      let configuration = {
+        width: document.getElementsByClassName("timelineContainer")[0].clientWidth,
+        height: document.getElementsByClassName("timelineContainer")[0].clientHeight,
+        title: `Billboard Top 100 Rankings for ${this.state.songName}`,
+        plot_bgcolor:"#121212",
+        paper_bgcolor:"#212121", 
+        font: {
+          color: '#1db954'
+        }, 
+        xaxis: {
+          title: {
+            text: 'Time Period on the Billboard Top 100',
+            font: {
+              size: 18,
+              color: '#7f7f7f'
+            }
+          },
+        },
+        yaxis: {
+          title: {
+            text: 'Ranking',
+            font: {
+              size: 18,
+              color: '#7f7f7f'
+            }
+          }
+        }
+      }
+
       var billboardDiv = <SongBillboardDiv
         data={plotData}
         id={id}
+        layout={configuration}
+
       />
       this.setState({
         billboard: billboardDiv
