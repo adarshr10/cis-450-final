@@ -18,7 +18,7 @@ export default class SongPage extends React.Component {
       songs: [],
       info: "",
       billboard: "",
-      songId: "",
+      songId: props.songId || "",
       songName: ""
     };
 
@@ -29,14 +29,13 @@ export default class SongPage extends React.Component {
   };
 
   componentDidMount() {
-    var songId = "";
-    const url = decodeURIComponent(window.location.pathname)
-    var id = url.substring(url.lastIndexOf("/")+1)
-    if (id === "song") {
+    // var songId = "";
+    // const url = decodeURIComponent(window.location.pathname)
+    // var id = url.substring(url.lastIndexOf("/")+1)
+    let songId = this.state.songId;
+    if (!songId) {
       songId = 'love storytaylor swift';
-    } else {
-      songId = id;
-    }
+    } 
     this.showInformation(songId);
     this.setState({songId: songId})
     this.showLyrics(songId);

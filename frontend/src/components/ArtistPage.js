@@ -1,6 +1,7 @@
 import React from 'react';
 
-
+import { Row, Table } from 'react-bootstrap';
+import ContentCol from "./SongCols/col"
 import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
 
@@ -35,7 +36,14 @@ export default class ArtistPage extends React.Component {
           Here's the timeline.
         </div>
         <div className="statsContainer">
-          Here are the stats.
+        <Row style={{height: "100%", margin: 0}}>
+            <ContentCol title="Information" subtitle="no wya" padding={true}>
+            </ContentCol>
+            <ContentCol title="Top Lyrics">
+            </ContentCol>
+            <ContentCol title="Similar Songs">
+            </ContentCol>
+          </Row>
         </div>
       </div>
     );

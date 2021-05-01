@@ -29,5 +29,5 @@ html, body{
 
 .statsContainer {
     grid-area: statsContainer;
-    padding: 3% 0 4% 0;
+    padding: 3% 0 3% 0;
 }

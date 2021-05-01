@@ -1,14 +1,8 @@
 var express = require('express')
 var router = express.Router();
+const db = require('../db_func/db_jeff')
 
-
-module.exports = router;
-
-
-
-
-
-
+router.get("/artist/:artistName", db.topSongs);
 
 
 

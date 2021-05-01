@@ -3,7 +3,8 @@ import './App.css';
 import {
 	BrowserRouter as Router,
 	Route,
-	Switch
+	Switch, 
+  useParams
 } from 'react-router-dom';
 
 import HomePage from './components/HomePage';
@@ -16,6 +17,12 @@ import ArtistPage from './components/ArtistPage';
 
 import './style/PageLayout.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+function SongRend(){
+  let {songId} = useParams();
+  return <SongPage songId={songId} />
+}
+
 
 function App() {
   return (
@@ -36,10 +43,9 @@ function App() {
 							path="/timeline"
 							render={() => <TimelinePage />}
 						/>
-						<Route
-							path="/song"
-							render={() => <SongPage />}
-						/>
+						<Route path="/song/:songId?">
+              <SongRend />
+            </Route>
 						<Route
 							path="/lyric"
 							render={() => <LyricPage />}
@@ -52,6 +58,7 @@ function App() {
 							path="/artist"
 							render={() => <ArtistPage />}
 						/>
+            <Route path="*" render={() => <HomePage />} />
 					</Switch>
 				</Router>
 			</div>    
