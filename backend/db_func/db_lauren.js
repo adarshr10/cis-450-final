@@ -1,5 +1,32 @@
 const connection = require('../config')
 
+
+const getGenres = (req, res) => {
+  var query = `
+  WITH timeRangeCompiled AS (
+    SELECT g.category, COUNT(g.category) as num
+    FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
+    WHERE YEAR(b.week) >= 1990
+    GROUP BY g.category
+  ), top AS (
+    SELECT category
+    FROM timeRangeCompiled 
+    ORDER BY num DESC
+    LIMIT 50
+  )
+  SELECT category
+  FROM top
+  ORDER BY category;
+  `;
+
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 // Top {limit} words that appeared in songs with genre {category}
 // most popular words in songs of different genres
 // display a few wellknown genres? — country, pop, r&b, rap, rock
@@ -18,6 +45,7 @@ const topWordsByGenre = (req, res) => {
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
+      console.log(rows);
       res.json(rows);
     }
   });
@@ -156,7 +184,7 @@ const topPosOfGenre = (req, res) => {
 
 
 // Search for everything
-// SELECT DISTINCT p.title, p.performer
+// SELECT p.title, p.performer, MAX(b.position)
 // FROM Song s JOIN Genre g ON s.id = g.song_id
 //             JOIN BillboardAppearance b ON s.id = b.song_id
 //             JOIN HasLyric l ON s.id = l.song_id
@@ -172,42 +200,61 @@ const topPosOfGenre = (req, res) => {
 //   s.album = "britney spears" OR
 //   l.word = "britney spears"
 // )
+// GROUP BY p.title, p.performer
 // LIMIT 10;
 
 const searchEverything = (req, res) => {
-  const limit = 100;
-  const genre = 'pop';
-  const lower = 2000;
-  const upper = 2010;
-  const pos = 10;
-  const keyword = 'britney spears'; // req.params.keyword;
+  // const limit = 100;
+  // const genre = req.params.genre;
+  // const lower = 2000;
+  // const upper = 2010;
+  // const position = 10;
+  // const keyword = 'britney spears'; // req.params.keyword;
+  const limit = 50;
+  const genre = req.params.gen;
+  const lower = req.params.low;
+  const upper = req.params.up;
+  const position = req.params.pos;
+  var keyword;
+  if (req.params.key) keyword = (req.params.key).trimStart();
+  else keyword = " ";
 
   var query = `
-    SELECT DISTINCT p.title, p.performer
+    SELECT DISTINCT s.id, p.title, p.performer, MAX(b.position) as position
     FROM Song s JOIN Genre g ON s.id = g.song_id
                 JOIN BillboardAppearance b ON s.id = b.song_id
-                JOIN HasLyric l ON s.id = l.song_id
                 JOIN PerformerTitle p ON s.id = p.song_id
+                LEFT JOIN HasLyric l ON s.id = l.song_id
     WHERE 
-    ('${genre}' IS NULL OR g.category = '${genre}') AND
-    (${lower} IS NULL OR YEAR(b.week) >= ${lower}) AND 
-    (${upper} IS NULL OR YEAR(b.week) <= ${upper}) AND 
-    (${pos} IS NULL OR b.position <= ${pos}) AND 
-    ('${keyword}' IS NULL OR 
-      p.performer = "'${keyword}' OR  
+    ('${genre}' = " " OR g.category = '${genre}') AND
+    (${lower} = -1 OR YEAR(b.week) >= ${lower}) AND 
+    (${upper} = -1 OR YEAR(b.week) <= ${upper}) AND 
+    (${position} = -1 OR b.position <= ${position}) AND 
+    ('${keyword}' = ' ' OR 
+      p.performer = '${keyword}' OR  
       p.title = '${keyword}' OR  
       s.album = '${keyword}' OR
-      l.word = '${keyword}'
+     (s.id = l.song_id AND l.word = '${keyword}')
     )
-    LIMIT ${limit}
+    GROUP BY p.title, p.performer
+    ORDER BY position
+    LIMIT ${limit};
   `;
-
-  
-
+  console.log(query);
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
+      console.log(rows);
       res.json(rows);
     }
   });
 };
+
+
+module.exports = {
+  searchEverything: searchEverything,
+  topPosOfGenre: topPosOfGenre,
+  topWordsByRankAndTime: topWordsByRankAndTime,
+  topWordsByGenre: topWordsByGenre,
+  getGenres: getGenres
+}
