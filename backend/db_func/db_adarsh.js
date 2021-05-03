@@ -1,5 +1,10 @@
 const connection = require('../config')
 
+/**
+ * 
+ * Methods and routes for songs and song page
+ * 
+ */
 const songBillboardInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");
   var query = `
@@ -116,6 +121,11 @@ const songSimilarSongs = (req, res) => {
 };
 
 
+/**
+ * 
+ * Methods and routes for genres and genre page
+ * 
+ */
 
 const genreLyricInformation = (req, res) => {
   const genre = req.params.genre;
@@ -123,8 +133,8 @@ const genreLyricInformation = (req, res) => {
     WITH songs_in_genre AS (
       SELECT s.id FROM Genre g JOIN Song s ON g.song_id = s.id WHERE g.category = '${genre}'
     )
-    SELECT h.word, count(h.word) as count FROM HasLyric h JOIN songs_in_genre sg ON h.song_id = sg.id GROUP BY h.word
-    ORDER BY count DESC;
+    SELECT h.word, count(h.word) as count, l.popularity FROM HasLyric h JOIN songs_in_genre sg ON h.song_id = sg.id JOIN Lyric l ON h.word = l.word
+    GROUP BY h.word ORDER BY count DESC;
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -134,12 +144,12 @@ const genreLyricInformation = (req, res) => {
   });
 };
 
-const genreSongInformation = (req, res) => {
+const genreBillboardInformation = (req, res) => {
   const genre = req.params.genre;
   var query = `
-    SELECT b.week, count(b.week) FROM BillboardAppearance b 
+    SELECT b.week, count(b.week) AS count FROM BillboardAppearance b 
     JOIN Genre g ON b.song_id = g.song_id  
-    WHERE g.category = '${genre}' GROUP BY b.week;
+    WHERE g.category = '${genre}' GROUP BY b.week ORDER BY b.week DESC;
   `;
 
   connection.query(query, (err, rows, fields) => {
@@ -150,17 +160,34 @@ const genreSongInformation = (req, res) => {
   });
 }
 
-const genreBillboardInformation = (req, res) => {
+const genreSongInformation = (req, res) => {
   const genre = req.params.genre;
   var query = `
-    WITH numOfAppearancesInRange AS ( 
+    WITH numOfAppearancesOnBillboard AS ( 
       SELECT b.song_id, COUNT(b.song_id) as num
       FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
       WHERE g.category = '${genre}' GROUP BY b.song_id
     )
-    SELECT p.title, n.num
-    FROM numOfAppearancesInRange n JOIN PerformerTitle p ON n.song_id = p.song_id
+    SELECT n.song_id, p.title, n.num
+    FROM numOfAppearancesOnBillboard n JOIN PerformerTitle p ON n.song_id = p.song_id
     ORDER BY n.num DESC;
+  `;
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+const genreSummary = (req, res) => {
+  const genre = req.params.genre;
+  var query = `
+    SELECT g.category, AVG(length) AS length, AVG(popularity) AS popularity, AVG(energy) AS energy, 
+    AVG(acousticness) AS acousticness, AVG(danceability) AS danceability, AVG(liveness) AS liveness, 
+    AVG(loudness) AS loudness, AVG(speechiness) AS speechiness, AVG(tempo) AS tempo, AVG(valence) AS valence
+    FROM Genre g JOIN Song s ON g.song_id = s.id WHERE g.category = '${genre}'
+    GROUP BY g.category;
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -175,5 +202,9 @@ module.exports = {
   songSimilarSongs: songSimilarSongs,
   songLyricInformation: songLyricInformation,
   songBillboardInformation: songBillboardInformation,
-  songGenres: songGenres
+  songGenres: songGenres,
+  genreLyricInformation: genreLyricInformation,
+  genreBillboardInformation: genreBillboardInformation,
+  genreSongInformation: genreSongInformation,
+  genreSummary: genreSummary
 }

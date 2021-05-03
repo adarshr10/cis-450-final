@@ -27,6 +27,7 @@ export default class SongPage extends React.Component {
     this.showInformation = this.showInformation.bind(this);
     this.showBillboard = this.showBillboard.bind(this);
   };
+    
 
   componentDidMount() {
     // var songId = "";
@@ -63,6 +64,13 @@ export default class SongPage extends React.Component {
         songOverview.explicit = "N";
       }
       let title = songOverview.title;
+      let length = parseInt(songOverview.length);
+      var minutes = Math.floor(length / 60000);
+      var seconds = ((length % 60000) / 1000).toFixed(0);
+      length = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+      songOverview.length = length;
+
       this.setState({
         songName: title
       });
@@ -209,7 +217,8 @@ export default class SongPage extends React.Component {
               size: 18,
               color: '#7f7f7f'
             }
-          }
+          },
+          autorange: 'reversed'
         }
       }
 

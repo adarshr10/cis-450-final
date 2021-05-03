@@ -3,7 +3,7 @@ import Plotly from "plotly.js"
 import createPlotlyComponent from 'react-plotly.js/factory';
 const Plot = createPlotlyComponent(Plotly);
 
-export default class SongBillboardDiv extends React.Component {
+export default class GenreBillboardDiv extends React.Component {
 	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
