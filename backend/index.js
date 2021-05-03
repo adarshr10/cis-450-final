@@ -13,6 +13,12 @@ const app = express()
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
 app.use(arouters);
+app.use(lrouters);
+app.use(jrouters);
+app.use(drouters);
+
+
+
 
 
 app.listen(PORT, () => {

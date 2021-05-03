@@ -28,6 +28,21 @@ function GenreRend(){
 	return <GenrePage genre={genre} />
   }
 
+function ArtRend(){
+  let {artistName} = useParams();
+  return <ArtistPage artist={artistName} />
+}
+
+function SearchRend(){
+  let {lim} = useParams();
+  let {gen} = useParams();
+  let {low} = useParams();
+  let {up} = useParams();
+  let {pos} = useParams();
+  let {key} = useParams();
+
+  return <SearchPage lim={lim} gen={gen} low={low} up={up} pos={pos} key={key}/>
+}
 
 function App() {
   return (
@@ -39,18 +54,25 @@ function App() {
 							path="/"
 							render={() => <HomePage />}
 						/>
-						<Route
+						{/* <Route
 							exact
 							path="/search"
 							render={() => <SearchPage />}
-						/>
+						/> */}
+
 						<Route
 							path="/timeline"
 							render={() => <TimelinePage />}
 						/>
+
 						<Route path="/song/:songId?">
               				<SongRend />
             			</Route>
+
+						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?">
+              				<SearchRend />
+            			</Route>
+
 						<Route
 							path="/lyric"
 							render={() => <LyricPage />}
@@ -58,10 +80,9 @@ function App() {
 						<Route path="/genre/:genre?">
               				<GenreRend />
             			</Route>
-						<Route
-							path="/artist"
-							render={() => <ArtistPage />}
-						/>
+						<Route path="/artist/:artistName?">
+              <ArtRend />
+            </Route>
             <Route path="*" render={() => <HomePage />} />
 					</Switch>
 				</Router>

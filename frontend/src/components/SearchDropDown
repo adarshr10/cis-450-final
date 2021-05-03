@@ -1,0 +1,10 @@
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+export default class SearchDropDown extends React.Component {
+	render() {
+		return (
+            <option className="genreOption" value={this.props.genre}>{this.props.genre}</option>
+		);
+	};
+};

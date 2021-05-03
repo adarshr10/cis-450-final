@@ -29,6 +29,7 @@ const songOverviewInformation = (req, res) => {
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
+      console.log(rows);
       res.json(rows);
     }
   });
