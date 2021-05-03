@@ -170,7 +170,7 @@ export default class SongPage extends React.Component {
       var bestSongs = topSongs.map((obj, i) =>
         <GenreSongsDiv 
           key={i}
-          id={`${obj.song_id}`} 
+          id={obj.song_id} 
           title={obj.title}
           num={obj.num}
         /> 
@@ -267,16 +267,16 @@ export default class SongPage extends React.Component {
 
               <div className="dropdown-container">
                 Lower Year: 
-                <select value={this.state.lowerLyric} onChange={this.handleLowerLyricChange} name="dropdown" id="SearchDropDown">
+                <select value={this.state.lowerLyric} onChange={this.handleLowerLyricChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsLyric}
                 </select>
                 Upper Year: 
-                <select value={this.state.upperLyric} onChange={this.handleUpperLyricChange} name="dropdown" id="SearchDropDown">
+                <select value={this.state.upperLyric} onChange={this.handleUpperLyricChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsLyric}
                 </select>
-                <button className="submit-btn" id="submitBtn" onClick={this.showLyrics.bind(this, this.state.genre, this.state.lowerLyric, this.state.upperLyric)}>Submit</button>
+                <button className="submit-btn" onClick={this.showLyrics.bind(this, this.state.genre, this.state.lowerLyric, this.state.upperLyric)}>Submit</button>
               </div>
               <Table borderless responsive="sm">
                 <tbody>
@@ -292,16 +292,16 @@ export default class SongPage extends React.Component {
             <ContentCol title={""+(this.state.genre)}>
               <div className="dropdown-container">
                 Lower Year: 
-                <select value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown" id="SearchDropDown">
+                <select value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsApp}
                 </select>
                 Upper Year: 
-                <select value={this.state.upper} onChange={this.handleUpperAppChange} name="dropdown" id="SearchDropDown">
+                <select value={this.state.upper} onChange={this.handleUpperAppChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsApp}
                 </select>
-                <button className="submit-btn" id="submitBtn" onClick={this.showSongs.bind(this, this.state.genre, this.state.lowerApp, this.state.upperApp)}>Submit</button>
+                <button className="submit-btn" onClick={this.showSongs.bind(this, this.state.genre, this.state.lowerApp, this.state.upperApp)}>Submit</button>
               </div>
               
               <Table borderless responsive="sm">

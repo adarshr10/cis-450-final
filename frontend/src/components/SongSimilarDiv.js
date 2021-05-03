@@ -6,7 +6,7 @@ export default class SongSimilarDiv extends React.Component {
 		return (
 			<tr className="id" id={this.props.id}>
                     <td className="title">
-						<a href={'/song/' + this.props.id}>{this.props.title}</a>
+						<a href={'/song/' + encodeURIComponent(this.props.id)}>{this.props.title}</a>
 					</td>
                 <td className="performer">{this.props.performer}</td>
 			</tr>

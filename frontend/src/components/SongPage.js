@@ -78,10 +78,10 @@ export default class SongPage extends React.Component {
       this.setState({
         songName: title, 
         sampleLink: link, 
-        sound: new Howl({
+        sound: link ? new Howl({
             src: [link],
             html5: true
-          })
+          }) : null
       });
 
 
@@ -171,7 +171,7 @@ export default class SongPage extends React.Component {
       var similar = songSimilar.map((obj, i) =>
         <SongSimilarDiv 
           key={i}
-          id={`${obj.song_id}`} 
+          id={obj.song_id} 
           title={obj.title}
           performer={obj.performer}
         /> 
@@ -261,23 +261,27 @@ export default class SongPage extends React.Component {
           {this.state.billboard}
         </div>
         <div className="statsContainer">
-          <div className="musicPlayContainer">
-            <Button variant="outline-success" onClick={() => {
-                if (!this.state.sound.playing()) {
-                  this.state.sound.play();
+          <div className="musicControlContainer">
+            <div className="musicPlayContainer">
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  console.log(this.state.sound)
+                  if (!this.state.sound.playing()) {
+                    this.state.sound.play();
+                  }
                 }
-              }
-            }>Play</Button>
-            <Button variant="outline-success" onClick={() => {
-                if (this.state.sound.playing()) {
-                  this.state.sound.pause();
+              }>Play</Button>
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  if (this.state.sound.playing()) {
+                    this.state.sound.pause();
+                  }
                 }
-              }
-            }>Pause</Button>
-            <Button variant="outline-success" onClick={() => {
-                this.state.sound.stop();
-              }
-            }>Reset</Button>
+              }>Pause</Button>
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  this.state.sound.stop();
+                }
+              }>Reset</Button>
+            </div>
+            <p>If buttons are disabled, no audio is available for this track!</p>
           </div>
           <Row style={{height: "100%", margin: 0}}>
             <ContentCol title="Information" padding={true}>
