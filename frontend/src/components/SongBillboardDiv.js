@@ -8,9 +8,9 @@ export default class SongSimilarDiv extends React.Component {
 	render() {
 		return (
 			<Plot id={this.props.id}
-                data={[
+                data={
                 this.props.data
-                ]} 
+                } 
 				layout={this.props.layout}
 				displayModeBar={false}
             />

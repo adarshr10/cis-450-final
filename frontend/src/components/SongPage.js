@@ -36,8 +36,8 @@ export default class SongPage extends React.Component {
     if (!songId) {
       songId = 'love storytaylor swift';
     } 
-    this.showInformation(songId);
     this.setState({songId: songId})
+    this.showInformation(songId);
     this.showLyrics(songId);
     this.showSongs(songId);
     this.showBillboard(songId);
@@ -174,7 +174,7 @@ export default class SongPage extends React.Component {
         weeks.push(obj.week);
         positions.push(obj.position);
       });
-      let plotData = {
+      let plotData = [{
         x: weeks,
         y: positions,
         type: "scatter",
@@ -182,7 +182,7 @@ export default class SongPage extends React.Component {
         line: {
           color: '#7F7F7F'
         }
-      }
+      }]
       
       let configuration = {
         width: document.getElementsByClassName("timelineContainer")[0].clientWidth,
@@ -235,7 +235,7 @@ export default class SongPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{height: "100%", margin: 0}}>
-            <ContentCol title="Information" subtitle="no wya" padding={true}>
+            <ContentCol title="Information" padding={true}>
               {this.state.info}
             </ContentCol>
             <ContentCol title="Top Lyrics">

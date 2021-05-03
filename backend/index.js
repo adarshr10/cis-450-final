@@ -16,7 +16,7 @@ app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
  * Song page routes
  */
 app.use(arouters);
-
+app.use(jrouters);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)

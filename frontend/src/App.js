@@ -23,6 +23,10 @@ function SongRend(){
   return <SongPage songId={songId} />
 }
 
+function ArtRend(){
+  let {artistName} = useParams();
+  return <ArtistPage artist={artistName} />
+}
 
 function App() {
   return (
@@ -54,10 +58,9 @@ function App() {
 							path="/genre"
 							render={() => <GenrePage />}
 						/>
-						<Route
-							path="/artist"
-							render={() => <ArtistPage />}
-						/>
+						<Route path="/artist/:artistName?">
+              <ArtRend />
+            </Route>
             <Route path="*" render={() => <HomePage />} />
 					</Switch>
 				</Router>
