@@ -23,6 +23,16 @@ function SongRend(){
   return <SongPage songId={songId} />
 }
 
+function SearchRend(){
+  let {lim} = useParams();
+  let {gen} = useParams();
+  let {low} = useParams();
+  let {up} = useParams();
+  let {pos} = useParams();
+  let {key} = useParams();
+
+  return <SearchPage lim={lim} gen={gen} low={low} up={up} pos={pos} key={key}/>
+}
 
 function App() {
   return (
@@ -34,18 +44,25 @@ function App() {
 							path="/"
 							render={() => <HomePage />}
 						/>
-						<Route
+						{/* <Route
 							exact
 							path="/search"
 							render={() => <SearchPage />}
-						/>
+						/> */}
+
 						<Route
 							path="/timeline"
 							render={() => <TimelinePage />}
 						/>
+
 						<Route path="/song/:songId?">
-              <SongRend />
-            </Route>
+              				<SongRend />
+            			</Route>
+
+						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?">
+              				<SearchRend />
+            			</Route>
+
 						<Route
 							path="/lyric"
 							render={() => <LyricPage />}

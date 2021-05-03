@@ -7,6 +7,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^4.6.0",
+    "plotly": "^1.0.6",
     "plotly.js": "^1.58.4",
     "plotly.js-dist": "^1.58.4",
     "react": "^17.0.2",
