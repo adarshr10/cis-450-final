@@ -9,7 +9,7 @@ const songBillboardInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");
   var query = `
     SELECT week, position FROM BillboardAppearance b
-    WHERE b.song_id = '${songId}'
+    WHERE b.song_id = '${songId}';
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -23,13 +23,12 @@ const songOverviewInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");
   var query = `
     SELECT DISTINCT * 
-    FROM Song s JOIN PerformerTitle p ON s.id = p.song_id
-    WHERE s.id = '${songId}'
+    FROM Song s JOIN PerformerTitle p ON s.id = p.song_id LEFT JOIN URL u ON s.id = u.song_id
+    WHERE s.id = '${songId}';
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
-      console.log(rows);
       res.json(rows);
     }
   });
@@ -40,7 +39,7 @@ const songGenres = (req, res) => {
   var query = `
     SELECT DISTINCT g.category 
     FROM Song s JOIN Genre g ON s.id = g.song_id
-    WHERE s.id = '${songId}'
+    WHERE s.id = '${songId}';
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -55,7 +54,7 @@ const songLyricInformation = (req, res) => {
   var query = `
     SELECT h.word, h.count, l.popularity
     FROM HasLyric h JOIN Lyric l ON h.word = l.word
-    WHERE h.song_id = '${songId}' ORDER BY h.count DESC
+    WHERE h.song_id = '${songId}' ORDER BY h.count DESC;
   `;
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -130,13 +129,23 @@ const songSimilarSongs = (req, res) => {
 
 const genreLyricInformation = (req, res) => {
   const genre = req.params.genre;
+  const lower = req.params.lower;
+  const upper = req.params.upper;
   var query = `
-    WITH songs_in_genre AS (
-      SELECT s.id FROM Genre g JOIN Song s ON g.song_id = s.id WHERE g.category = '${genre}'
+    WITH songs_in_time_and_genre AS (
+      SELECT DISTINCT b.song_id FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
+      WHERE (${lower} = 1950 OR YEAR(b.week) >= ${lower}) 
+        AND (${upper} = 2021 OR YEAR(b.week) <= ${upper})
+        AND g.category = '${genre}'
+    ),
+    lyrics_in_genre AS (
+      SELECT h.word, count(h.word) as count FROM HasLyric h JOIN songs_in_time_and_genre st ON h.song_id = st.song_id
+      GROUP BY h.word ORDER BY count DESC
     )
-    SELECT h.word, count(h.word) as count, l.popularity FROM HasLyric h JOIN songs_in_genre sg ON h.song_id = sg.id JOIN Lyric l ON h.word = l.word
-    GROUP BY h.word ORDER BY count DESC;
+    SELECT lg.word, lg.count, l.popularity FROM lyrics_in_genre lg JOIN Lyric l ON lg.word = l.word
+    ORDER BY lg.count DESC;
   `;
+
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
@@ -148,9 +157,9 @@ const genreLyricInformation = (req, res) => {
 const genreBillboardInformation = (req, res) => {
   const genre = req.params.genre;
   var query = `
-    SELECT b.week, count(b.week) AS count FROM BillboardAppearance b 
+    SELECT DATE_FORMAT(week,'%Y-%m') AS monthYear, count(DATE_FORMAT(week,'%Y-%m')) AS count FROM BillboardAppearance b 
     JOIN Genre g ON b.song_id = g.song_id  
-    WHERE g.category = '${genre}' GROUP BY b.week ORDER BY b.week DESC;
+    WHERE g.category = 'rap' GROUP BY monthYear ORDER BY monthYear DESC;
   `;
 
   connection.query(query, (err, rows, fields) => {
@@ -163,11 +172,16 @@ const genreBillboardInformation = (req, res) => {
 
 const genreSongInformation = (req, res) => {
   const genre = req.params.genre;
+  const upper = req.params.upper;
+  const lower = req.params.lower;
   var query = `
     WITH numOfAppearancesOnBillboard AS ( 
       SELECT b.song_id, COUNT(b.song_id) as num
       FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
-      WHERE g.category = '${genre}' GROUP BY b.song_id
+      WHERE g.category = '${genre}' 
+        AND (${lower} = 1950 OR YEAR(b.week) >= ${lower}) 
+        AND (${upper} = 2021 OR YEAR(b.week) <= ${upper}) 
+      GROUP BY b.song_id 
     )
     SELECT n.song_id, p.title, n.num
     FROM numOfAppearancesOnBillboard n JOIN PerformerTitle p ON n.song_id = p.song_id

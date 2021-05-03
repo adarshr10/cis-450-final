@@ -1,5 +1,5 @@
 import React from 'react';
-import "../style/SongPage.css"
+import "../style/GenrePage.css"
 import { Row, Table } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
@@ -12,19 +12,35 @@ export default class SongPage extends React.Component {
   
   constructor(props) {
     super(props);
+    var d = new Date();
 
     this.state = {
       lyrics: [],
       songs: [],
       info: "",
       billboard: "",
+      lowerApp: 1950,
+      upperApp: parseInt(d.getFullYear()),
+      lowerLyric: 1950,
+      upperLyric: parseInt(d.getFullYear()),
+      yearsApp: [],
+      yearsLyric: [],
       genre: props.genre || ""
     };
+
+    for (var i = 1950; i < parseInt(d.getFullYear()) + 1; i++) {
+      this.state.yearsApp.push(<option className="genresOption" value={i}>{i}</option>);
+      this.state.yearsLyric.push(<option className="genresOption" value={i}>{i}</option>);
+    }
 
     this.showLyrics = this.showLyrics.bind(this);
     this.showSongs = this.showSongs.bind(this);
     this.showInformation = this.showInformation.bind(this);
     this.showBillboard = this.showBillboard.bind(this);
+    this.handleLowerAppChange = this.handleLowerAppChange.bind(this);
+    this.handleUpperAppChange = this.handleUpperAppChange.bind(this);
+    this.handleLowerLyricChange = this.handleLowerLyricChange.bind(this);
+    this.handleUpperLyricChange = this.handleUpperLyricChange.bind(this);
   };
 
   componentDidMount() {
@@ -32,15 +48,43 @@ export default class SongPage extends React.Component {
     // const url = decodeURIComponent(window.location.pathname)
     // var id = url.substring(url.lastIndexOf("/")+1)
     let genre = this.state.genre;
+    let upperApp = this.state.upperApp;
+    let lowerApp = this.state.lowerApp;
+    let upperLyric = this.state.upperLyric;
+    let lowerLyric = this.state.lowerLyric;
     if (!genre) {
       genre = 'rap';
     } 
-    this.showInformation(genre);
     this.setState({genre: genre})
-    this.showLyrics(genre);
-    this.showSongs(genre);
+    this.showInformation(genre);
+    this.showLyrics(genre, lowerLyric, upperLyric);
+    this.showSongs(genre, lowerApp, upperApp);
     this.showBillboard(genre);
   };
+
+  handleLowerAppChange(e) {
+		this.setState({
+			lowerApp: e.target.value
+		});
+	};
+
+  handleUpperAppChange(e) {
+		this.setState({
+			upperApp: e.target.value
+		});
+	};
+
+  handleLowerLyricChange(e) {
+		this.setState({
+			lowerLyric: e.target.value
+		});
+	};
+
+  handleUpperLyricChange(e) {
+		this.setState({
+			upperLyric: e.target.value
+		});
+	};
 
   showInformation(genre) {
     fetch(`http://localhost:8080/genreOverview/${genre}`, {
@@ -66,16 +110,16 @@ export default class SongPage extends React.Component {
             <GenreInformationDiv 
               id={`${genreOverview.category}`} 
               length={genreOverview.length}
-              popularity={genreOverview.popularity}
-              energy={genreOverview.energy}
-              acousticness={genreOverview.acousticness}
-              danceability={genreOverview.danceability}
-              instrumental={genreOverview.instrumental}
-              liveness={genreOverview.liveness}
-              loudness={genreOverview.loudness}
-              speechiness={genreOverview.speechiness}
-              tempo={genreOverview.tempo}
-              valence={genreOverview.valence}
+              popularity={parseFloat(genreOverview.popularity).toFixed(4)}
+              energy={parseFloat(genreOverview.energy).toFixed(4)}
+              acousticness={parseFloat(genreOverview.acousticness).toFixed(4)}
+              danceability={parseFloat(genreOverview.danceability).toFixed(4)}
+              instrumental={parseFloat(genreOverview.instrumental).toFixed(4)}
+              liveness={parseFloat(genreOverview.liveness).toFixed(4)}
+              loudness={parseFloat(genreOverview.loudness).toFixed(4)}
+              speechiness={parseFloat(genreOverview.speechiness).toFixed(4)}
+              tempo={parseFloat(genreOverview.tempo).toFixed(4)}
+              valence={parseFloat(genreOverview.valence).toFixed(4)}
             /> 
           ;
         this.setState({
@@ -85,8 +129,8 @@ export default class SongPage extends React.Component {
   };
 
 
-  showLyrics(genre) {
-    fetch(`http://localhost:8080/genreLyrics/${genre}`, {
+  showLyrics(genre, lower, upper) {
+    fetch(`http://localhost:8080/genreLyrics/${genre}/${lower}/${upper}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -112,8 +156,8 @@ export default class SongPage extends React.Component {
     });
   };
 
-  showSongs(genre) {
-    fetch(`http://localhost:8080/genreSongs/${genre}`, {
+  showSongs(genre, lower, upper) {
+    fetch(`http://localhost:8080/genreSongs/${genre}/${lower}/${upper}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -149,14 +193,14 @@ export default class SongPage extends React.Component {
       console.log(err);
     }).then(billboardData => {
       if (!billboardData) return;
-      let weeks = [];
+      let months = [];
       let positions = [];
       billboardData.forEach((obj, i) => {
-        weeks.push(obj.week);
+        months.push(obj.monthYear);
         positions.push(obj.count);
       });
       let plotData = {
-        x: weeks,
+        x: months,
         y: positions,
         type: "scatter",
         mode: "lines", 
@@ -176,7 +220,7 @@ export default class SongPage extends React.Component {
         }, 
         xaxis: {
           title: {
-            text: 'Week',
+            text: 'Month',
             font: {
               size: 18,
               color: '#7f7f7f'
@@ -185,7 +229,7 @@ export default class SongPage extends React.Component {
         },
         yaxis: {
           title: {
-            text: 'Appearances in Week',
+            text: 'Appearances in Month',
             font: {
               size: 18,
               color: '#7f7f7f'
@@ -220,6 +264,20 @@ export default class SongPage extends React.Component {
               {this.state.info}
             </ContentCol>
             <ContentCol title={"Popular Lyrics in "+(this.state.genre)}>
+
+              <div className="dropdown-container">
+                Lower Year: 
+                <select value={this.state.lowerLyric} onChange={this.handleLowerLyricChange} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.yearsLyric}
+                </select>
+                Upper Year: 
+                <select value={this.state.upperLyric} onChange={this.handleUpperLyricChange} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.yearsLyric}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.showLyrics.bind(this, this.state.genre, this.state.lowerLyric, this.state.upperLyric)}>Submit</button>
+              </div>
               <Table borderless responsive="sm">
                 <tbody>
                   <tr className='headerRow'>
@@ -231,12 +289,26 @@ export default class SongPage extends React.Component {
                 </tbody>
               </Table>
             </ContentCol>
-            <ContentCol title={"Hottest Songs in "+(this.state.genre)}>
+            <ContentCol title={""+(this.state.genre)}>
+              <div className="dropdown-container">
+                Lower Year: 
+                <select value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.yearsApp}
+                </select>
+                Upper Year: 
+                <select value={this.state.upper} onChange={this.handleUpperAppChange} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.yearsApp}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.showSongs.bind(this, this.state.genre, this.state.lowerApp, this.state.upperApp)}>Submit</button>
+              </div>
+              
               <Table borderless responsive="sm">
                 <tbody>
                   <tr className='headerRow'>
                     <th>Title</th>
-                    <th>Appearances in Top 100</th>
+                    <th>Appearances</th>
                   </tr>
                   {this.state.songs}
                 </tbody>

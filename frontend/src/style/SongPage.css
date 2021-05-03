@@ -36,3 +36,12 @@ th{
   color:#1db954;
   text-decoration: none;
 }
+
+.musicPlayContainer{
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
