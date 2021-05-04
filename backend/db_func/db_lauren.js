@@ -2,6 +2,7 @@ const connection = require('../config')
 
 
 const getGenres = (req, res) => {
+  const lim = req.params.lim;
   var query = `
   WITH timeRangeCompiled AS (
     SELECT g.category, COUNT(g.category) as num
@@ -12,7 +13,7 @@ const getGenres = (req, res) => {
     SELECT category
     FROM timeRangeCompiled 
     ORDER BY num DESC
-    LIMIT 50
+    LIMIT ${lim}
   )
   SELECT category
   FROM top
@@ -27,19 +28,26 @@ const getGenres = (req, res) => {
   });
 };
 
+// 0: TOP WORDS BY GENRE
 // Top {limit} words that appeared in songs with genre {category}
 // most popular words in songs of different genres
 // display a few wellknown genres? — country, pop, r&b, rap, rock
 const topWordsByGenre = (req, res) => {
-  const genre = 'pop';
-  const limit = 10;
+  const genre = req.params.gen;
+  const limit = 50;
   var query = `
-    SELECT DISTINCT l.word, l.popularity
-    FROM Lyric l JOIN HasLyric h ON l.word = h.word
+  WITH temp AS (
+    SELECT h.word, b.song_id
+    FROM BillboardAppearance b JOIN HasLyric h ON b.song_id = h.song_id
     JOIN Genre g ON g.song_id = h.song_id
     WHERE g.category = '${genre}'
-    ORDER BY l.popularity
-    LIMIT ${limit}
+  )
+  
+  SELECT l.word, ROUND(COUNT(DISTINCT b.song_id)/(SELECT COUNT(DISTINCT song_id) FROM temp), 3) as count
+  FROM Lyric l JOIN temp b ON b.word = l.word
+  GROUP BY l.word
+  ORDER BY count DESC
+  LIMIT ${limit};
   `;
 
   connection.query(query, (err, rows, fields) => {
@@ -55,36 +63,54 @@ const topWordsByGenre = (req, res) => {
 // most popular words in top 10 songs
 // allow ppl to set range and rank
 
-// SELECT l.word, COUNT(l.word) as count
-// FROM Lyric l JOIN HasLyric h ON l.word = h.word
-// JOIN BillboardAppearance b ON b.song_id = h.song_id
-// WHERE b.position <= 10 AND YEAR(b.week) >= 2000 AND YEAR(b.week) <= 2010
+// WITH temp AS (
+// 	SELECT h.word, b.song_id, b.position
+// 	FROM BillboardAppearance b JOIN HasLyric h ON b.song_id = h.song_id
+// 	WHERE (1990 = -1 || YEAR(b.week) >= 1990) AND
+// 	(2010 = -1 || YEAR(b.week) <= 2010)
+// )
+
+// SELECT l.word, COUNT(DISTINCT b.song_id)/(SELECT COUNT(DISTINCT song_id) FROM temp) as num
+// FROM Lyric l JOIN temp b ON b.word = l.word
+// WHERE (-1 = -1 || b.position <= -1)
 // GROUP BY l.word
-// ORDER BY COUNT(l.word) DESC
-// LIMIT 20;
-// const topWordsByRankAndTime = (req, res) => {
-//   const limit = 10;
-//   const num = 10;
-//   const lower = 2000;
-//   const upper = 2010;
+// ORDER BY num DESC
+// LIMIT 50;
 
-//   var query = `
-//     SELECT l.word, COUNT(l.word) as count
-//     FROM Lyric l JOIN HasLyric h ON l.word = h.word
-//     JOIN BillboardAppearance b ON b.song_id = h.song_id
-//     WHERE b.position <= ${num} AND YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper}
-//     GROUP BY l.word
-//     ORDER BY COUNT(l.word) DESC
-//     LIMIT ${limit}
-//   `;
+// SELECT l.word, ROUND(COUNT(DISTINCT b.song_id)/(SELECT COUNT(DISTINCT song_id) FROM temp), 3) as count
+// FROM Lyric l JOIN temp b ON b.word = l.word
+// WHERE (${num} = -1 || b.position <= ${num})
+// GROUP BY l.word
+// ORDER BY count DESC
+// LIMIT ${limit};
+const topWordsByRankAndTime = (req, res) => {
+  const limit = 50;
+  //const num = req.params.pos;
+  const lower = req.params.low;
+  const upper = req.params.up;
 
-//   connection.query(query, (err, rows, fields) => {
-//     if  (err) console.log(err);
-//     else {
-//       res.json(rows);
-//     }
-//   });
-// };
+  var query = `
+  WITH temp AS (
+    SELECT h.word, b.song_id
+    FROM BillboardAppearance b JOIN HasLyric h ON b.song_id = h.song_id
+    WHERE (${lower} = -1 || YEAR(b.week) >= ${lower}) AND
+    (${upper} = -1 || YEAR(b.week) <= ${upper})
+  )
+  
+  SELECT l.word, ROUND(COUNT(DISTINCT b.song_id)/(SELECT COUNT(DISTINCT song_id) FROM temp), 3) as count
+  FROM Lyric l JOIN temp b ON b.word = l.word
+  GROUP BY l.word
+  ORDER BY count DESC
+  LIMIT ${limit};
+  `;
+
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
 
 // What portion of Top 100 songs dominated by a specific genre?
 // Percentage of songs from each genre (top {limit}) in time range {lower} to {upper}
@@ -100,25 +126,46 @@ const topWordsByGenre = (req, res) => {
 // FROM timeRangeCompiled 
 // ORDER BY num DESC
 // LIMIT 20;
-const topWordsByRankAndTime = (req, res) => {
-  const limit = 10;
-  const lower = 2000;
-  const upper = 2010;
+
+// WITH temp1 AS (
+//   SELECT song_id
+//   FROM BillboardAppearance
+//   WHERE (1990 = -1 || YEAR(week) >= 1990) AND 
+//   (2010 = -1 || YEAR(week) <= 2010)
+// ), temp AS (
+//   SELECT g.category, g.song_id
+//   FROM temp1 b JOIN Genre g ON b.song_id = g.song_id
+//   )
+  
+//   SELECT category, ROUND(COUNT(*)/(SELECT COUNT(*) FROM temp1), 3) as count
+//   FROM temp 
+//   GROUP BY category
+//   ORDER BY count DESC
+//   LIMIT 50;
+const topGenresByRankAndTime = (req, res) => {
+  const limit = 50;
+  const lower = req.params.low;
+  const upper = req.params.up;
 
   var query = `
-    WITH timeRangeCompiled AS (
-    SELECT g.category, COUNT(g.category) as num
-    FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
-    WHERE YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper}
-    GROUP BY g.category
+  WITH temp1 AS (
+    SELECT song_id
+    FROM BillboardAppearance
+    WHERE (${lower} = -1 || YEAR(week) >= ${lower}) AND 
+    (${upper} = -1 || YEAR(week) <= ${upper})
+), temp AS (
+    SELECT g.category, g.song_id
+    FROM temp1 b JOIN Genre g ON b.song_id = g.song_id
     )
     
-    SELECT category, num/(SELECT SUM(num) FROM timeRangeCompiled) as percentage
-    FROM timeRangeCompiled 
-    ORDER BY num DESC
-    LIMIT ${limit}
+    SELECT category, ROUND(COUNT(*)/(SELECT COUNT(*) FROM temp1), 3) as count
+    FROM temp 
+    GROUP BY category
+    ORDER BY count DESC
+    LIMIT ${limit};
   `;
 
+  console.log(query);
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
@@ -149,8 +196,8 @@ const topWordsByRankAndTime = (req, res) => {
 // ORDER BY highest_position;
 const topPosOfGenre = (req, res) => {
   const limit = 100;
-  const lower = 2000;
-  const upper = 2010;
+  const lower = req.params.low;
+  const upper = req.params.up;
 
   var query = `
     WITH timeRangeCompiled AS (
@@ -162,15 +209,15 @@ const topPosOfGenre = (req, res) => {
     SELECT category
     FROM timeRangeCompiled 
     ORDER BY num DESC
-    LIMIT 50
+    LIMIT ${limit}
     )
     
-    SELECT g.category, MIN(b.position) AS highest_position
+    SELECT g.category, MIN(b.position) AS high
     FROM Song s JOIN Genre g ON s.id = g.song_id
                 JOIN BillboardAppearance b ON s.id = b.song_id
-    WHERE YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper} AND g.category IN (SELECT * FROM commonGenres)
+    WHERE (${lower} = -1 || YEAR(week) >= ${lower}) AND (${upper} = -1 || YEAR(week) <= ${upper}) AND g.category IN (SELECT * FROM commonGenres)
     GROUP BY g.category
-    ORDER BY highest_position
+    ORDER BY high
     LIMIT ${limit}
   `;
 
@@ -210,7 +257,7 @@ const searchEverything = (req, res) => {
   // const upper = 2010;
   // const position = 10;
   // const keyword = 'britney spears'; // req.params.keyword;
-  const limit = 50;
+  const limit = 100;
   const genre = req.params.gen;
   const lower = req.params.low;
   const upper = req.params.up;
@@ -220,7 +267,7 @@ const searchEverything = (req, res) => {
   else keyword = " ";
 
   var query = `
-    SELECT DISTINCT s.id, p.title, p.performer, MAX(b.position) as position
+    SELECT DISTINCT s.id, p.title, p.performer, MIN(b.position) as position
     FROM Song s JOIN Genre g ON s.id = g.song_id
                 JOIN BillboardAppearance b ON s.id = b.song_id
                 JOIN PerformerTitle p ON s.id = p.song_id
@@ -255,6 +302,7 @@ module.exports = {
   searchEverything: searchEverything,
   topPosOfGenre: topPosOfGenre,
   topWordsByRankAndTime: topWordsByRankAndTime,
+  topGenresByRankAndTime: topGenresByRankAndTime,
   topWordsByGenre: topWordsByGenre,
   getGenres: getGenres
 }

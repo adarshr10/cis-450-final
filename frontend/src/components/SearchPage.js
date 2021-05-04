@@ -3,11 +3,10 @@ import '../style/SearchPage.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
-import ContentCol from "./LaurenCols/searchCol"
+import ContentCol from "./SearchPage/searchCol"
 
-import DropDown from "./SearchDropDown"
 import { Row, Table } from 'react-bootstrap';
-import SearchDiv from './SearchDiv';
+import SearchDiv from './SearchPage/SearchDiv';
 
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class SearchPage extends React.Component {
@@ -48,7 +47,7 @@ export default class SearchPage extends React.Component {
   componentDidMount() {
     //this.showSongs();
 
-    fetch("http://localhost:8080/genres",
+    fetch("http://localhost:8080/genres/50",
     {
       method: 'GET'
     }).then(res => {
@@ -133,7 +132,7 @@ export default class SearchPage extends React.Component {
         <Sidebar curPage="/search" className="sidebarContainer"></Sidebar>
 
         <div className="timelineContainer">
-          <div className="input-container">
+          <div className="dropdown-container">
           keywords:
 							<input type='text' placeholder="Keywords" value={this.state.keyword} onChange={this.handleKeywordChanged} id="keyName" className="key-input"/>
 					</div>
