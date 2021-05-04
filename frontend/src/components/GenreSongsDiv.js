@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class SongSimilarDiv extends React.Component {
+export default class GenreSongsDiv extends React.Component {
 	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
@@ -8,7 +8,7 @@ export default class SongSimilarDiv extends React.Component {
                     <td className="title">
 						<a href={'/song/' + encodeURIComponent(this.props.id)}>{this.props.title}</a>
 					</td>
-                <td className="performer">{this.props.performer}</td>
+                <td className="num">{this.props.num}</td>
 			</tr>
 		);
 	};

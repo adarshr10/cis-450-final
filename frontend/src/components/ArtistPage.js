@@ -16,7 +16,7 @@ export default class ArtistPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      artist: props.artist == null ? "Taylor Swift" : this.capitalizeName(props.artist),
+      artist: props.artist == null ? "Taylor Swift" : this.toTitleCase(props.artist),
       genres: [],
       topLyrics: [],
       topSongs: [],
@@ -30,8 +30,10 @@ export default class ArtistPage extends React.Component {
     this.getBillboard = this.getBillboard.bind(this);
   };
 
-  capitalizeName(name) {
-    return name.replace(/\b(\w)/g, s => s.toUpperCase());
+  toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
   }
 
   // React function that is called when the page load.
@@ -103,9 +105,9 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => 
         <tr key={i}>
-          <td className="topSong">{obj.title}</td>
-          <td className="topSong">{obj.peak}</td>
-          <td className="topSong">{obj.weeks}</td>
+          <td className="topSong title"><a href={"/song/"+obj.title.toLowerCase()+this.state.artist.toLowerCase()}>{obj.title}</a></td>
+          <td className="topSong">{obj.peak === 999999 ? "N/A":obj.peak}</td>
+          <td className="topSong">{obj.weeks === -1 ? "N/A":obj.weeks}</td>
         </tr>
       )
       this.setState({topSongs: divs})
@@ -125,9 +127,7 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => {
         return (
-          <tr className="id" key={i}>
-				    <td className="title"><a href={'/artist/' + obj.artist}>{obj.artist}</a></td>
-			    </tr>
+				  <li key={i} className="title mb-2"><a href={'/artist/' + obj.artist}>{obj.artist}</a></li>
         )
       })
       this.setState({similarArtists: divs})
@@ -145,26 +145,29 @@ export default class ArtistPage extends React.Component {
       console.log(err);
     }).then(rows => {
       if(!rows) return;
-      const weeks = [], peak= [], count = []
+      const weeks = [], peak= [], count = [], billboard=[];
       rows.forEach((obj) => {
         weeks.push(obj.week);
+        billboard.push(obj.url);
         peak.push(obj.peak);
         count.push(obj.count);
       })
       let plotData = [{
         x: weeks,
         y: peak,
-        type: "bar",
-        name: "Position of Highest Song on Billboard (peak)",
-        line: {color: "white"}
+        type: "scatter",
+        mode: 'markers',
+        name: "Position of Highest Song<br>on Billboard (peak)",
+        line: {color: "#7F7F7F"}
       }, 
       {
         x: weeks,
         y: count,
+        customdata: billboard,
         type: "bar",
         yaxis: "y2", 
-        name: "Number of Songs on Billboard",
-        line: {color: '#7F7F7F'}
+        name: "Number of Songs on<br>Billboard",
+        marker: {color: '#238bdb'}
       }]
       let configuration = {
         width: document.getElementsByClassName("timelineContainer")[0].clientWidth,
@@ -175,9 +178,8 @@ export default class ArtistPage extends React.Component {
         font: {
           color: '#1db954'
         },
-        margin: {b: 100, t: 75},
-        showlegend: true,
-	      legend: {"orientation": "h", xanchor: "center", y: -.2, x: 0.5},
+        barmode: "group",
+        margin: {b: 100, t: 75, r:20},
         xaxis: {
           title: {
             text: 'Week',
@@ -211,8 +213,14 @@ export default class ArtistPage extends React.Component {
       }
       var billboardDiv = <SongBillboardDiv
       data={plotData}
-      id={artist}
+      id={artist.replace(" ", "-") + "-plotly"}
       layout={configuration}
+      onClick={function(data){
+        if(data.points.length > 1){
+            window.open(data.points[1].customdata, "_blank", "");
+          }
+        }
+      }
     />
       this.setState({billboard: billboardDiv})
     })
@@ -227,11 +235,20 @@ export default class ArtistPage extends React.Component {
           {this.state.billboard}
         </div>
         <div className="statsContainer">
-          <div className="rowContainer">
           <Row style={{margin: 0}}>
-            <ContentCol title="Information" subtitle={this.state.artist} padding={true}>
-              <div>Genres: {Object.keys(this.state.genres).join(", ")}</div>
-            </ContentCol>
+            <ContentCol title="Information">
+              <h4 className="mt-3 mx-3">{this.state.artist}</h4>
+              <hr className="mx-3"style={{backgroundColor: "white"}}></hr>
+              <div className='info-col m-3'>
+                <div id="genre-list mb-2">Genres: {Object.keys(this.state.genres).join(", ")}</div>             
+                <div>
+                  <span>Similar Artists:</span>
+                  <ul id="similarArtDiv">
+                    {this.state.similarArtists}
+                  </ul>
+                </div>
+              </div>
+          </ContentCol>
             <ContentCol title="Top Songs">
               <Table borderless responsive="sm">
                 <tbody>
@@ -241,19 +258,6 @@ export default class ArtistPage extends React.Component {
                     <th>Weeks on Chart</th>
                   </tr>
                   {this.state.topSongs}
-                </tbody>
-              </Table>
-            </ContentCol>
-          </Row>
-          <Row style={{margin: 0}}>
-            
-            <ContentCol title="Similar Artists">
-              <Table borderless responsive="sm">
-                <tbody>
-                  <tr className='headerRow'>
-                    <th>Artist Name</th>
-                  </tr>
-                  {this.state.similarArtists}
                 </tbody>
               </Table>
             </ContentCol>
@@ -270,7 +274,6 @@ export default class ArtistPage extends React.Component {
               </Table>
             </ContentCol>
           </Row>
-          </div>
         </div>
       </div>
     );
