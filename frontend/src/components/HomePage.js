@@ -1,5 +1,11 @@
 import React from 'react';
-import Sidebar from './Sidebar'; 
+import Div_0 from './HomePage/Div_0';
+import Div_1 from './HomePage/Div_1';
+import Div_2 from './HomePage/Div_2';
+import Div_3 from './HomePage/Div_3';
+import Sidebar from './Sidebar';
+import ContentCol from "./HomePage/homeCol"
+import { Col, Row, Table } from 'react-bootstrap';
 
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class HomePage extends React.Component {
@@ -9,58 +15,926 @@ export default class HomePage extends React.Component {
     // The state maintained by this React Component. This component maintains the list of keywords,
     // and a list of movies for a specified keyword.
     this.state = {
-      keywords: [],
-      movies: []
+      // 0 — TOP LYRICS BY GENRE
+      genres_0: [<option className="genresOption" value={"hello"}>{"hello"}</option>],
+      genre_0: " ",
+      pop_0: [],
+      country_0: [],
+      rb_0: [],
+      custom_0: [],
+
+      // 1 - TOP LYRICS BY DECADE
+      pos_1: -1,
+      low_1: -1,
+      up_1: -1,
+      custom_1: [],
+      positions_1: [],
+      decades_1: [],
+      dec0_1: [],
+      dec1_1: [],
+      dec2_1: [],
+
+      // 2 — TOP GENRE BY DECADE
+      low_2: -1,
+      up_2: -1,
+      custom_2: [],
+      dec0_2: [],
+      dec1_2: [],
+      dec2_2: [],
+
+      // 3 — TOP GENRE RANKS BY DECADE
+      low_3: -1,
+      up_3: -1,
+      custom_3: [],
+      dec0_3: [],
+      dec1_3: [],
+      dec2_3: [],
     };
+
+    this.show_0 = this.show_0.bind(this);
+    this.fill_0 = this.fill_0.bind(this);
+    this.handleGenreChange_0 = this.handleGenreChange_0.bind(this);
+
+    this.show_1 = this.show_1.bind(this);
+    this.fill_1 = this.fill_1.bind(this);
+    this.handlePosChange_1 = this.handlePosChange_1.bind(this);
+    this.handleLowChange_1 = this.handleLowChange_1.bind(this);
+    this.handleUpChange_1 = this.handleUpChange_1.bind(this);
+    var i;
+    for (i = 0; i < 8; i++) {
+      this.state.decades_1.push(<option className="genresOption" value={1950 + 10 * i}>{1950 + 10 * i}</option>);
+    }
+    for (i = 1; i <= 100; i++) {
+      this.state.positions_1.push(<option className="genresOption" value={i}>{i}</option>);
+    }
+
+    this.show_2 = this.show_2.bind(this);
+    this.fill_2 = this.fill_2.bind(this);
+    this.handleLowChange_2 = this.handleLowChange_2.bind(this);
+    this.handleUpChange_2 = this.handleUpChange_2.bind(this);
+
+    this.show_3 = this.show_3.bind(this);
+    this.fill_3 = this.fill_3.bind(this);
+    this.handleLowChange_3 = this.handleLowChange_3.bind(this);
+    this.handleUpChange_3 = this.handleUpChange_3.bind(this);
   };
 
   // React function that is called when the page load.
   componentDidMount() {
+
+    // 0 — TOP WORDS BY GENRE
+    fetch("http://localhost:8080/genres/20",
+      {
+        method: 'GET'
+      }).then(res => {
+        return res.json();
+      }, err => {
+        console.log(err);
+      }).then(genreList => {
+        if (!genreList) return;
+        const ret = genreList.map((obj, i) =>
+          <option className="genresOption" value={obj.category}>{obj.category}</option>
+        );
+        this.setState({
+          genres_0: ret
+        });
+      }, err => {
+        console.log(err);
+      });
+
+
+    this.fill_0();
+    this.fill_1();
+    this.fill_2();
+    this.fill_3();
+
+  };
+
+
+
+  // 0 — TOP WORDS BY GENRE
+  handleGenreChange_0(e) {
+    this.setState({
+      genre_0: e.target.value
+    });
+  };
+
+  show_0() {
+
+    fetch(`http://localhost:8080/home/query0/${this.state.genre_0}`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_0
+          key={i}
+          num={counter++}
+          word={obj.word}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        custom_0: dataInfo
+      });
+    });
+  };
+
+
+  // 1 - TOP WORDS BY RANK AND TIME
+  handlePosChange_1(e) {
+    this.setState({
+      pos_1: e.target.value
+    });
+  };
+
+  handleLowChange_1(e) {
+    this.setState({
+      low_1: e.target.value
+    });
+  };
+
+  handleUpChange_1(e) {
+    this.setState({
+      up_1: e.target.value
+    });
+  };
+
+  show_1() {
+
+    fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/${this.state.low_1}/${this.state.up_1}`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_1
+          key={i}
+          num={counter++}
+          word={obj.word}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        custom_1: dataInfo
+      });
+    });
+
+
     
   };
 
-  render() {    
+
+  // 2
+  handleLowChange_2(e) {
+    this.setState({
+      low_2: e.target.value
+    });
+  };
+
+  handleUpChange_2(e) {
+    this.setState({
+      up_2: e.target.value
+    });
+  };
+
+  show_2() {
+
+    fetch(`http://localhost:8080/home/query2/${this.state.low_2}/${this.state.up_2}`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_2
+          key={i}
+          num={counter++}
+          category={obj.category}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        custom_2: dataInfo
+      });
+    });
+
+
+    
+  };
+
+    // 3
+    handleLowChange_3(e) {
+      this.setState({
+        low_3: e.target.value
+      });
+    };
+  
+    handleUpChange_3(e) {
+      this.setState({
+        up_3: e.target.value
+      });
+    };
+  
+    show_3() {
+  
+      fetch(`http://localhost:8080/home/query3/${this.state.low_3}/${this.state.up_3}`, {
+        method: 'GET' // The type of HTTP request.
+      }).then(res => {
+        // Convert the response data to a JSON.
+        return res.json();
+      }, err => {
+        // Print the error if there is one.
+        console.log(err);
+      }).then(data => {
+        if (!data) return;
+        var counter = 1;
+        var dataInfo = data.map((obj, i) =>
+          <Div_3
+            key={i}
+            num={counter++}
+            category={obj.category}
+            high={obj.high}
+          />
+        );
+  
+        this.setState({
+          custom_3: dataInfo
+        });
+      });
+  
+  
+      
+    };
+
+  render() {
     return (
       <div className="pageContainer">
         <Sidebar curPage="/" className="sidebarContainer"></Sidebar>
 
         <div className="timelineContainer">
-          Here's the timeline.
-        </div>
-        <div className="statsContainer">
-          Here are the stats.
-        </div>
-        
-        {/*
-      <div className="Dashboard">
 
-        <PageNavbar active="dashboard" />
+          <div className="statsContainer">
+            <Col style={{ height: "100%", margin: 0 }}>
+              {/* QUERY 0 */}
+              <ContentCol title="Top Lyrics by Genre">
+                <div className="dropdown-container">
+                  Genre:
+                    <select value={this.state.genre_0} onChange={this.handleGenreChange_0} name="dropdown" id="SearchDropDown">
+                    <option value=""> </option>
+                    {this.state.genres_0}
+                  </select>
+                  <button className="submit-btn" id="submitBtn" onClick={this.show_0}>Submit</button>
+                </div>
+                <Row style={{ height: "100%", margin: 0 }}>
 
-        <br />
-        <div className="container movies-container">
-          <div className="jumbotron">
-            <div className="h5">Keywords</div>
-            <div className="keywords-container">
-              {this.state.keywords}
-            </div>
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Custom</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.custom_0}
+                      </tbody>
+                    </Table>
+                  </ContentCol>
+
+                  <ContentCol borderless>
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Pop</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.pop_0}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Country</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.country_0}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>R&B</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.rb_0}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                </Row>
+              </ContentCol>
+
+              {/* QUERY 1 */}
+              <ContentCol title="Top Lyrics by Decade">
+                <div className="dropdown-container">
+                Lower decade:
+                  <select value={this.state.low_1} onChange={this.handleLowChange_1} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+                  
+                  Upper decade:
+                  <select value={this.state.up_1} onChange={this.handleUpChange_1} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+                  <button className="submit-btn" id="submitBtn" onClick={this.show_1}>Submit</button>
+                </div>
+
+                <Row style={{ height: "100%", margin: 0 }}>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Custom</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.custom_1}
+                      </tbody>
+                    </Table>
+                  </ContentCol>
+
+                  <ContentCol borderless>
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1950-1970</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec0_1}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1970-1990</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec1_1}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1990-2010</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec2_1}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+                </Row>
+              </ContentCol>
+
+
+              {/* QUERY 2 */}
+              <ContentCol title="Top Genres by Decade">
+                <div className="dropdown-container">
+                Lower decade:
+                  <select value={this.state.low_2} onChange={this.handleLowChange_2} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+
+                  Upper decade:
+                  <select value={this.state.up_2} onChange={this.handleUpChange_2} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+                  <button className="submit-btn" id="submitBtn" onClick={this.show_2}>Submit</button>
+                </div>
+
+                <Row style={{ height: "100%", margin: 0 }}>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Custom</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.custom_2}
+                      </tbody>
+                    </Table>
+                  </ContentCol>
+
+                  <ContentCol borderless>
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1950-1970</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec0_2}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1970-1990</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec1_2}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1990-2010</th>
+                          <th>%</th>
+                        </tr>
+                        {this.state.dec2_2}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                </Row>
+              </ContentCol>
+
+              {/* QUERY 3 */}
+              <ContentCol title="Top Ranks of Genres by Decade">
+                <div className="dropdown-container">
+                Lower decade:
+                  <select value={this.state.low_3} onChange={this.handleLowChange_3} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+
+                  Upper decade:
+                  <select value={this.state.up_3} onChange={this.handleUpChange_3} name="dropdown" id="SearchDropDown">
+                    <option value=" "> </option>
+                    {this.state.decades_1}
+                  </select>
+                  <button className="submit-btn" id="submitBtn" onClick={this.show_3}>Submit</button>
+                </div>
+
+                <Row style={{ height: "100%", margin: 0 }}>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>Custom</th>
+                          <th>Peak</th>
+                        </tr>
+                        {this.state.custom_3}
+                      </tbody>
+                    </Table>
+                  </ContentCol>
+
+                  <ContentCol borderless>
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1950-1970</th>
+                          <th>Peak</th>
+                        </tr>
+                        {this.state.dec0_3}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1970-1990</th>
+                          <th>Peak</th>
+                        </tr>
+                        {this.state.dec1_3}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                  <ContentCol borderless>
+
+                    <Table borderless responsive="sm">
+                      <tbody>
+                        <tr className='headerRow'>
+                          <th>#</th>
+                          <th>1990-2010</th>
+                          <th>Peak</th>
+                        </tr>
+                        {this.state.dec2_3}
+                      </tbody>
+                    </Table>
+
+                  </ContentCol>
+
+                </Row>
+              </ContentCol>
+            </Col>
           </div>
 
-          <br />
-          <div className="jumbotron">
-            <div className="movies-container">
-              <div className="movies-header">
-                <div className="header-lg"><strong>Title</strong></div>
-                <div className="header"><strong>Rating</strong></div>
-                <div className="header"><strong>Vote Count</strong></div>
-              </div>
-              <div className="results-container" id="results">
-                {this.state.movies}
-              </div>
-            </div>
-          </div>
+
+
         </div>
-    </div>*/}
       </div>
     );
   };
+
+
+
+
+  fill_0() {
+
+    fetch(`http://localhost:8080/home/query0/pop`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_0
+          key={i}
+          num={counter++}
+          word={obj.word}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        pop_0: dataInfo
+      });
+    });
+
+    fetch(`http://localhost:8080/home/query0/country`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_0
+          key={i}
+          num={counter++}
+          word={obj.word}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        country_0: dataInfo
+      });
+    });
+
+    fetch(`http://localhost:8080/home/query0/r&b`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(data => {
+      if (!data) return;
+      var counter = 1;
+      var dataInfo = data.map((obj, i) =>
+        <Div_0
+          key={i}
+          num={counter++}
+          word={obj.word}
+          count={obj.count.toString().substring(1)}
+        />
+      );
+
+      this.setState({
+        rb_0: dataInfo
+      });
+    });
+  };
+
+
+
+
+fill_1() {
+
+  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1950/1970`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_1
+        key={i}
+        num={counter++}
+        word={obj.word}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec0_1: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1970/1990`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_1
+        key={i}
+        num={counter++}
+        word={obj.word}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec1_1: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1990/2010`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_1
+        key={i}
+        num={counter++}
+        word={obj.word}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec2_1: dataInfo
+    });
+  });
+};
+
+
+fill_2() {
+
+  fetch(`http://localhost:8080/home/query2/1950/1970`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_2
+        key={i}
+        num={counter++}
+        category={obj.category}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec0_2: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query2/1970/1990`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_2
+        key={i}
+        num={counter++}
+        category={obj.category}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec1_2: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query2/1990/2010`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_2
+        key={i}
+        num={counter++}
+        category={obj.category}
+        count={obj.count.toString().substring(1)}
+      />
+    );
+
+    this.setState({
+      dec2_2: dataInfo
+    });
+  });
+};
+
+fill_3() {
+
+  fetch(`http://localhost:8080/home/query3/1950/1970`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_3
+        key={i}
+        num={counter++}
+        category={obj.category}
+        high={obj.high}
+      />
+    );
+
+    this.setState({
+      dec0_3: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query3/1970/1990`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_3
+        key={i}
+        num={counter++}
+        category={obj.category}
+        high={obj.high}
+      />
+    );
+
+    this.setState({
+      dec1_3: dataInfo
+    });
+  });
+
+  fetch(`http://localhost:8080/home/query3/1990/2010`, {
+    method: 'GET' // The type of HTTP request.
+  }).then(res => {
+    // Convert the response data to a JSON.
+    return res.json();
+  }, err => {
+    // Print the error if there is one.
+    console.log(err);
+  }).then(data => {
+    if (!data) return;
+    var counter = 1;
+    var dataInfo = data.map((obj, i) =>
+      <Div_3
+        key={i}
+        num={counter++}
+        category={obj.category}
+        high={obj.high}
+      />
+    );
+
+    this.setState({
+      dec2_3: dataInfo
+    });
+  });
+};
+
 };
