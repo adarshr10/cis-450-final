@@ -23,6 +23,11 @@ function SongRend(){
   return <SongPage songId={songId} />
 }
 
+function LyricRend(){
+  let {lyric} = useParams();
+  return <LyricPage lyric={lyric} />
+}
+
 function ArtRend(){
   let {artistName} = useParams();
   return <ArtistPage artist={artistName} />
@@ -65,13 +70,11 @@ function App() {
             			</Route>
 
 						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?">
-              				<SearchRend />
-            			</Route>
-
-						<Route
-							path="/lyric"
-							render={() => <LyricPage />}
-						/>
+              <SearchRend />
+            </Route>
+						<Route path="/lyric/:lyric?">
+              <LyricRend />
+            </Route>
 						<Route
 							path="/genre"
 							render={() => <GenrePage />}

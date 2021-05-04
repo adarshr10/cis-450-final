@@ -109,10 +109,79 @@ const topSongs = (req, res, limit) => {
   });
 }
 
+
+// -------------------------------------- LYRIC METHODS ---------------------------------------
+const lyricTopGenre = (req, res, limit) => {
+  const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
+  const query = `
+  WITH lyric AS (SELECT h.count, g.category FROM HasLyric h JOIN Genre g ON LOWER(h.word)='${lyric}' AND h.song_id=g.song_id)
+  SELECT category, SUM(count) as count FROM lyric
+  GROUP BY category ORDER BY count DESC LIMIT ${limit};
+  `
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+}
+
+const lyricTopArtist = (req, res, limit) => {
+  const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
+  const query = `
+  WITH lyric AS (SELECT p.performer, h.count FROM HasLyric h JOIN PerformerTitle p ON LOWER(h.word) = '${lyric}' AND h.song_id=p.song_id)
+  SELECT performer, SUM(count) as count FROM lyric
+  GROUP BY performer ORDER BY count DESC LIMIT ${limit};
+  `
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+}
+
+const lyricTopSongs = (req, res, limit) => {
+  const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
+  const query = `
+  SELECT p.performer, p.title, h.count 
+  FROM PerformerTitle p JOIN HasLyric h on LOWER(h.word)='${lyric}' AND p.song_id=h.song_id
+  ORDER BY h.count DESC LIMIT ${limit};
+  `
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+}
+
+const lyricBillboard = (req, res) => {
+  const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
+  const query = `
+  WITH billboard AS 
+    (SELECT b.week, b.url, h.count FROM BillboardAppearance b JOIN HasLyric h ON LOWER(h.word)='babi' AND b.song_id=h.song_id)
+  SELECT week, url, SUM(count) as word_count, COUNT(count) as song_count FROM billboard
+  GROUP BY week, url ORDER BY week ASC;
+  `
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+}
+
+
+
 module.exports = {
   topSongs: topSongs,
   artistGenres: artistGenres,
   similarArtists: similarArtists,
   topLyrics: topLyrics,
-  billboardPerformance: billboardPerformance
+  billboardPerformance: billboardPerformance,
+  lyricTopArtist: lyricTopArtist,
+  lyricTopGenre: lyricTopGenre,
+  lyricTopSongs: lyricTopSongs,
+  lyricBillboard: lyricBillboard
 }

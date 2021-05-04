@@ -7,12 +7,13 @@ export default class SongSimilarDiv extends React.Component {
 	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
-			<Plot id={this.props.id}
+			<Plot divId={this.props.id}
                 data={
                 this.props.data
                 } 
 				layout={this.props.layout}
 				displayModeBar={false}
+        onClick={this.props.onClick || null}
             />
 		);
 	};
