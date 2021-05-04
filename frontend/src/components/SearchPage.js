@@ -112,6 +112,7 @@ export default class SearchPage extends React.Component {
       var dataInfo = data.map((obj, i) =>
         <SearchDiv 
           key = {i}
+          id={obj.id}
           title={obj.title}
           performer={obj.performer}
           ranking={obj.position}

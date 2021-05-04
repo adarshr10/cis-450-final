@@ -1,8 +1,8 @@
 import React from 'react';
-import Div_0 from './HomePage/Div_0';
-import Div_1 from './HomePage/Div_1';
-import Div_2 from './HomePage/Div_2';
-import Div_3 from './HomePage/Div_3';
+import TopWordsByGenreDiv from './HomePage/TopWordsByGenreDiv';
+import TopWordsByRankAndTimeDiv from './HomePage/TopWordsByRankAndTimeDiv';
+import TopGenresByRankAndTimeDiv from './HomePage/TopGenresByRankAndTimeDiv';
+import TopPosOfGenreDiv from './HomePage/TopPosOfGenreDiv';
 import Sidebar from './Sidebar';
 import ContentCol from "./HomePage/homeCol"
 import { Col, Row, Table } from 'react-bootstrap';
@@ -121,7 +121,7 @@ export default class HomePage extends React.Component {
 
   show_0() {
 
-    fetch(`http://localhost:8080/home/query0/${this.state.genre_0}`, {
+    fetch(`http://localhost:8080/home/topWordsByGenre/${this.state.genre_0}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -133,7 +133,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_0
+        <TopWordsByGenreDiv
           key={i}
           num={counter++}
           word={obj.word}
@@ -169,7 +169,7 @@ export default class HomePage extends React.Component {
 
   show_1() {
 
-    fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/${this.state.low_1}/${this.state.up_1}`, {
+    fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/${this.state.low_1}/${this.state.up_1}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -181,7 +181,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_1
+        <TopWordsByRankAndTimeDiv
           key={i}
           num={counter++}
           word={obj.word}
@@ -214,7 +214,7 @@ export default class HomePage extends React.Component {
 
   show_2() {
 
-    fetch(`http://localhost:8080/home/query2/${this.state.low_2}/${this.state.up_2}`, {
+    fetch(`http://localhost:8080/home/topGenresByRankAndTime/${this.state.low_2}/${this.state.up_2}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -226,7 +226,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_2
+        <TopGenresByRankAndTimeDiv
           key={i}
           num={counter++}
           category={obj.category}
@@ -258,7 +258,7 @@ export default class HomePage extends React.Component {
   
     show_3() {
   
-      fetch(`http://localhost:8080/home/query3/${this.state.low_3}/${this.state.up_3}`, {
+      fetch(`http://localhost:8080/home/topPosOfGenre/${this.state.low_3}/${this.state.up_3}`, {
         method: 'GET' // The type of HTTP request.
       }).then(res => {
         // Convert the response data to a JSON.
@@ -270,7 +270,7 @@ export default class HomePage extends React.Component {
         if (!data) return;
         var counter = 1;
         var dataInfo = data.map((obj, i) =>
-          <Div_3
+          <TopPosOfGenreDiv
             key={i}
             num={counter++}
             category={obj.category}
@@ -623,7 +623,7 @@ export default class HomePage extends React.Component {
 
   fill_0() {
 
-    fetch(`http://localhost:8080/home/query0/pop`, {
+    fetch(`http://localhost:8080/home/topWordsByGenre/pop`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -635,7 +635,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_0
+        <TopWordsByGenreDiv
           key={i}
           num={counter++}
           word={obj.word}
@@ -648,7 +648,7 @@ export default class HomePage extends React.Component {
       });
     });
 
-    fetch(`http://localhost:8080/home/query0/country`, {
+    fetch(`http://localhost:8080/home/topWordsByGenre/country`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -660,7 +660,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_0
+        <TopWordsByGenreDiv
           key={i}
           num={counter++}
           word={obj.word}
@@ -673,7 +673,7 @@ export default class HomePage extends React.Component {
       });
     });
 
-    fetch(`http://localhost:8080/home/query0/r&b`, {
+    fetch(`http://localhost:8080/home/topWordsByGenre/r&b`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -685,7 +685,7 @@ export default class HomePage extends React.Component {
       if (!data) return;
       var counter = 1;
       var dataInfo = data.map((obj, i) =>
-        <Div_0
+        <TopWordsByGenreDiv
           key={i}
           num={counter++}
           word={obj.word}
@@ -704,7 +704,7 @@ export default class HomePage extends React.Component {
 
 fill_1() {
 
-  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1950/1970`, {
+  fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1950/1970`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -716,7 +716,7 @@ fill_1() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_1
+      <TopWordsByRankAndTimeDiv
         key={i}
         num={counter++}
         word={obj.word}
@@ -729,7 +729,7 @@ fill_1() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1970/1990`, {
+  fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1970/1990`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -741,7 +741,7 @@ fill_1() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_1
+      <TopWordsByRankAndTimeDiv
         key={i}
         num={counter++}
         word={obj.word}
@@ -754,7 +754,7 @@ fill_1() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query1/${this.state.pos_1}/1990/2010`, {
+  fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1990/2010`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -766,7 +766,7 @@ fill_1() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_1
+      <TopWordsByRankAndTimeDiv
         key={i}
         num={counter++}
         word={obj.word}
@@ -783,7 +783,7 @@ fill_1() {
 
 fill_2() {
 
-  fetch(`http://localhost:8080/home/query2/1950/1970`, {
+  fetch(`http://localhost:8080/home/topGenresByRankAndTime/1950/1970`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -795,7 +795,7 @@ fill_2() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_2
+      <TopGenresByRankAndTimeDiv
         key={i}
         num={counter++}
         category={obj.category}
@@ -808,7 +808,7 @@ fill_2() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query2/1970/1990`, {
+  fetch(`http://localhost:8080/home/topGenresByRankAndTime/1970/1990`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -820,7 +820,7 @@ fill_2() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_2
+      <TopGenresByRankAndTimeDiv
         key={i}
         num={counter++}
         category={obj.category}
@@ -833,7 +833,7 @@ fill_2() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query2/1990/2010`, {
+  fetch(`http://localhost:8080/home/topGenresByRankAndTime/1990/2010`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -845,7 +845,7 @@ fill_2() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_2
+      <TopGenresByRankAndTimeDiv
         key={i}
         num={counter++}
         category={obj.category}
@@ -861,7 +861,7 @@ fill_2() {
 
 fill_3() {
 
-  fetch(`http://localhost:8080/home/query3/1950/1970`, {
+  fetch(`http://localhost:8080/home/topPosOfGenre/1950/1970`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -873,7 +873,7 @@ fill_3() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_3
+      <TopPosOfGenreDiv
         key={i}
         num={counter++}
         category={obj.category}
@@ -886,7 +886,7 @@ fill_3() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query3/1970/1990`, {
+  fetch(`http://localhost:8080/home/topPosOfGenre/1970/1990`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -898,7 +898,7 @@ fill_3() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_3
+      <TopPosOfGenreDiv
         key={i}
         num={counter++}
         category={obj.category}
@@ -911,7 +911,7 @@ fill_3() {
     });
   });
 
-  fetch(`http://localhost:8080/home/query3/1990/2010`, {
+  fetch(`http://localhost:8080/home/topPosOfGenre/1990/2010`, {
     method: 'GET' // The type of HTTP request.
   }).then(res => {
     // Convert the response data to a JSON.
@@ -923,7 +923,7 @@ fill_3() {
     if (!data) return;
     var counter = 1;
     var dataInfo = data.map((obj, i) =>
-      <Div_3
+      <TopPosOfGenreDiv
         key={i}
         num={counter++}
         category={obj.category}

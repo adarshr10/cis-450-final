@@ -14,6 +14,14 @@ export default class SongInformationDiv extends React.Component {
                 <div className="acousticness">Acousticness: {this.props.acousticness}</div>
 				<div className="mode">Mode: {this.props.mode}</div>
 				<div className="danceability">Danceability: {this.props.danceability}</div>
+				<div className="instrumental">Instrumental: {this.props.instrumental}</div>
+				<div className="key">Key: {this.props.key}</div>
+                <div className="liveness">Liveness: {this.props.liveness}</div>
+				<div className="loudness">Loudness: {this.props.loudness}</div>
+				<div className="speechiness">Speechiness: {this.props.speechiness}</div>
+				<div className="tempo">Tempo: {this.props.tempo}</div>
+                <div className="time_signature">Time Signature: {this.props.time_signature}</div>
+				<div className="valence">Valence: {this.props.valence}</div>
                 <div className="genres">Genres: {this.props.genres}</div>
 			</div>
 		);
