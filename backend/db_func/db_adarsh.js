@@ -8,7 +8,7 @@ const connection = require('../config')
 const songBillboardInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");
   var query = `
-    SELECT week, position FROM BillboardAppearance b
+    SELECT week, position, url FROM BillboardAppearance b
     WHERE b.song_id = '${songId}';
   `;
   connection.query(query, (err, rows, fields) => {
@@ -157,9 +157,9 @@ const genreLyricInformation = (req, res) => {
 const genreBillboardInformation = (req, res) => {
   const genre = req.params.genre;
   var query = `
-    SELECT DATE_FORMAT(week,'%Y-%m') AS monthYear, count(DATE_FORMAT(week,'%Y-%m')) AS count FROM BillboardAppearance b 
+    SELECT DATE_FORMAT(week,'%Y-%m') AS monthYear, count(DATE_FORMAT(week,'%Y-%m')) AS count, b.url FROM BillboardAppearance b 
     JOIN Genre g ON b.song_id = g.song_id  
-    WHERE g.category = 'rap' GROUP BY monthYear ORDER BY monthYear DESC;
+    WHERE g.category = '${genre}' GROUP BY monthYear ORDER BY monthYear DESC;
   `;
 
   connection.query(query, (err, rows, fields) => {

@@ -196,13 +196,16 @@ export default class SongPage extends React.Component {
       if (!billboardData) return;
       let weeks = [];
       let positions = [];
+      let urls = [];
       billboardData.forEach((obj, i) => {
         weeks.push(obj.week);
         positions.push(obj.position);
+        urls.push(obj.url);
       });
       let plotData = [{
         x: weeks,
         y: positions,
+        customdata: urls,
         type: "scatter",
         mode: "lines", 
         line: {
@@ -244,7 +247,12 @@ export default class SongPage extends React.Component {
         data={plotData}
         id={id}
         layout={configuration}
-
+        onClick={function(data){
+          if(data.points.length == 1){
+              window.open(data.points[0].customdata, "_blank", "");
+            }
+          }
+        }
       />
       this.setState({
         billboard: billboardDiv

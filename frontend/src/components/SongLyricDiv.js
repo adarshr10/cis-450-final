@@ -6,7 +6,7 @@ export default class SongLyricDiv extends React.Component {
 	render() {
 		return (
 			<tr className="id" id={this.props.id}>
-				<td className="word">{this.props.word}</td>
+				<td className="word"><a href={'/lyric/' + this.props.word}>{this.props.word}</a></td>
                 <td className="frequency">{this.props.frequency}</td>
                 <td className="popularity">{this.props.popularity}</td>
 			</tr>

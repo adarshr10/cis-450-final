@@ -160,7 +160,7 @@ const lyricBillboard = (req, res) => {
   const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
   const query = `
   WITH billboard AS 
-    (SELECT b.week, b.url, h.count FROM BillboardAppearance b JOIN HasLyric h ON LOWER(h.word)='babi' AND b.song_id=h.song_id)
+    (SELECT b.week, b.url, h.count FROM BillboardAppearance b JOIN HasLyric h ON LOWER(h.word)='${lyric}' AND b.song_id=h.song_id)
   SELECT week, url, SUM(count) as word_count, COUNT(count) as song_count FROM billboard
   GROUP BY week, url ORDER BY week ASC;
   `

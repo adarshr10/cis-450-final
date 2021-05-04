@@ -47,3 +47,12 @@ html, body{
 background-color: darkgrey;
 outline: 1px solid slategrey;
 }
+
+a{
+  color: white;
+}
+
+a:hover{
+  color:#1db954;
+  text-decoration: none;
+}
