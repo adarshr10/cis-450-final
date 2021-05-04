@@ -3,10 +3,10 @@ import "../style/GenrePage.css"
 import { Row, Table } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
-import GenreInformationDiv from './GenreInformationDiv';
-import GenreLyricDiv from './GenreLyricDiv';
+import SongInformationDiv from './SongInformationDiv';
+import SongLyricDiv from './SongLyricDiv';
 import GenreSongsDiv from './GenreSongsDiv';
-import GenreBillboardDiv from './GenreBillboardDiv';
+import SongBillboardDiv from './SongBillboardDiv';
 
 export default class SongPage extends React.Component {
   
@@ -107,7 +107,7 @@ export default class SongPage extends React.Component {
 
       genreOverview.length = length;
       const genreInfoDiv = 
-            <GenreInformationDiv 
+            <SongInformationDiv 
               id={`${genreOverview.category}`} 
               length={genreOverview.length}
               popularity={parseFloat(genreOverview.popularity).toFixed(4)}
@@ -141,7 +141,7 @@ export default class SongPage extends React.Component {
     }).then(genreLyrics => {
       if (!genreLyrics) return;
       var lyricsInfo = genreLyrics.map((obj, i) =>
-        <GenreLyricDiv 
+        <SongLyricDiv 
           key={i}
           id={`${obj.word}-${obj.count}`} 
           word={obj.word}
@@ -195,19 +195,22 @@ export default class SongPage extends React.Component {
       if (!billboardData) return;
       let months = [];
       let positions = [];
+      let urls = [];
       billboardData.forEach((obj, i) => {
         months.push(obj.monthYear);
         positions.push(obj.count);
+        urls.push(obj.url)
       });
-      let plotData = {
+      let plotData = [{
         x: months,
         y: positions,
+        customdata: urls,
         type: "scatter",
         mode: "lines", 
         line: {
           color: '#7F7F7F'
         }
-      }
+      }]
       
       let configuration = {
         width: document.getElementsByClassName("timelineContainer")[0].clientWidth,
@@ -238,11 +241,16 @@ export default class SongPage extends React.Component {
         }
       }
 
-      var billboardDiv = <GenreBillboardDiv
+      var billboardDiv = <SongBillboardDiv
         data={plotData}
         id={genre}
         layout={configuration}
-
+        onClick={function(data){
+          if(data.points.length == 1){
+              window.open(data.points[0].customdata, "_blank", "");
+            }
+          }
+        }
       />
       this.setState({
         billboard: billboardDiv

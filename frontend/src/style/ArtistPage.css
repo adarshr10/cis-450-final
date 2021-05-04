@@ -36,12 +36,3 @@ tr:not(.headerRow):hover{
   z-index: 2;
   background-color: #1DB954;;
 }
-
-.title a{
-  color: white;
-}
-
-.title a:hover{
-  color:#1db954;
-  text-decoration: none;
-}

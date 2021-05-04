@@ -56,10 +56,9 @@ export default class ArtistPage extends React.Component {
       console.log(err);
     }).then(rows => {
       if(!rows) return;
-      const gen = {};
-      rows.forEach((obj) => {
-        gen[obj.category] = obj.count;
-      });
+      const gen = rows.map((obj, i) => 
+        <span><a href={'/genre/' + obj.category}>{obj.category}</a>, </span>
+      );
       this.setState({genres: gen})
     })
   }
@@ -240,7 +239,7 @@ export default class ArtistPage extends React.Component {
               <h4 className="mt-3 mx-3">{this.state.artist}</h4>
               <hr className="mx-3"style={{backgroundColor: "white"}}></hr>
               <div className='info-col m-3'>
-                <div id="genre-list mb-2">Genres: {Object.keys(this.state.genres).join(", ")}</div>             
+                <div id="genre-list mb-2">Genres: {this.state.genres}</div>             
                 <div>
                   <span>Similar Artists:</span>
                   <ul id="similarArtDiv">
