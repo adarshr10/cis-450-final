@@ -212,6 +212,29 @@ const genreSummary = (req, res) => {
   });
 };
 
+const genrePopularArtists = (req, res) => {
+  const genre = req.params.genre;
+  var query = `
+  WITH artists_in_genre AS (
+    SELECT p.song_id, p.performer FROM Genre g JOIN PerformerTitle p ON g.song_id = p.song_id
+    WHERE g.category = 'rap' 
+      AND LOWER(performer) NOT LIKE '%featuring%' 
+      AND LOWER(performer) NOT LIKE '%Feat.'
+  ),
+  arist_counts AS (
+    SELECT ag.performer, count(ag.performer) AS weeks_in_top FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
+    GROUP BY (ag.performer)
+  )
+  SELECT * FROM arist_counts ORDER BY weeks_in_top DESC;
+  `;
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 module.exports = {
   songOverviewInformation: songOverviewInformation,
   songSimilarSongs: songSimilarSongs,
@@ -221,5 +244,6 @@ module.exports = {
   genreLyricInformation: genreLyricInformation,
   genreBillboardInformation: genreBillboardInformation,
   genreSongInformation: genreSongInformation,
-  genreSummary: genreSummary
+  genreSummary: genreSummary, 
+  genrePopularArtists: genrePopularArtists
 }
