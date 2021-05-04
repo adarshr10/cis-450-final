@@ -1,12 +1,13 @@
 import React from 'react';
 import "../style/SongPage.css"
-import { Row, Table } from 'react-bootstrap';
+import { Row, Table, Button } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
 import SongInformationDiv from './SongInformationDiv';
 import SongLyricDiv from './SongLyricDiv';
 import SongSimilarDiv from './SongSimilarDiv';
 import SongBillboardDiv from './SongBillboardDiv';
+import {Howl} from 'howler'
 
 export default class SongPage extends React.Component {
   
@@ -19,7 +20,9 @@ export default class SongPage extends React.Component {
       info: "",
       billboard: "",
       songId: props.songId || "",
-      songName: ""
+      songName: "",
+      sampleLink: "", 
+      sound: ""
     };
 
     this.showLyrics = this.showLyrics.bind(this);
@@ -34,7 +37,7 @@ export default class SongPage extends React.Component {
     // var id = url.substring(url.lastIndexOf("/")+1)
     let songId = this.state.songId;
     if (!songId) {
-      songId = 'love storytaylor swift';
+      songId = '...baby one more timebritney spears';
     } 
     this.setState({songId: songId})
     this.showInformation(songId);
@@ -63,9 +66,24 @@ export default class SongPage extends React.Component {
         songOverview.explicit = "N";
       }
       let title = songOverview.title;
+      let link = songOverview.url;
+
+      let length = parseInt(songOverview.length);
+      var minutes = Math.floor(length / 60000);
+      var seconds = ((length % 60000) / 1000).toFixed(0);
+      length = minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+      songOverview.length = length;
+
       this.setState({
-        songName: title
+        songName: title, 
+        sampleLink: link, 
+        sound: link ? new Howl({
+            src: [link],
+            html5: true
+          }) : null
       });
+
 
       fetch(`http://localhost:8080/songGenres/${id}`, {
         method: 'GET' // The type of HTTP request.
@@ -114,8 +132,15 @@ export default class SongPage extends React.Component {
       // Print the error if there is one.
       console.log(err);
     }).then(songLyrics => {
-      if (!songLyrics) return;
-      var lyricsInfo = songLyrics.map((obj, i) =>
+      let lyricsInfo = "";
+      if (songLyrics.length === 0) {
+        lyricsInfo = <tr>
+          <td>No</td>
+          <td>Data</td>
+          <td>Available</td>
+        </tr>
+      } else {
+        lyricsInfo = songLyrics.map((obj, i) =>
         <SongLyricDiv 
           key={i}
           id={`${obj.word}-${obj.count}`} 
@@ -124,6 +149,7 @@ export default class SongPage extends React.Component {
           popularity={obj.popularity}
         /> 
       );
+      }
           
       this.setState({
         lyrics: lyricsInfo
@@ -145,7 +171,7 @@ export default class SongPage extends React.Component {
       var similar = songSimilar.map((obj, i) =>
         <SongSimilarDiv 
           key={i}
-          id={`${obj.song_id}`} 
+          id={obj.song_id} 
           title={obj.title}
           performer={obj.performer}
         /> 
@@ -209,7 +235,8 @@ export default class SongPage extends React.Component {
               size: 18,
               color: '#7f7f7f'
             }
-          }
+          },
+          autorange: 'reversed'
         }
       }
 
@@ -234,6 +261,28 @@ export default class SongPage extends React.Component {
           {this.state.billboard}
         </div>
         <div className="statsContainer">
+          <div className="musicControlContainer">
+            <div className="musicPlayContainer">
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  console.log(this.state.sound)
+                  if (!this.state.sound.playing()) {
+                    this.state.sound.play();
+                  }
+                }
+              }>Play</Button>
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  if (this.state.sound.playing()) {
+                    this.state.sound.pause();
+                  }
+                }
+              }>Pause</Button>
+              <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
+                  this.state.sound.stop();
+                }
+              }>Reset</Button>
+            </div>
+            <p>If buttons are disabled, no audio is available for this track!</p>
+          </div>
           <Row style={{height: "100%", margin: 0}}>
             <ContentCol title="Information" padding={true}>
               {this.state.info}
