@@ -298,23 +298,21 @@ const searchEverything = (req, res) => {
   const lower = req.params.low || -1;
   const upper = req.params.up || -1;
   const position = req.params.pos || -1;
-  var keyword;
-  if (req.params.key) keyword = (req.params.key).toLowerCase().replace("'", "\\'").trim();
-  else keyword = " ";
+  const keyword = req.params.key == null ? " ": req.params.key.toLowerCase().replace("'", "\\'").trim();
 
   var query = `
   WITH 
     performer AS 
-      (SELECT * FROM PerformerTitle WHERE 'britney spears' <> " " AND (LOWER(performer) LIKE '%britney spears%' OR LOWER(title) LIKE '%britney spears%')),
+      (SELECT * FROM PerformerTitle WHERE '${keyword}' <> " " AND (LOWER(performer) LIKE '%${keyword}%' OR LOWER(title) LIKE '%${keyword}%')),
     genre AS 
-      (SELECT song_id, category FROM Genre WHERE ' ' <> " " AND LOWER(category) LIKE '% %'),
+      (SELECT song_id, category FROM Genre WHERE '${genre}' <> " " AND LOWER(category) LIKE '%${genre}%'),
     billboard AS
       (SELECT song_id, position FROM BillboardAppearance 
-      WHERE (-1 <> -1 AND YEAR(week) >= -1) OR (-1 <> -1 AND YEAR(week) <= -1) OR (-1 <> -1 AND position <= -1)),
+      WHERE (${lower} <> -1 AND YEAR(week) >= ${lower}) OR (${upper} <> -1 AND YEAR(week) <= ${upper}) OR (${position} <> -1 AND position <= ${position})),
     lyric AS
-      (SELECT DISTINCT song_id FROM HasLyric WHERE 'britney spears' <> " " AND word='britney spears'), 
+      (SELECT DISTINCT song_id FROM HasLyric WHERE '${keyword}' <> " " AND word='${keyword}'), 
     song AS
-      (select DISTINCT id FROM Song WHERE 'britney spears' <> " " AND album LIKE "%britney spears%"),
+      (select DISTINCT id FROM Song WHERE '${keyword}' <> " " AND album LIKE "%${keyword}%"),
     all_ids AS 
       ((SELECT song_id FROM performer) UNION (SELECT song_id FROM genre) UNION (SELECT song_id FROM billboard) UNION (SELECT song_id FROM lyric)
         UNION (SELECT id as song_id FROM song))
@@ -324,7 +322,7 @@ const searchEverything = (req, res) => {
         LEFT JOIN BillboardAppearance b ON ai.song_id=b.song_id
   GROUP BY ai.song_id, p.title, p.performer
   ORDER BY position 
-  LIMIT 100;
+  LIMIT ${limit};
   `;
   console.log(query);
   connection.query(query, (err, rows, fields) => {
