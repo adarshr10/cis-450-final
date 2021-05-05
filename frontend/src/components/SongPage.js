@@ -269,7 +269,7 @@ export default class SongPage extends React.Component {
           {this.state.billboard}
         </div>
         <div className="statsContainer">
-          <div className="musicControlContainer">
+          <div className="mb-4 musicControlContainer">
             <div className="musicPlayContainer">
               <Button disabled={!this.state.sound} variant="outline-success" onClick={() => {
                   console.log(this.state.sound)
@@ -291,7 +291,7 @@ export default class SongPage extends React.Component {
             </div>
             <p>If buttons are disabled, no audio is available for this track!</p>
           </div>
-          <Row style={{height: "100%", margin: 0}}>
+          <Row style={{margin: 0}}>
             <ContentCol title="Information" padding={true}>
               {this.state.info}
             </ContentCol>

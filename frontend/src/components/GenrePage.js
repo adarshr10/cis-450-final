@@ -267,7 +267,7 @@ export default class SongPage extends React.Component {
           {this.state.billboard}
         </div>
         <div className="statsContainer">
-          <Row style={{height: "100%", margin: 0}}>
+          <Row style={{margin: 0}}>
             <ContentCol title="Information" subtitle="no wya" padding={true}>
               {this.state.info}
             </ContentCol>
