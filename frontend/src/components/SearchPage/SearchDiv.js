@@ -2,7 +2,6 @@ import React from 'react';
 
 export default class SearchDiv extends React.Component {
 
-	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
 			<tr className="id" id={this.props.title}>
@@ -12,6 +11,7 @@ export default class SearchDiv extends React.Component {
 				{/* <td className="title">{this.props.title}</td> */}
 				<td className="performer">{this.props.performer}</td>
                 <td className="ranking">{this.props.ranking}</td>
+				<td className="genre">{this.props.genres}</td>
 			</tr>
 		);
 	};

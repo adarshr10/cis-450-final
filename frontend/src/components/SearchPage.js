@@ -5,7 +5,7 @@ import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
 import ContentCol from "./SearchPage/searchCol"
 
-import { Row, Table } from 'react-bootstrap';
+import { Row, Table, Form, Button, Col} from 'react-bootstrap';
 import SearchDiv from './SearchPage/SearchDiv';
 
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
@@ -57,7 +57,7 @@ export default class SearchPage extends React.Component {
     }).then(genreList => {
       if (!genreList) return;
       const ret = genreList.map((obj, i) =>
-	 	 <option className="genresOption" value={obj.category}>{obj.category}</option>
+	 	 <option className="genresOption" value={obj.category} key={i}>{obj.category}</option>
       );
       this.setState({
         genres: ret
@@ -97,7 +97,8 @@ export default class SearchPage extends React.Component {
 		});
 	};
 
-  showSongs() {
+  showSongs(event) {
+    event.preventDefault();
     
     fetch(`http://localhost:8080/searchData/${this.state.limit}/${this.state.genre}/${this.state.lower}/${this.state.upper}/${this.state.position}/${this.state.keyword}`, {
       method: 'GET' // The type of HTTP request.
@@ -116,6 +117,7 @@ export default class SearchPage extends React.Component {
           title={obj.title}
           performer={obj.performer}
           ranking={obj.position}
+          genres={obj.genre}
         /> 
       );
           
@@ -133,8 +135,12 @@ export default class SearchPage extends React.Component {
         <Sidebar curPage="/search" className="sidebarContainer"></Sidebar>
 
         <div className="timelineContainer">
+          <h1 className="title">
+            Search for Songs!
+          </h1>
+          {/*
           <div className="dropdown-container">
-          keywords:
+          Keywords:
 							<input type='text' placeholder="Keywords" value={this.state.keyword} onChange={this.handleKeywordChanged} id="keyName" className="key-input"/>
 					</div>
 
@@ -170,8 +176,66 @@ export default class SearchPage extends React.Component {
 							</select>
           </div>
 
-          <button className="submit-btn" id="submitBtn" onClick={this.showSongs}>Submit</button>
+          <button className="submit-btn" id="submitBtn" onClick={this.showSongs}>Submit</button>*/}
+          <div className="formContainer">
 
+            <Form onSubmit={this.showSongs}>
+              <Row>
+                <Col>
+                  <Form.Group controlId="searchKeyword">
+                    <Form.Label>Keywords</Form.Label>
+                    <Form.Control type="text" placeholder="Artist/Album Keywords" onChange={this.handleKeywordChanged}></Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="searchGenre">
+                    <Form.Label>Genre</Form.Label>
+                    <Form.Control as="select" onChange={this.handleGenreChange}>
+                      <option key={0} value=" "></option>
+                      {this.state.genres}
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="searchLower">
+                  <Form.Label>Lower Decade</Form.Label>
+                  <Form.Control as="select" onChange={this.handleLowerChange}>
+                    <option key={0} value=" "></option>
+                    {this.state.decades}
+                  </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="searchUpper">
+                  <Form.Label>Upper Decade</Form.Label>
+                  <Form.Control as="select" onChange={this.handleUpperChange}>
+                    <option key={0} value=" "></option>
+                    {this.state.decades}
+                  </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="searchBillboard">
+                    <Form.Label>Billboard Ranking</Form.Label>
+                    <Form.Control as="select" onChange={this.handlePositionChange}>
+                      <option key={0} value=" "></option>
+                      {this.state.positions}
+                    </Form.Control>
+                  </Form.Group>              
+                </Col>
+              </Row>
+              <Button variant="secondary" type="submit">
+                Find Songs
+              </Button>
+
+            </Form>
+          </div>
         </div>
         <div className="statsContainer">
           <Row style={{height: "100%", margin: 0}}>
@@ -182,6 +246,7 @@ export default class SearchPage extends React.Component {
                     <th>Title</th>
                     <th>Performer</th>
                     <th>Top Ranking</th>
+                    <th>Genres</th>
                   </tr>
                   {this.state.songs}
                 </tbody>

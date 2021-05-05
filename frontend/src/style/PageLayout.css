@@ -28,7 +28,7 @@ html, body{
 
 .timelineContainer {
     grid-area: timelineContainer;
-    border: white 2px solid;
+    border: gray 2px solid;
 }
 
 .statsContainer {

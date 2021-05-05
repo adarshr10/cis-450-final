@@ -17,9 +17,6 @@ const Sidebar = ({curPage}) => {
                     <Nav.Link href="/search">Search</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href="/timeline">Timeline</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
                     <Nav.Link href="/song">Song</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>

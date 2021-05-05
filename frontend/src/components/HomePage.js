@@ -6,14 +6,12 @@ import TopPosOfGenreDiv from './HomePage/TopPosOfGenreDiv';
 import Sidebar from './Sidebar';
 import ContentCol from "./HomePage/homeCol"
 import { Col, Row, Table } from 'react-bootstrap';
+import '../style/HomePage.css'
 
-// TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
 
-    // The state maintained by this React Component. This component maintains the list of keywords,
-    // and a list of movies for a specified keyword.
     this.state = {
       // 0 — TOP LYRICS BY GENRE
       genres_0: [<option className="genresOption" value={"hello"}>{"hello"}</option>],
@@ -238,8 +236,6 @@ export default class HomePage extends React.Component {
         custom_2: dataInfo
       });
     });
-
-
     
   };
 
@@ -293,327 +289,328 @@ export default class HomePage extends React.Component {
         <Sidebar curPage="/" className="sidebarContainer"></Sidebar>
 
         <div className="timelineContainer">
-
-          <div className="statsContainer">
-            <Col style={{ height: "100%", margin: 0 }}>
-              {/* QUERY 0 */}
-              <ContentCol title="Top Lyrics by Genre">
-                <div className="dropdown-container">
-                  Genre:
-                    <select value={this.state.genre_0} onChange={this.handleGenreChange_0} name="dropdown" id="SearchDropDown">
-                    <option value=""> </option>
-                    {this.state.genres_0}
-                  </select>
-                  <button className="submit-btn" id="submitBtn" onClick={this.show_0}>Submit</button>
-                </div>
-                <Row style={{ height: "100%", margin: 0 }}>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Custom</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.custom_0}
-                      </tbody>
-                    </Table>
-                  </ContentCol>
-
-                  <ContentCol borderless>
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Pop</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.pop_0}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Country</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.country_0}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>R&B</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.rb_0}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                </Row>
-              </ContentCol>
-
-              {/* QUERY 1 */}
-              <ContentCol title="Top Lyrics by Decade">
-                <div className="dropdown-container">
-                Lower decade:
-                  <select value={this.state.low_1} onChange={this.handleLowChange_1} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-                  
-                  Upper decade:
-                  <select value={this.state.up_1} onChange={this.handleUpChange_1} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-                  <button className="submit-btn" id="submitBtn" onClick={this.show_1}>Submit</button>
-                </div>
-
-                <Row style={{ height: "100%", margin: 0 }}>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Custom</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.custom_1}
-                      </tbody>
-                    </Table>
-                  </ContentCol>
-
-                  <ContentCol borderless>
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1950-1970</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec0_1}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1970-1990</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec1_1}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1990-2010</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec2_1}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-                </Row>
-              </ContentCol>
-
-
-              {/* QUERY 2 */}
-              <ContentCol title="Top Genres by Decade">
-                <div className="dropdown-container">
-                Lower decade:
-                  <select value={this.state.low_2} onChange={this.handleLowChange_2} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-
-                  Upper decade:
-                  <select value={this.state.up_2} onChange={this.handleUpChange_2} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-                  <button className="submit-btn" id="submitBtn" onClick={this.show_2}>Submit</button>
-                </div>
-
-                <Row style={{ height: "100%", margin: 0 }}>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Custom</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.custom_2}
-                      </tbody>
-                    </Table>
-                  </ContentCol>
-
-                  <ContentCol borderless>
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1950-1970</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec0_2}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1970-1990</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec1_2}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1990-2010</th>
-                          <th>%</th>
-                        </tr>
-                        {this.state.dec2_2}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                </Row>
-              </ContentCol>
-
-              {/* QUERY 3 */}
-              <ContentCol title="Top Ranks of Genres by Decade">
-                <div className="dropdown-container">
-                Lower decade:
-                  <select value={this.state.low_3} onChange={this.handleLowChange_3} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-
-                  Upper decade:
-                  <select value={this.state.up_3} onChange={this.handleUpChange_3} name="dropdown" id="SearchDropDown">
-                    <option value=" "> </option>
-                    {this.state.decades_1}
-                  </select>
-                  <button className="submit-btn" id="submitBtn" onClick={this.show_3}>Submit</button>
-                </div>
-
-                <Row style={{ height: "100%", margin: 0 }}>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>Custom</th>
-                          <th>Peak</th>
-                        </tr>
-                        {this.state.custom_3}
-                      </tbody>
-                    </Table>
-                  </ContentCol>
-
-                  <ContentCol borderless>
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1950-1970</th>
-                          <th>Peak</th>
-                        </tr>
-                        {this.state.dec0_3}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1970-1990</th>
-                          <th>Peak</th>
-                        </tr>
-                        {this.state.dec1_3}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                  <ContentCol borderless>
-
-                    <Table borderless responsive="sm">
-                      <tbody>
-                        <tr className='headerRow'>
-                          <th>#</th>
-                          <th>1990-2010</th>
-                          <th>Peak</th>
-                        </tr>
-                        {this.state.dec2_3}
-                      </tbody>
-                    </Table>
-
-                  </ContentCol>
-
-                </Row>
-              </ContentCol>
-            </Col>
-          </div>
-
-
-
+          <h1 className="title">CIS 550 Final Project</h1>
         </div>
+
+        <div className="statsContainer">
+          <Col style={{ height: "100%", margin: 0 }}>
+            {/* QUERY 0 */}
+            <ContentCol title="Top Lyrics by Genre">
+              <div className="dropdown-container">
+                Genre:
+                  <select value={this.state.genre_0} onChange={this.handleGenreChange_0} name="dropdown" id="SearchDropDown">
+                  <option value=""> </option>
+                  {this.state.genres_0}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.show_0}>Submit</button>
+              </div>
+              <Row style={{ height: "100%", margin: 0 }}>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Custom</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.custom_0}
+                    </tbody>
+                  </Table>
+                </ContentCol>
+
+                <ContentCol borderless>
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Pop</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.pop_0}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Country</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.country_0}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>R&B</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.rb_0}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+              </Row>
+            </ContentCol>
+
+            {/* QUERY 1 */}
+            <ContentCol title="Top Lyrics by Decade">
+              <div className="dropdown-container">
+              Lower decade:
+                <select value={this.state.low_1} onChange={this.handleLowChange_1} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+                
+                Upper decade:
+                <select value={this.state.up_1} onChange={this.handleUpChange_1} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.show_1}>Submit</button>
+              </div>
+
+              <Row style={{ height: "100%", margin: 0 }}>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Custom</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.custom_1}
+                    </tbody>
+                  </Table>
+                </ContentCol>
+
+                <ContentCol borderless>
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1950-1970</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec0_1}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1970-1990</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec1_1}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1990-2010</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec2_1}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+              </Row>
+            </ContentCol>
+
+
+            {/* QUERY 2 */}
+            <ContentCol title="Top Genres by Decade">
+              <div className="dropdown-container">
+              Lower decade:
+                <select value={this.state.low_2} onChange={this.handleLowChange_2} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+
+                Upper decade:
+                <select value={this.state.up_2} onChange={this.handleUpChange_2} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.show_2}>Submit</button>
+              </div>
+
+              <Row style={{ height: "100%", margin: 0 }}>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Custom</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.custom_2}
+                    </tbody>
+                  </Table>
+                </ContentCol>
+
+                <ContentCol borderless>
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1950-1970</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec0_2}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1970-1990</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec1_2}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1990-2010</th>
+                        <th>%</th>
+                      </tr>
+                      {this.state.dec2_2}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+              </Row>
+            </ContentCol>
+
+            {/* QUERY 3 */}
+            <ContentCol title="Top Ranks of Genres by Decade">
+              <div className="dropdown-container">
+              Lower decade:
+                <select value={this.state.low_3} onChange={this.handleLowChange_3} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+
+                Upper decade:
+                <select value={this.state.up_3} onChange={this.handleUpChange_3} name="dropdown" id="SearchDropDown">
+                  <option value=" "> </option>
+                  {this.state.decades_1}
+                </select>
+                <button className="submit-btn" id="submitBtn" onClick={this.show_3}>Submit</button>
+              </div>
+
+              <Row style={{ height: "100%", margin: 0 }}>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>Custom</th>
+                        <th>Peak</th>
+                      </tr>
+                      {this.state.custom_3}
+                    </tbody>
+                  </Table>
+                </ContentCol>
+
+                <ContentCol borderless>
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1950-1970</th>
+                        <th>Peak</th>
+                      </tr>
+                      {this.state.dec0_3}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1970-1990</th>
+                        <th>Peak</th>
+                      </tr>
+                      {this.state.dec1_3}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+                <ContentCol borderless>
+
+                  <Table borderless responsive="sm">
+                    <tbody>
+                      <tr className='headerRow'>
+                        <th>#</th>
+                        <th>1990-2010</th>
+                        <th>Peak</th>
+                      </tr>
+                      {this.state.dec2_3}
+                    </tbody>
+                  </Table>
+
+                </ContentCol>
+
+              </Row>
+            </ContentCol>
+          </Col>
+        </div>
+
+
+
       </div>
     );
   };

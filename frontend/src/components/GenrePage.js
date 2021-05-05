@@ -25,7 +25,8 @@ export default class SongPage extends React.Component {
       upperLyric: parseInt(d.getFullYear()),
       yearsApp: [],
       yearsLyric: [],
-      genre: props.genre || ""
+      genre: props.genre || "",
+      popularArtists: []
     };
 
     for (var i = 1950; i < parseInt(d.getFullYear()) + 1; i++) {
@@ -37,6 +38,7 @@ export default class SongPage extends React.Component {
     this.showSongs = this.showSongs.bind(this);
     this.showInformation = this.showInformation.bind(this);
     this.showBillboard = this.showBillboard.bind(this);
+    this.showPopularArtists = this.showPopularArtists.bind(this);
     this.handleLowerAppChange = this.handleLowerAppChange.bind(this);
     this.handleUpperAppChange = this.handleUpperAppChange.bind(this);
     this.handleLowerLyricChange = this.handleLowerLyricChange.bind(this);
@@ -60,6 +62,7 @@ export default class SongPage extends React.Component {
     this.showLyrics(genre, lowerLyric, upperLyric);
     this.showSongs(genre, lowerApp, upperApp);
     this.showBillboard(genre);
+    this.showPopularArtists(genre);
   };
 
   handleLowerAppChange(e) {
@@ -182,6 +185,30 @@ export default class SongPage extends React.Component {
     });
   };
 
+  // shows top artists of this genre
+  showPopularArtists(genre) {
+    fetch(`http://localhost:8080/genrePopularArtists/${genre}`, {
+      method: 'GET' // The type of HTTP request.
+    }).then(res => {
+      return res.json();
+    }, err => {
+      console.log(err);
+    }).then(popularArtists => {
+      if (!popularArtists) return;
+      let artists = popularArtists.map((obj, i) =>
+        <GenreArtistsDiv 
+          key={i}
+          performer={obj.performer} 
+          weeks={obj.weeks_in_top}
+        /> 
+      );
+          
+      this.setState({
+        popularArtists: artists
+      });
+    });
+  }
+
   showBillboard(genre) {
     fetch(`http://localhost:8080/genreBillboard/${genre}`, {
       method: 'GET' // The type of HTTP request.
@@ -246,7 +273,7 @@ export default class SongPage extends React.Component {
         id={genre}
         layout={configuration}
         onClick={function(data){
-          if(data.points.length == 1){
+          if(data.points.length === 1){
               window.open(data.points[0].customdata, "_blank", "");
             }
           }
@@ -268,7 +295,7 @@ export default class SongPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{margin: 0}}>
-            <ContentCol title="Information" subtitle="no wya" padding={true}>
+            <ContentCol title="Information" padding={true}>
               {this.state.info}
             </ContentCol>
             <ContentCol title={"Popular Lyrics in "+(this.state.genre)}>
@@ -322,9 +349,37 @@ export default class SongPage extends React.Component {
                 </tbody>
               </Table>
             </ContentCol>
+            
+          </Row>
+          <Row>
+            <ContentCol title={`Popular ${this.state.genre} Artists`}>
+              <Table>
+                <tbody>
+                  <tr className='headerRow'>
+                    <th>Performer</th>
+                    <th>Weeks in Top 100</th>
+                  </tr>
+                  {this.state.popularArtists}
+                </tbody>
+              </Table>
+            </ContentCol>
           </Row>
         </div>
       </div>
     );
   };
+};
+
+// props: performer, weeks
+class GenreArtistsDiv extends React.Component {
+	render() {
+		return (
+			<tr className="id">
+          <td className="performer">
+						<a href={'/artist/' + encodeURIComponent(this.props.performer)}>{this.props.performer}</a>
+					</td>
+          <td className="weeks">{this.props.weeks}</td>
+			</tr>
+		);
+	};
 };

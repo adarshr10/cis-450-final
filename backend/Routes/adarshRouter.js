@@ -12,4 +12,5 @@ router.get('/genreLyrics/:genre/:lower/:upper', db.genreLyricInformation);
 router.get('/genreBillboard/:genre', db.genreBillboardInformation);
 router.get('/genreSongs/:genre/:lower/:upper', db.genreSongInformation);
 router.get('/genreOverview/:genre', db.genreSummary);
+router.get('/genrePopularArtists/:genre', db.genrePopularArtists);
 module.exports = router

@@ -222,7 +222,7 @@ const genrePopularArtists = (req, res) => {
       AND LOWER(performer) NOT LIKE '%Feat.'
   ),
   arist_counts AS (
-    SELECT ag.performer, count(ag.performer) AS weeks_in_top FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
+    SELECT ag.performer AS performer, count(ag.performer) AS weeks_in_top FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
     GROUP BY (ag.performer)
   )
   SELECT * FROM arist_counts ORDER BY weeks_in_top DESC;

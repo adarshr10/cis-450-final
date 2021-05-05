@@ -147,8 +147,7 @@ export default class LyricPage extends React.Component {
       let plotData = [{
         x: weeks,
         y: counts,
-        type: "scatter",
-        mode: "lines", 
+        type: "bar",
         line: {
           color: '#7F7F7F'
         }

@@ -9,7 +9,6 @@ import {
 
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
-import TimelinePage from './components/TimelinePage';
 import SongPage from './components/SongPage';
 import LyricPage from './components/LyricPage';
 import GenrePage from './components/GenrePage';
@@ -63,12 +62,6 @@ function App() {
 							path="/search"
 							render={() => <SearchPage />}
 						/> */}
-
-						<Route
-							path="/timeline"
-							render={() => <TimelinePage />}
-						/>
-
 						<Route path="/song/:songId?">
                 <SongRend />
             </Route>
