@@ -7,6 +7,7 @@ router.get("/artist/artistGenres/:artistName", db.artistGenres);
 router.get("/artist/topLyrics/:artistName", (req, res) => db.topLyrics(req, res, 100))
 router.get("/artist/similarArtists/:artistName", (req, res) => db.similarArtists(req, res, 30))
 router.get("/artist/billboardPerformance/:artistName", db.billboardPerformance)
+router.get("/artist/top100Weeks/:artistName", db.artistTotalTop100);
 
 
 router.get('/lyric/topGenres/:lyric', (req, res) => db.lyricTopGenre(req, res, 30))

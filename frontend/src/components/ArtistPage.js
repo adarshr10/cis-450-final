@@ -20,6 +20,7 @@ export default class ArtistPage extends React.Component {
       genres: [],
       topLyrics: [],
       topSongs: [],
+      top100Weeks: 0,
       billboard: [],
       similarArtists: []
     };
@@ -28,6 +29,7 @@ export default class ArtistPage extends React.Component {
     this.getTopSongs = this.getTopSongs.bind(this);
     this.getSimilarArtists = this.getSimilarArtists.bind(this);
     this.getBillboard = this.getBillboard.bind(this);
+    this.getTop100Weeks = this.getTop100Weeks.bind(this);
   };
 
   toTitleCase(str) {
@@ -40,6 +42,7 @@ export default class ArtistPage extends React.Component {
   componentDidMount() {
     this.getGenres(this.state.artist);
     this.getTopLyrics(this.state.artist);
+    this.getTop100Weeks(this.state.artist);
     this.getTopSongs(this.state.artist);
     this.getSimilarArtists(this.state.artist)
     this.getBillboard(this.state.artist)
@@ -57,7 +60,9 @@ export default class ArtistPage extends React.Component {
     }).then(rows => {
       if(!rows) return;
       const gen = rows.map((obj, i) => 
-        <span key={i}><a href={'/genre/' + obj.category}>{obj.category}</a>, </span>
+        (i === rows.length - 1 ? 
+          <span key={i}><a href={'/genre/' + obj.category}>{obj.category}</a></span>: 
+          <span key={i}><a href={'/genre/' + obj.category}>{obj.category}</a> | </span>)
       );
       this.setState({genres: gen})
     })
@@ -88,6 +93,21 @@ export default class ArtistPage extends React.Component {
         );
         this.setState({topLyrics: divs})
       }
+    })
+  }
+
+  getTop100Weeks(artist){
+    fetch(`http://localhost:8080/artist/top100Weeks/${artist}`, {
+      method: "GET"
+    }).then(res => {
+      // Convert the response data to a JSON.
+      return res.json();
+    }, err => {
+      // Print the error if there is one.
+      console.log(err);
+    }).then(rows => {
+      if(!rows) return;
+      this.setState({top100Weeks: rows[0].count})
     })
   }
 
@@ -126,7 +146,7 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => {
         return (
-				  <li key={i} className="title mb-2"><a href={'/artist/' + obj.artist}>{obj.artist}</a></li>
+				  <li key={i} className="mb-2"><a href={'/artist/' + obj.artist}>{obj.artist}</a></li>
         )
       })
       this.setState({similarArtists: divs})
@@ -239,9 +259,10 @@ export default class ArtistPage extends React.Component {
               <h4 className="mt-3 mx-3">{this.state.artist}</h4>
               <hr className="mx-3"style={{backgroundColor: "white"}}></hr>
               <div className='info-col m-3'>
-                <div id="genre-list mb-2">Genres: {this.state.genres}</div>             
+                <div id="genre-list" className="mb-2"><em>Genres:</em> {this.state.genres}</div>
+                <div className="mb-2"><em>Total Weeks in Top 100:</em> {this.state.top100Weeks} songs</div>             
                 <div>
-                  <span>Similar Artists:</span>
+                  <em>Similar Artists:</em>
                   <ul id="similarArtDiv">
                     {this.state.similarArtists}
                   </ul>

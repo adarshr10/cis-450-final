@@ -46,7 +46,7 @@ export default class SearchPage extends React.Component {
 
   componentDidMount() {
     //this.showSongs();
-
+    this.showLoader();
     fetch("http://localhost:8080/genres/50",
     {
       method: 'GET'
@@ -62,6 +62,7 @@ export default class SearchPage extends React.Component {
       this.setState({
         genres: ret
 	  });
+      this.hideLoader();
     }, err => {
       console.log(err);
     });	

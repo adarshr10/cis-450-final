@@ -29,6 +29,21 @@ const billboardPerformance = (req, res) => {
   });
 }
 
+const artistTotalTop100 = (req, res) =>{
+  const artist = req.params.artistName.toLowerCase().replace("'", "\\'");
+  const query = `
+  SELECT COUNT(DISTINCT b.week) as count
+  FROM BillboardAppearance b JOIN PerformerTitle p 
+  ON p.performer LIKE '%${artist}%' AND p.song_id=b.song_id;
+  `
+  connection.query(query, (err, rows, fields) => {
+    if  (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+}
+
 const topLyrics = (req, res, limit) => {
   const artist = req.params.artistName.toLowerCase().replace("'", "\\'");
   const query = `
@@ -177,6 +192,7 @@ const lyricBillboard = (req, res) => {
 module.exports = {
   topSongs: topSongs,
   artistGenres: artistGenres,
+  artistTotalTop100: artistTotalTop100,
   similarArtists: similarArtists,
   topLyrics: topLyrics,
   billboardPerformance: billboardPerformance,

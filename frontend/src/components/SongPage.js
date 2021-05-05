@@ -112,7 +112,7 @@ export default class SongPage extends React.Component {
               mode={songOverview.mode}
               danceability={songOverview.danceability}
               instrumental={songOverview.instrumental}
-              key={songOverview.key}
+              // key={songOverview.key}
               liveness={songOverview.liveness}
               loudness={songOverview.loudness}
               speechiness={songOverview.speechiness}
