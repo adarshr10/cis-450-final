@@ -2,7 +2,7 @@ const connection = require('../config')
 
 
 const getGenres = (req, res) => {
-  const lim = req.params.lim || 1000;
+  const lim = parseInt(req.params.lim) || 1000;
   var query = `
   WITH timeRangeCompiled AS (
     SELECT g.category, COUNT(g.category) as num
@@ -42,7 +42,7 @@ const getGenres = (req, res) => {
 //time from 3.8 sec to 2 sec
 
 const topWordsByGenre = (req, res) => {
-  const genre = req.params.gen == null ? " ": req.params.gen.toLowerCase().replace("'", "\\'").trim();
+  const genre = req.params.gen == null ? "": req.params.gen.toLowerCase().replace("'", "\\'").trim();
   const limit = 50;
   var query = `
   WITH temp AS (
@@ -99,8 +99,8 @@ const topWordsByGenre = (req, res) => {
 const topWordsByRankAndTime = (req, res) => {
   const limit = 50;
   //const num = req.params.pos;
-  const lower = req.params.low || -1;
-  const upper = req.params.up || -1;
+  const lower = parseInt(req.params.low) || -1;
+  const upper = parseInt(req.params.up) || -1;
 
   var query = `
   WITH temp AS (
@@ -114,7 +114,7 @@ const topWordsByRankAndTime = (req, res) => {
   FROM temp
   GROUP BY word
   ORDER BY count DESC
-  LIMIT 50;
+  LIMIT ${limit};
   `;
 
   connection.query(query, (err, rows, fields) => {
@@ -163,8 +163,8 @@ const topWordsByRankAndTime = (req, res) => {
 //time from 2.26 to 0.77
 const topGenresByRankAndTime = (req, res) => {
   const limit = 50;
-  const lower = req.params.low || -1;
-  const upper = req.params.up || -1;
+  const lower = parseInt(req.params.low) || -1;
+  const upper = parseInt(req.params.up) || -1;
 
   var query = `
   WITH temp1 AS (
@@ -220,8 +220,8 @@ const topGenresByRankAndTime = (req, res) => {
 //time from 2.83 to 1.44 sec
 const topPosOfGenre = (req, res) => {
   const limit = 100;
-  const lower = req.params.low || -1;
-  const upper = req.params.up || -1;
+  const lower = parseInt(req.params.low) || -1;
+  const upper = parseInt(req.params.up) || -1;
 
   var query = `
   WITH songs AS (
@@ -301,7 +301,6 @@ const searchEverything = (req, res) => {
   // const keyword = 'britney spears'; // req.params.keyword;
   const limit = 100;
   const genre = req.params.gen == null ? "":req.params.gen.toLowerCase().replace("'", "\\'").trim();
-  console.log(genre)
   const lower = parseInt(req.params.low) || -1;
   const upper = parseInt(req.params.up) || -1;
   const position = parseInt(req.params.pos) || -1;
