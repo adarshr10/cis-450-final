@@ -285,7 +285,7 @@ const topPosOfGenre = (req, res) => {
 // union all satisfactory ids and JOIN with tables with desired information
 
 // test query: just britney spears
-// time from 29 sec to 
+// time from 29 sec to 0.13 sec
 const searchEverything = (req, res) => {
   // const limit = 100;
   // const genre = req.params.genre;
@@ -303,11 +303,11 @@ const searchEverything = (req, res) => {
   var query = `
   WITH 
     performer AS 
-      (SELECT * FROM PerformerTitle WHERE '${keyword}' <> " " AND (LOWER(performer) LIKE '%${keyword}%' OR LOWER(title) LIKE '%${keyword}%')),
+      (SELECT DISTINCT song_id FROM PerformerTitle WHERE '${keyword}' <> " " AND (LOWER(performer) LIKE '%${keyword}%' OR LOWER(title) LIKE '%${keyword}%')),
     genre AS 
-      (SELECT song_id, category FROM Genre WHERE '${genre}' <> " " AND LOWER(category) LIKE '%${genre}%'),
+      (SELECT DISTINCT song_id FROM Genre WHERE '${genre}' <> " " AND LOWER(category) LIKE '%${genre}%'),
     billboard AS
-      (SELECT song_id, position FROM BillboardAppearance 
+      (SELECT DISTINCT song_id FROM BillboardAppearance 
       WHERE (${lower} <> -1 AND YEAR(week) >= ${lower}) OR (${upper} <> -1 AND YEAR(week) <= ${upper}) OR (${position} <> -1 AND position <= ${position})),
     lyric AS
       (SELECT DISTINCT song_id FROM HasLyric WHERE '${keyword}' <> " " AND word='${keyword}'), 
