@@ -97,9 +97,17 @@ export default class SearchPage extends React.Component {
 		});
 	};
 
+  showLoader(){
+    document.getElementById("spinner-div").classList.remove("d-none");
+  }
+
+  hideLoader(){
+    document.getElementById("spinner-div").classList.add("d-none");
+  }
+
   showSongs(event) {
     event.preventDefault();
-    
+    this.showLoader();
     fetch(`http://localhost:8080/searchData/${this.state.limit}/${this.state.genre}/${this.state.lower}/${this.state.upper}/${this.state.position}/${this.state.keyword}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
@@ -120,10 +128,11 @@ export default class SearchPage extends React.Component {
           genres={obj.genre}
         /> 
       );
-          
+      
       this.setState({
         songs: dataInfo
       });
+      this.hideLoader()
     });
   };
 

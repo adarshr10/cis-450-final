@@ -291,7 +291,7 @@ const topPosOfGenre = (req, res) => {
 // union all satisfactory ids and JOIN with tables with desired information
 
 // test query: just britney spears
-// time from 29 sec to 0.13 sec
+// time from 29 sec to 1.12 sec
 const searchEverything = (req, res) => {
   // const limit = 100;
   // const genre = req.params.genre;
@@ -300,28 +300,35 @@ const searchEverything = (req, res) => {
   // const position = 10;
   // const keyword = 'britney spears'; // req.params.keyword;
   const limit = 100;
-  const genre = req.params.gen == null ? " ":req.params.gen.toLowerCase().replace("'", "\\'").trim();
-  const lower = req.params.low || -1;
-  const upper = req.params.up || -1;
-  const position = req.params.pos || -1;
-  const keyword = req.params.key == null ? " ": req.params.key.toLowerCase().replace("'", "\\'").trim();
+  const genre = req.params.gen == null ? "":req.params.gen.toLowerCase().replace("'", "\\'").trim();
+  console.log(genre)
+  const lower = parseInt(req.params.low) || -1;
+  const upper = parseInt(req.params.up) || -1;
+  const position = parseInt(req.params.pos) || -1;
+  const keyword = req.params.key == null ? "": req.params.key.toLowerCase().replace("'", "\\'").trim();
 
   var query = `
   WITH 
     performer AS 
-      (SELECT DISTINCT song_id FROM PerformerTitle WHERE '${keyword}' <> " " AND (LOWER(performer) LIKE '%${keyword}%' OR LOWER(title) LIKE '%${keyword}%')),
+      (SELECT DISTINCT song_id FROM PerformerTitle${keyword === "" ? "": ` WHERE (LOWER(performer) LIKE "%${keyword}%" OR LOWER(title) LIKE "%${keyword}%")`}),
     genre AS 
-      (SELECT DISTINCT song_id FROM Genre WHERE '${genre}' <> " " AND LOWER(category) LIKE '%${genre}%'),
-    billboard AS
-      (SELECT DISTINCT song_id FROM BillboardAppearance 
-      WHERE (${lower} <> -1 AND YEAR(week) >= ${lower}) OR (${upper} <> -1 AND YEAR(week) <= ${upper}) OR (${position} <> -1 AND position <= ${position})),
+      (SELECT DISTINCT song_id FROM Genre${genre === "" ? "": ` WHERE LOWER(category)="${genre}"`}),
+    billboard1 AS
+      (SELECT DISTINCT song_id, week, position FROM BillboardAppearance${lower === -1 ? "": ` WHERE YEAR(week) >= ${lower}`}),
+    billboard2 AS 
+      (SELECT DISTINCT song_id, week, position FROM billboard1${upper === -1 ? "": ` WHERE YEAR(week) <= ${upper}`}),
+    billboard3 AS
+      (SELECT DISTINCT song_id FROM billboard2${position === -1 ? "": ` WHERE position <= ${position}`}),
     lyric AS
-      (SELECT DISTINCT song_id FROM HasLyric WHERE '${keyword}' <> " " AND word='${keyword}'), 
+      (SELECT DISTINCT song_id FROM HasLyric${keyword === "" ? "" : ` WHERE LOWER(word) LIKE "%${keyword}%"`}), 
     song AS
-      (select DISTINCT id FROM Song WHERE '${keyword}' <> " " AND album LIKE "%${keyword}%"),
+      (select DISTINCT id as song_id FROM Song${keyword === "" ? "" : ` WHERE LOWER(album) LIKE "%${keyword}%"`}),
+    keywords AS
+      ((SELECT song_id FROM song) UNION (SELECT song_id FROM performer) UNION (SELECT song_id FROM lyric)),
     all_ids AS 
-      ((SELECT song_id FROM performer) UNION (SELECT song_id FROM genre) UNION (SELECT song_id FROM billboard) UNION (SELECT song_id FROM lyric)
-        UNION (SELECT id as song_id FROM song))
+      (SELECT DISTINCT song_id FROM 
+        keywords INNER JOIN billboard3 USING(song_id) 
+        INNER JOIN genre USING(song_id))
   SELECT ai.song_id AS id, p.title, p.performer, MIN(b.position) as position, GROUP_CONCAT(DISTINCT g.category SEPARATOR ", ") AS genre
   FROM all_ids ai LEFT JOIN Genre g on ai.song_id=g.song_id
         LEFT JOIN PerformerTitle p ON ai.song_id=p.song_id

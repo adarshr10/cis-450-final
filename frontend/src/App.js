@@ -6,6 +6,8 @@ import {
 	Switch, 
   useParams
 } from 'react-router-dom';
+import {Spinner} from 'react-bootstrap';
+
 
 import HomePage from './components/HomePage';
 import SearchPage from './components/SearchPage';
@@ -50,6 +52,7 @@ function SearchRend(){
 function App() {
   return (
     <div className="App">
+        <div id="spinner-div" className="d-none"><Spinner id="spinner-obj" animation="grow" variant="success" /></div>
 				<Router>
 					<Switch>
 						<Route
