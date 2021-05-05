@@ -216,19 +216,25 @@ const topGenresByRankAndTime = (req, res) => {
 
 //STEPS TO OPTIMIZE
 //Remove subqueries and add more JOIN conditions
-//test query: 1950, 2020, 100
-//time from 4.24 to 2.23
+//test query: 2010, 2020, 50
+//time from 2.83 to 1.44 sec
 const topPosOfGenre = (req, res) => {
   const limit = 100;
   const lower = req.params.low || -1;
   const upper = req.params.up || -1;
 
   var query = `
-  SELECT g.category, MIN(IF(b.position = 0, 999999, b.position)) AS high
-  FROM BillboardAppearance b JOIN Genre g 
-  ON b.song_id = g.song_id AND (${lower} = -1 OR YEAR(b.week) >= ${lower}) AND (${upper} = -1 OR YEAR(b.week) <= ${upper})
-  GROUP BY g.category
-  ORDER BY high LIMIT ${limit};
+  WITH songs AS (
+    SELECT g.song_id, g.category, b.position
+    FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
+    AND ((${lower} <> -1 AND YEAR(b.week) >= ${lower} AND ${upper} <> -1 AND YEAR(b.week) <= ${upper}) 
+      OR (${lower} = -1 AND YEAR(b.week) <= ${upper})
+      OR (${upper} = -1 AND YEAR(b.week) >= ${lower}))
+    ),
+    top_cat AS (
+      SELECT category, MIN(IF(position = 0, 999999, position)) as highest_position
+      FROM songs GROUP BY category ORDER BY COUNT(song_id) DESC LIMIT ${limit})
+  SELECT category, highest_position FROM top_cat ORDER BY highest_position;
   `;
 
   connection.query(query, (err, rows, fields) => {

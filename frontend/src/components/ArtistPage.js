@@ -57,7 +57,7 @@ export default class ArtistPage extends React.Component {
     }).then(rows => {
       if(!rows) return;
       const gen = rows.map((obj, i) => 
-        <span><a href={'/genre/' + obj.category}>{obj.category}</a>, </span>
+        <span key={i}><a href={'/genre/' + obj.category}>{obj.category}</a>, </span>
       );
       this.setState({genres: gen})
     })
