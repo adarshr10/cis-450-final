@@ -8,7 +8,7 @@ import '../style/Sidebar.css';
 const Sidebar = ({curPage}) => {
 
     return (
-        <div className="sidebar flex-column">
+        <div className="sidebar flex-column sidebarContainer">
             <Nav variant="pills" defaultActiveKey={curPage} className="flex-column">
                 <Nav.Item>
                     <Nav.Link href="/">Home</Nav.Link>
