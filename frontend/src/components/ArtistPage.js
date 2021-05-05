@@ -260,7 +260,7 @@ export default class ArtistPage extends React.Component {
               <hr className="mx-3"style={{backgroundColor: "white"}}></hr>
               <div className='info-col m-3'>
                 <div id="genre-list" className="mb-2"><em>Genres:</em> {this.state.genres}</div>
-                <div className="mb-2"><em>Total Weeks in Top 100:</em> {this.state.top100Weeks} songs</div>             
+                <div className="mb-2"><em>Total Weeks in Top 100:</em> {this.state.top100Weeks} weeks</div>             
                 <div>
                   <em>Similar Artists:</em>
                   <ul id="similarArtDiv">
