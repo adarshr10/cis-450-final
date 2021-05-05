@@ -7,10 +7,10 @@ export default class Div_0 extends React.Component {
 		return (
 			<tr className="id" id={this.props.word}>
 				<td className="num">{this.props.num}</td>
-				<td className="word">
-					<a href={'/lyric/' + this.props.word}>{this.props.word}</a>
+				<td className="category">
+					<a href={'/genre/' + encodeURIComponent(this.props.category)}>{this.props.category}</a>
 				</td>
-				<td className="count">{this.props.count}</td>
+				<td className="high">{this.props.high}</td>
 			</tr>
 		);
 	};

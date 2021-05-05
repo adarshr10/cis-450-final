@@ -9,18 +9,10 @@ router.get("/artist/similarArtists/:artistName", (req, res) => db.similarArtists
 router.get("/artist/billboardPerformance/:artistName", db.billboardPerformance)
 
 
-router.get('/lyric/topGenres/:lyric')
-
-
-
-
-
-
-
-
-
-
-
+router.get('/lyric/topGenres/:lyric', (req, res) => db.lyricTopGenre(req, res, 30))
+router.get('/lyric/topArtists/:lyric', (req, res) => db.lyricTopArtist(req, res, 30))
+router.get('/lyric/topSongs/:lyric', (req, res) => db.lyricTopSongs(req, res, 30))
+router.get('/lyric/billboardPlot/:lyric', (req, res) => db.lyricBillboard(req, res, 30))
 
 
 module.exports = router

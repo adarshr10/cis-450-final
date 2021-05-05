@@ -2,13 +2,14 @@ const connection = require('../config')
 
 /**
  * 
- * Methods and routes for songs and song page
+ * ----------- Methods and routes for timeline page
  * 
  */
+
 const songBillboardInformation = (req, res) => {
   const songId = req.params.songId.replace("'", "\\'");
   var query = `
-    SELECT week, position, url FROM BillboardAppearance b
+    SELECT week, position FROM BillboardAppearance b
     WHERE b.song_id = '${songId}';
   `;
   connection.query(query, (err, rows, fields) => {
@@ -157,9 +158,9 @@ const genreLyricInformation = (req, res) => {
 const genreBillboardInformation = (req, res) => {
   const genre = req.params.genre;
   var query = `
-    SELECT DATE_FORMAT(week,'%Y-%m') AS monthYear, count(DATE_FORMAT(week,'%Y-%m')) AS count, b.url FROM BillboardAppearance b 
+    SELECT DATE_FORMAT(week,'%Y-%m') AS monthYear, count(DATE_FORMAT(week,'%Y-%m')) AS count FROM BillboardAppearance b 
     JOIN Genre g ON b.song_id = g.song_id  
-    WHERE g.category = '${genre}' GROUP BY monthYear ORDER BY monthYear DESC;
+    WHERE g.category = 'rap' GROUP BY monthYear ORDER BY monthYear DESC;
   `;
 
   connection.query(query, (err, rows, fields) => {
@@ -212,29 +213,6 @@ const genreSummary = (req, res) => {
   });
 };
 
-const genrePopularArtists = (req, res) => {
-  const genre = req.params.genre;
-  var query = `
-  WITH artists_in_genre AS (
-    SELECT p.song_id, p.performer FROM Genre g JOIN PerformerTitle p ON g.song_id = p.song_id
-    WHERE g.category = 'rap' 
-      AND LOWER(performer) NOT LIKE '%featuring%' 
-      AND LOWER(performer) NOT LIKE '%Feat.'
-  ),
-  arist_counts AS (
-    SELECT ag.performer, count(ag.performer) AS weeks_in_top FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
-    GROUP BY (ag.performer)
-  )
-  SELECT * FROM arist_counts ORDER BY weeks_in_top DESC;
-  `;
-  connection.query(query, (err, rows, fields) => {
-    if  (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
-};
-
 module.exports = {
   songOverviewInformation: songOverviewInformation,
   songSimilarSongs: songSimilarSongs,
@@ -244,6 +222,5 @@ module.exports = {
   genreLyricInformation: genreLyricInformation,
   genreBillboardInformation: genreBillboardInformation,
   genreSongInformation: genreSongInformation,
-  genreSummary: genreSummary, 
-  genrePopularArtists: genrePopularArtists
+  genreSummary: genreSummary
 }

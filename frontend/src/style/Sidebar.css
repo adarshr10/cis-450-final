@@ -1,3 +1,7 @@
+.sidebar {
+    border-right: gray 2px solid;
+}
+
 
 .nav-link {
     color:white;
