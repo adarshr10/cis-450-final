@@ -4,7 +4,8 @@ import {
 	BrowserRouter as Router,
 	Route,
 	Switch, 
-  useParams
+  useParams,
+  useHistory
 } from 'react-router-dom';
 import {Spinner} from 'react-bootstrap';
 
@@ -50,10 +51,11 @@ function SearchRend(){
 }
 
 function App() {
+  const history = useHistory();
   return (
     <div className="App">
         <div id="spinner-div" className="d-none"><Spinner id="spinner-obj" animation="grow" variant="success" /></div>
-				<Router>
+				<Router history={history}>
 					<Switch>
 						<Route
 							exact

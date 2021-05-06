@@ -1,22 +1,22 @@
 const connection = require('../config')
 
+//STEPS TO OPTIMIZE
+//performertitle song_id (p_song_id)
 
+//before index: 1.67
 const getGenres = (req, res) => {
   const lim = parseInt(req.params.lim) || 1000;
   var query = `
   WITH timeRangeCompiled AS (
-    SELECT g.category, COUNT(g.category) as num
+    SELECT g.category
     FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
     WHERE YEAR(b.week) >= 1990
     GROUP BY g.category
-  ), top AS (
-    SELECT category
-    FROM timeRangeCompiled 
-    ORDER BY num DESC
+    ORDER BY COUNT(g.category) DESC
     LIMIT ${lim}
   )
   SELECT category
-  FROM top
+  FROM timeRangeCompiled
   ORDER BY category;
   `;
 

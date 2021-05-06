@@ -4,36 +4,43 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
 import ContentCol from "./SearchPage/searchCol"
-
 import { Row, Table, Form, Button, Col} from 'react-bootstrap';
 import SearchDiv from './SearchPage/SearchDiv';
+import {withRouter} from 'react-router-dom'
 
 // TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
-export default class SearchPage extends React.Component {
+class SearchPage extends React.Component {
   constructor(props) {
     super(props);
-
     // The state maintained by this React Component. This component maintains the list of keywords,
     // and a list of movies for a specified keyword.
-    this.state = {
-      songs: [],
-      genres: [<option className="genresOption" value={"hello"}>{"hello"}</option>],
-      decades: [],
-      positions: [],
-
-      limit: -1,
-      genre: " ",
-      lower: -1,
-      upper: -1,
-      position: -1,
-      keyword: " "
-    };
+    if (props.history.location.pathname === "/search" && props.history.location.state != null){
+      const prev = props.history.location.state;
+      this.state = {...prev, 
+        genres: [],
+        decades: [],
+        positions: []}
+      this.state.songs = JSON.parse(this.state.songs)
+    }else{
+      this.state = {
+        songs: [],
+        genres: [],
+        decades: [],
+        positions: [],
+        limit: -1,
+        genre: " ",
+        lower: -1,
+        upper: -1,
+        position: -1,
+        keyword: " "
+      };
+    }
     var i;
     for (i = 0; i < 8; i++) {
-      this.state.decades.push(<option className="genresOption" value={1950 + 10 * i}>{1950 + 10 * i}</option>);
+      this.state.decades.push(1950 + 10 * i);
     }
     for (i = 1; i <= 100; i ++) {
-      this.state.positions.push(<option className="genresOption" value={i}>{i}</option>);
+      this.state.positions.push(i);
     }
 
     this.showSongs = this.showSongs.bind(this);
@@ -43,6 +50,17 @@ export default class SearchPage extends React.Component {
     this.handlePositionChange = this.handlePositionChange.bind(this);
     this.handleKeywordChanged = this.handleKeywordChanged.bind(this);
   };
+
+  updateHistory(){
+    this.props.history.push("/search", {
+      limit: this.state.limit,
+      genre: this.state.genre,
+      lower: this.state.lower,
+      upper: this.state.upper,
+      position: this.state.position,
+      keyword: this.state.keyword,
+      songs: JSON.stringify(this.state.songs)})
+  }
 
   componentDidMount() {
     //this.showSongs();
@@ -56,11 +74,8 @@ export default class SearchPage extends React.Component {
       console.log(err);
     }).then(genreList => {
       if (!genreList) return;
-      const ret = genreList.map((obj, i) =>
-	 	 <option className="genresOption" value={obj.category} key={i}>{obj.category}</option>
-      );
       this.setState({
-        genres: ret
+        genres: genreList
 	  });
       this.hideLoader();
     }, err => {
@@ -94,7 +109,7 @@ export default class SearchPage extends React.Component {
 
   handleKeywordChanged(e) {
 		this.setState({
-			keyword: e.target.value
+			keyword: encodeURIComponent(e.target.value)
 		});
 	};
 
@@ -119,26 +134,14 @@ export default class SearchPage extends React.Component {
       console.log(err);
     }).then(data => {
       if (!data) return;
-      var dataInfo = data.map((obj, i) =>
-        <SearchDiv 
-          key = {i}
-          id={obj.id}
-          title={obj.title}
-          performer={obj.performer}
-          ranking={obj.position}
-          genres={obj.genre}
-        /> 
-      );
-      
       this.setState({
-        songs: dataInfo
+        songs: data
       });
       this.hideLoader()
+      this.updateHistory()
     });
   };
 
-
-ç
   render() {    
     return (
       <div className="pageContainer">
@@ -202,9 +205,11 @@ export default class SearchPage extends React.Component {
                 <Col>
                   <Form.Group controlId="searchGenre">
                     <Form.Label>Genre</Form.Label>
-                    <Form.Control as="select" onChange={this.handleGenreChange}>
+                    <Form.Control as="select" onChange={this.handleGenreChange} value={this.state.genre}>
                       <option key={0} value=" "></option>
-                      {this.state.genres}
+                      {this.state.genres.map((obj, i) =>
+                        <option className="genresOption" value={obj.category} key={i+1}>{obj.category}</option>
+                      )}
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -213,18 +218,22 @@ export default class SearchPage extends React.Component {
                 <Col>
                   <Form.Group controlId="searchLower">
                   <Form.Label>Lower Decade</Form.Label>
-                  <Form.Control as="select" onChange={this.handleLowerChange}>
+                  <Form.Control as="select" onChange={this.handleLowerChange} value={this.state.lower === -1 ? " ":this.state.lower}>
                     <option key={0} value=" "></option>
-                    {this.state.decades}
+                    {this.state.decades.map((year, i) => 
+                      <option key={i+1} className="decadeOption" value={year}>{year}</option>
+                    )}
                   </Form.Control>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="searchUpper">
                   <Form.Label>Upper Decade</Form.Label>
-                  <Form.Control as="select" onChange={this.handleUpperChange}>
+                  <Form.Control as="select" onChange={this.handleUpperChange} value={this.state.upper === -1 ? " ":this.state.upper}>
                     <option key={0} value=" "></option>
-                    {this.state.decades}
+                    {this.state.decades.map((year, i) => 
+                      <option key={i+1} className="decadeOption" value={year}>{year}</option>
+                    )}
                   </Form.Control>
                   </Form.Group>
                 </Col>
@@ -233,9 +242,11 @@ export default class SearchPage extends React.Component {
                 <Col>
                   <Form.Group controlId="searchBillboard">
                     <Form.Label>Billboard Ranking</Form.Label>
-                    <Form.Control as="select" onChange={this.handlePositionChange}>
+                    <Form.Control as="select" onChange={this.handlePositionChange} value={this.state.position === -1 ? " ":this.state.position}>
                       <option key={0} value=" "></option>
-                      {this.state.positions}
+                      {this.state.positions.map((pos, i) =>
+                        <option key={i} className="positionOption" value={pos}>{pos}</option>
+                      )}
                     </Form.Control>
                   </Form.Group>              
                 </Col>
@@ -258,7 +269,16 @@ export default class SearchPage extends React.Component {
                     <th>Top Ranking</th>
                     <th>Genres</th>
                   </tr>
-                  {this.state.songs}
+                  {this.state.songs.map((obj, i) =>
+                    <SearchDiv 
+                    key={i}
+                    id={obj.id}
+                    title={obj.title}
+                    performer={obj.performer}
+                    ranking={obj.position}
+                    genres={obj.genre}
+                  /> 
+                  )}
                 </tbody>
               </Table>
             </ContentCol>
@@ -268,3 +288,6 @@ export default class SearchPage extends React.Component {
     );
   };
 };
+
+
+export default withRouter(SearchPage)
