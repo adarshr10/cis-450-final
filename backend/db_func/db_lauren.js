@@ -292,7 +292,7 @@ const topPosOfGenre = (req, res) => {
 // only query tables if provided parameter isn't empty
 
 // test query: 'love' keyword
-// time from 31 sec to 2.3 sec
+// time from 31 sec to 1.82 sec
 const searchEverything = (req, res) => {
   // const limit = 100;
   // const genre = req.params.genre;
@@ -325,14 +325,11 @@ const searchEverything = (req, res) => {
       ((SELECT song_id FROM song) UNION (SELECT song_id FROM performer) UNION (SELECT song_id FROM lyric)),`}
     genre AS 
       (SELECT DISTINCT song_id FROM Genre${genre === "" ? "": ` WHERE LOWER(category)="${genre}"`}),
-    billboard1 AS
-      (SELECT DISTINCT song_id, week, position FROM BillboardAppearance${lower === -1 ? "": ` WHERE YEAR(week) >= ${lower}`}),
-    billboard2 AS 
-      (SELECT DISTINCT song_id, week, position FROM billboard1${upper === -1 ? "": ` WHERE YEAR(week) <= ${upper}`}),
-    billboard3 AS
-      (SELECT DISTINCT song_id FROM billboard2${position === -1 ? "": ` WHERE position <= ${position}`}),
+    billboard AS
+      (SELECT DISTINCT song_id FROM BillboardAppearance WHERE YEAR(week) >= ${lower === -1 ? -1:lower} 
+      AND YEAR(week) <= ${upper === -1 ? 999999:upper} AND position <= ${position === -1 ? 101:position}),
     all_ids AS 
-      (SELECT DISTINCT song_id FROM ${keyword === "" ? "billboard3":"keywords INNER JOIN billboard3 USING(song_id)"} INNER JOIN genre USING(song_id))
+      (SELECT DISTINCT song_id FROM ${keyword === "" ? "billboard":"keywords INNER JOIN billboard USING(song_id)"} INNER JOIN genre USING(song_id))
   SELECT ai.song_id AS id, p.title, p.performer, b.position, g.genre
   FROM all_ids ai LEFT JOIN minBill b ON ai.song_id=b.song_id
         LEFT JOIN PerformerTitle p ON ai.song_id=p.song_id
