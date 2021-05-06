@@ -32,7 +32,7 @@ class SearchPage extends React.Component {
         lower: -1,
         upper: -1,
         position: -1,
-        keyword: " "
+        keyword: ""
       };
     }
     var i;
@@ -109,7 +109,7 @@ class SearchPage extends React.Component {
 
   handleKeywordChanged(e) {
 		this.setState({
-			keyword: encodeURIComponent(e.target.value)
+			keyword: e.target.value
 		});
 	};
 
@@ -124,7 +124,7 @@ class SearchPage extends React.Component {
   showSongs(event) {
     event.preventDefault();
     this.showLoader();
-    fetch(`http://localhost:8080/searchData/${this.state.limit}/${this.state.genre}/${this.state.lower}/${this.state.upper}/${this.state.position}/${this.state.keyword}`, {
+    fetch(`http://localhost:8080/searchData/${this.state.limit}/${encodeURIComponent(this.state.genre)}/${this.state.lower}/${this.state.upper}/${this.state.position}/${encodeURIComponent(this.state.keyword)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.

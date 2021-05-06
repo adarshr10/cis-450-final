@@ -170,8 +170,8 @@ const topGenresByRankAndTime = (req, res) => {
   WITH temp1 AS (
     SELECT DISTINCT song_id
     FROM BillboardAppearance
-    WHERE (${lower} = -1 OR YEAR(week) >= ${lower}) AND 
-    (${upper} = -1 OR YEAR(week) <= ${upper})
+    WHERE (YEAR(week) >= ${lower}) AND 
+    (YEAR(week) <= ${upper === -1 ? 999999:upper})
 ), temp AS (
     SELECT g.category, g.song_id
     FROM temp1 b JOIN Genre g ON b.song_id = g.song_id
@@ -224,17 +224,12 @@ const topPosOfGenre = (req, res) => {
   const upper = parseInt(req.params.up) || -1;
 
   var query = `
-  WITH songs AS (
-    SELECT g.song_id, g.category, b.position
+    SELECT g.category, MIN(b.position) as high
     FROM BillboardAppearance b JOIN Genre g ON b.song_id = g.song_id
-    AND ((${lower} <> -1 AND YEAR(b.week) >= ${lower} AND ${upper} <> -1 AND YEAR(b.week) <= ${upper}) 
-      OR (${lower} = -1 AND YEAR(b.week) <= ${upper})
-      OR (${upper} = -1 AND YEAR(b.week) >= ${lower}))
-    ),
-    top_cat AS (
-      SELECT category, MIN(IF(position = 0, 999999, position)) as highest_position
-      FROM songs GROUP BY category ORDER BY COUNT(song_id) DESC LIMIT ${limit})
-  SELECT category, highest_position FROM top_cat ORDER BY highest_position;
+    AND (YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper === -1 ? 999999:upper}) 
+    GROUP BY g.category
+    ORDER BY COUNT(*) DESC, high ASC
+    LIMIT ${limit}
   `;
 
   connection.query(query, (err, rows, fields) => {

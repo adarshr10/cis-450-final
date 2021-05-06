@@ -256,7 +256,7 @@ export default class SongPage extends React.Component {
         id={id}
         layout={configuration}
         onClick={function(data){
-          if(data.points.length == 1){
+          if(data.points.length === 1){
               window.open(data.points[0].customdata, "_blank", "");
             }
           }

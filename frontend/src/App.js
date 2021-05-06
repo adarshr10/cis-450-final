@@ -40,12 +40,7 @@ function ArtRend(){
 }
 
 function SearchRend(){
-  let {lim} = useParams();
-  let {gen} = useParams();
-  let {low} = useParams();
-  let {up} = useParams();
-  let {pos} = useParams();
-  let {key} = useParams();
+  let {lim, gen, low, up, pos, key} = useParams();
 
   return <SearchPage lim={lim} gen={gen} low={low} up={up} pos={pos} key={key}/>
 }
@@ -60,7 +55,7 @@ function App() {
 						<Route
 							exact
 							path="/"
-							render={() => <HomePage />}
+							component={HomePage}
 						/>
 						{/* <Route
 							exact

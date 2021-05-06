@@ -12,6 +12,7 @@ export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.controller = new AbortController();
     this.state = {
       // 0 — TOP LYRICS BY GENRE
       genres_0: [<option className="genresOption" value={"hello"}>{"hello"}</option>],
@@ -77,19 +78,25 @@ export default class HomePage extends React.Component {
     this.handleUpChange_3 = this.handleUpChange_3.bind(this);
   };
 
+  componentWillUnmount(){
+    this.controller.abort();
+  }
+
   // React function that is called when the page load.
   componentDidMount() {
 
     // 0 — TOP WORDS BY GENRE
     fetch("http://localhost:8080/genres/20",
       {
-        method: 'GET'
+        method: 'GET',
+        signal: this.controller.signal
       }).then(res => {
         return res.json();
       }, err => {
         console.log(err);
       }).then(genreList => {
         if (!genreList) return;
+        console.log("NOT POSSIBLE")
         const ret = genreList.map((obj, i) =>
           <option className="genresOption" value={obj.category}>{obj.category}</option>
         );
@@ -102,10 +109,13 @@ export default class HomePage extends React.Component {
 
 
     this.fill_0();
+    console.log(0)
     this.fill_1();
+    console.log(1)
     this.fill_2();
+    console.log(2)
     this.fill_3();
-
+    console.log(3)
   };
 
 
@@ -120,10 +130,11 @@ export default class HomePage extends React.Component {
   show_0() {
 
     fetch(`http://localhost:8080/home/topWordsByGenre/${this.state.genre_0}`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
-      return res.json();
+      return this.mounted ? res.json():null;
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -168,10 +179,11 @@ export default class HomePage extends React.Component {
   show_1() {
 
     fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/${this.state.low_1}/${this.state.up_1}`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
-      return res.json();
+      return this.mounted ? res.json():null;
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -213,10 +225,11 @@ export default class HomePage extends React.Component {
   show_2() {
 
     fetch(`http://localhost:8080/home/topGenresByRankAndTime/${this.state.low_2}/${this.state.up_2}`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
-      return res.json();
+      return this.mounted ? res.json():null;
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -255,10 +268,11 @@ export default class HomePage extends React.Component {
     show_3() {
   
       fetch(`http://localhost:8080/home/topPosOfGenre/${this.state.low_3}/${this.state.up_3}`, {
-        method: 'GET' // The type of HTTP request.
+        method: 'GET',
+        signal: this.controller.signal
       }).then(res => {
         // Convert the response data to a JSON.
-        return res.json();
+        return this.mounted ? res.json():null;
       }, err => {
         // Print the error if there is one.
         console.log(err);
@@ -621,7 +635,8 @@ export default class HomePage extends React.Component {
   fill_0() {
 
     fetch(`http://localhost:8080/home/topWordsByGenre/pop`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
       return res.json();
@@ -646,7 +661,8 @@ export default class HomePage extends React.Component {
     });
 
     fetch(`http://localhost:8080/home/topWordsByGenre/country`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
       return res.json();
@@ -671,7 +687,8 @@ export default class HomePage extends React.Component {
     });
 
     fetch(`http://localhost:8080/home/topWordsByGenre/r&b`, {
-      method: 'GET' // The type of HTTP request.
+      method: 'GET',
+      signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
       return res.json();
@@ -702,7 +719,8 @@ export default class HomePage extends React.Component {
 fill_1() {
 
   fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1950/1970`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -727,7 +745,8 @@ fill_1() {
   });
 
   fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1970/1990`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -752,7 +771,8 @@ fill_1() {
   });
 
   fetch(`http://localhost:8080/home/topWordsByRankAndTime/${this.state.pos_1}/1990/2010`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -781,7 +801,8 @@ fill_1() {
 fill_2() {
 
   fetch(`http://localhost:8080/home/topGenresByRankAndTime/1950/1970`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -806,7 +827,8 @@ fill_2() {
   });
 
   fetch(`http://localhost:8080/home/topGenresByRankAndTime/1970/1990`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -831,7 +853,8 @@ fill_2() {
   });
 
   fetch(`http://localhost:8080/home/topGenresByRankAndTime/1990/2010`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -859,7 +882,8 @@ fill_2() {
 fill_3() {
 
   fetch(`http://localhost:8080/home/topPosOfGenre/1950/1970`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -884,7 +908,8 @@ fill_3() {
   });
 
   fetch(`http://localhost:8080/home/topPosOfGenre/1970/1990`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
@@ -909,7 +934,8 @@ fill_3() {
   });
 
   fetch(`http://localhost:8080/home/topPosOfGenre/1990/2010`, {
-    method: 'GET' // The type of HTTP request.
+    method: 'GET',
+    signal: this.controller.signal
   }).then(res => {
     // Convert the response data to a JSON.
     return res.json();
