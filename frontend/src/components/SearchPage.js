@@ -85,25 +85,25 @@ class SearchPage extends React.Component {
 
   handleGenreChange(e) {
 		this.setState({
-			genre: e.target.value
+			genre: e.target.value 
 		});
 	};
 
   handleLowerChange(e) {
 		this.setState({
-			lower: e.target.value
+			lower: e.target.value === " " ? -1:e.target.value
 		});
 	};
 
   handleUpperChange(e) {
 		this.setState({
-			upper: e.target.value
+			upper: e.target.value === " " ? -1:e.target.value
 		});
 	};
 
   handlePositionChange(e) {
 		this.setState({
-			position: e.target.value
+			position: e.target.value === " " ? -1:e.target.value
 		});
 	};
 
@@ -124,6 +124,7 @@ class SearchPage extends React.Component {
   showSongs(event) {
     event.preventDefault();
     this.showLoader();
+    alert(`http://localhost:8080/searchData/${this.state.limit}/${encodeURIComponent(this.state.genre)}/${this.state.lower}/${this.state.upper}/${this.state.position}/${encodeURIComponent(this.state.keyword)}`)
     fetch(`http://localhost:8080/searchData/${this.state.limit}/${encodeURIComponent(this.state.genre)}/${this.state.lower}/${this.state.upper}/${this.state.position}/${encodeURIComponent(this.state.keyword)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
