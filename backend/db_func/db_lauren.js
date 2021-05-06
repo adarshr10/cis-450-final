@@ -334,7 +334,7 @@ const searchEverything = (req, res) => {
   FROM all_ids ai LEFT JOIN minBill b ON ai.song_id=b.song_id
         LEFT JOIN PerformerTitle p ON ai.song_id=p.song_id
         LEFT JOIN minGenre g on ai.song_id=g.song_id
-  ORDER BY b.position, b.weeks_on_chart, b.recent
+  ORDER BY b.position ASC,  b.recent DESC, b.weeks_on_chart DESC
   LIMIT ${limit};
   `;
   console.log(query);
