@@ -17,7 +17,6 @@ import LyricPage from './components/LyricPage';
 import GenrePage from './components/GenrePage';
 import ArtistPage from './components/ArtistPage';
 
-import './style/PageLayout.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SongRend(){
@@ -57,19 +56,12 @@ function App() {
 							path="/"
 							component={HomePage}
 						/>
-						{/* <Route
-							exact
-							path="/search"
-							render={() => <SearchPage />}
-						/> */}
 						<Route path="/song/:songId?">
                 <SongRend />
             </Route>
-
 						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?">
                 <SearchRend />
             </Route>
-
 						<Route path="/lyric/:lyric?">
               <LyricRend />
             </Route>

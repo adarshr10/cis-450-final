@@ -3,22 +3,17 @@ const express = require('express')
 const cors = require('cors');
 
 const PORT = 8080
-const arouters = require('./Routes/adarshRouter.js')
-const drouters = require('./Routes/danielRouter.js')
-const jrouters = require('./Routes/jeffreyRouter.js')
-const lrouters = require('./Routes/laurenRouter.js')
+const router_song_genre = require('./Routes/router_song_genre.js')
+const router_artist_lyric = require('./Routes/router_artist_lyric.js')
+const router_search = require('./Routes/router_search.js')
 
 const app = express()
 
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 
-app.use(arouters);
-app.use(lrouters);
-app.use(jrouters);
-app.use(drouters);
-
-
-
+app.use(router_artist_lyric);
+app.use(router_search);
+app.use(router_song_genre);
 
 
 app.listen(PORT, () => {

@@ -9,9 +9,6 @@ import SongLyricDiv from './SongLyricDiv'
 import SongBillboardDiv from './SongBillboardDiv'
 
 
-// TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
-
-
 export default class ArtistPage extends React.Component {
   constructor(props) {
     super(props);

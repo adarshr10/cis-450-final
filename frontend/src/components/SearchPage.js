@@ -242,7 +242,7 @@ class SearchPage extends React.Component {
               <Row>
                 <Col>
                   <Form.Group controlId="searchBillboard">
-                    <Form.Label>Billboard Ranking</Form.Label>
+                    <Form.Label>Billboard Ranking (upper bound)</Form.Label>
                     <Form.Control as="select" onChange={this.handlePositionChange} value={this.state.position === -1 ? " ":this.state.position}>
                       <option key={0} value=" "></option>
                       {this.state.positions.map((pos, i) =>

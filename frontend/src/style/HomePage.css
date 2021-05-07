@@ -30,17 +30,32 @@
     padding: 1% 1% 1% 1%;
 }
 
-.pageContainer {
+.homePageContainer {
   display: grid;
   grid-template-columns: minmax(9rem, 15%) 1fr 1fr 1fr;
-  grid-template-rows: 500px 1fr 1fr;
+  grid-template-rows: 450px 1fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
-    "sidebarContainer timelineContainer timelineContainer timelineContainer"
+    "sidebarContainer homeTimelineContainer homeTimelineContainer homeTimelineContainer"
     "sidebarContainer statsContainer statsContainer statsContainer"
     "sidebarContainer statsContainer statsContainer statsContainer";
   background-color: #121212;
   color: white;
   height: 100%;
   width: 100%;
+}
+
+.sidebarContainer {
+  grid-area: sidebarContainer;
+}
+
+.homeTimelineContainer {
+  grid-area: homeTimelineContainer;
+  border-bottom: gray 1px solid;
+  padding: 10px;
+}
+
+.statsContainer {
+  grid-area: statsContainer;
+  padding: 3% 0 3% 0;
 }

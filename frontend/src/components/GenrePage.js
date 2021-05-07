@@ -5,8 +5,9 @@ import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
 import SongInformationDiv from './SongInformationDiv';
 import SongLyricDiv from './SongLyricDiv';
-import GenreSongsDiv from './GenreSongsDiv';
 import SongBillboardDiv from './SongBillboardDiv';
+import '../style/PageLayout.css'
+
 
 export default class SongPage extends React.Component {
   
@@ -324,7 +325,7 @@ export default class SongPage extends React.Component {
                 </tbody>
               </Table>
             </ContentCol>
-            <ContentCol title={""+(this.state.genre)}>
+            <ContentCol title={`Popular ${this.state.genre} Songs`}>
               <div className="dropdown-container">
                 Lower Year: 
                 <select value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown">
@@ -379,6 +380,19 @@ class GenreArtistsDiv extends React.Component {
 						<a href={'/artist/' + encodeURIComponent(this.props.performer)}>{this.props.performer}</a>
 					</td>
           <td className="weeks">{this.props.weeks}</td>
+			</tr>
+		);
+	};
+};
+
+class GenreSongsDiv extends React.Component {
+	render() {
+		return (
+			<tr className="id" id={this.props.id}>
+                    <td className="title">
+						<a href={'/song/' + encodeURIComponent(this.props.id)}>{this.props.title}</a>
+					</td>
+                <td className="num">{this.props.num}</td>
 			</tr>
 		);
 	};

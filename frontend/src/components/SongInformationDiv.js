@@ -2,8 +2,19 @@ import React from 'react';
 
 export default class SongInformationDiv extends React.Component {
 
-	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
+		let genreComp = <span></span>;
+		if (this.props.genres) {
+			genreComp = (
+			<div className="genres">Genres:
+				<ul>
+					{this.props.genres.map((genre) => 
+						<li><a href={'/genre/' + encodeURIComponent(genre)}>{genre}</a></li>
+					)}
+				</ul>
+			</div>
+			);
+		}
 		return (
 			<div className="song" id={this.props.id}>
 				<div className="album">Album: {this.props.album}</div>
@@ -22,7 +33,9 @@ export default class SongInformationDiv extends React.Component {
 				<div className="tempo">Tempo: {this.props.tempo}</div>
                 <div className="time_signature">Time Signature: {this.props.time_signature}</div>
 				<div className="valence">Valence: {this.props.valence}</div>
-                <div className="genres">Genres: {this.props.genres}</div>
+				<div className="genres">
+					{genreComp}
+				</div>
 			</div>
 		);
 	};

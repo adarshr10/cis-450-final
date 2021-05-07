@@ -1,6 +1,6 @@
 var {Router} = require('express')
 var router = Router();
-const db = require('../db_func/db_jeff')
+const db = require('../db_func/db_artist_lyric')
 
 router.get("/artist/topSongs/:artistName", (req, res) => db.topSongs(req, res, 100));
 router.get("/artist/artistGenres/:artistName", db.artistGenres);

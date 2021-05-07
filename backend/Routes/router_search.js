@@ -1,7 +1,7 @@
 
 var {Router} = require('express')
 var router = Router();
-const db = require("../db_func/db_lauren")
+const db = require("../db_func/db_search")
 
 router.get('/genres/:lim?', db.getGenres);
 router.get('/searchData/:lim?/:gen?/:low?/:up?/:pos?/:key?', db.searchEverything);

@@ -203,8 +203,6 @@ export default class HomePage extends React.Component {
         custom_1: dataInfo
       });
     });
-
-
     
   };
 
@@ -299,11 +297,42 @@ export default class HomePage extends React.Component {
 
   render() {
     return (
-      <div className="pageContainer">
+      <div className="homePageContainer">
         <Sidebar curPage="/" className="sidebarContainer"></Sidebar>
 
-        <div className="timelineContainer">
+        <div className="homeTimelineContainer">
           <h1 className="title">CIS 550 Final Project</h1>
+          <p>Welcome to our CIS 550 Final Project, an interactive web app for analyzing the musical features, lyrical features,
+            and historic Billboard performance of songs and their associated artists, genres, and more! The different pages of
+            our website are as follows:
+          </p>
+          <ul>
+            <li>
+              Check out the <b>Search</b> page to search for specific songs based on keywords, genre, time ranges, and 
+              Billboard ranking.
+            </li>
+            <li>
+              The <b>Song</b> page displays a variety of information about a specific song, including audio features, top lyrics,
+              similar songs, and historical Billboard performance.
+            </li>
+            <li>
+              The <b>Lyric</b> page displays information concerning a certain song lyric. Shown on the page are
+              the genres, artists, and songs which use that lyric the most. Additionally, the page displays a chart 
+              showing the number of Billboard Hot 100 songs with that lyric over time.
+            </li>
+            <li>
+              The <b>Genre</b> page displays information about a specific genre, such as popular lyrics within that genre, popular
+              artists within that genre, and popular songs within that genre. The page also displays a chart showing the Billboard
+              performance of that genre over time.
+            </li>
+            <li>
+              The <b>Artist</b> page displays information about a specific artist, such as popular songs, top lyrics, and
+              historical Billboard performance.
+            </li>
+          </ul>
+          The results on each page (e.g. listed songs, artists, genres, etc.) all have hyperlinks allowing the user to
+          navigate to the associated page for that result.
+
         </div>
 
         <div className="statsContainer">

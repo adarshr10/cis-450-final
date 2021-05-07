@@ -48,7 +48,7 @@ html, body{
 
 .timelineContainer {
     grid-area: timelineContainer;
-    border: gray 2px solid;
+    padding: 10px;
 }
 
 .statsContainer {
@@ -66,8 +66,8 @@ html, body{
 }
 
 #similarArtDiv::-webkit-scrollbar-thumb, .contentDiv::-webkit-scrollbar-thumb {
-background-color: darkgrey;
-outline: 1px solid slategrey;
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
 }
 
 a{

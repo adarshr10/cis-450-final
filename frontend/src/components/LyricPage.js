@@ -6,9 +6,7 @@ import {stemmer} from 'stemmer'
 import SongSimilarDiv from './SongSimilarDiv'
 import Plotly from "plotly.js"
 import createPlotlyComponent from 'react-plotly.js/factory';
-
-
-import LyricGenresDiv from './LyricGenresDiv'
+import '../style/PageLayout.css'
 
 // ------- page for a single lyric
 
@@ -264,6 +262,19 @@ class LyricBillboardDiv extends React.Component {
 				displayModeBar={false}
         onClick={this.props.onClick || null}
       />
+		);
+	};
+};
+
+// div for genres in lyric page
+class LyricGenresDiv extends React.Component {
+	render() {
+		return (
+			<tr className="id">
+                <td className="genre">
+                    <a href={'/genre/' + encodeURIComponent(this.props.genreName)}>{this.props.genreName}</a>
+                </td>
+			</tr>
 		);
 	};
 };

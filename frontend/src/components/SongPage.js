@@ -98,8 +98,6 @@ export default class SongPage extends React.Component {
         genres = genreStuff.map((obj, i) =>
           obj.category
         );
-        genres = genres.join(", ");
-
         const songInfoDiv = 
             <SongInformationDiv 
               id={`${songOverview.id}`} 
