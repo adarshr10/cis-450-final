@@ -1,4 +1,4 @@
-const connection = require('../config')
+const {connection, conn2} = require('../config')
 
 //STEPS TO OPTIMIZE
 //performertitle song_id (p_song_id)
@@ -58,7 +58,7 @@ const topWordsByGenre = (req, res) => {
   LIMIT ${limit};
   `;
 
-  connection.query(query, (err, rows, fields) => {
+  conn2.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
@@ -106,8 +106,7 @@ const topWordsByRankAndTime = (req, res) => {
   WITH temp AS (
     SELECT DISTINCT h.word, b.song_id
     FROM BillboardAppearance b JOIN HasLyric h ON b.song_id = h.song_id
-    AND (${lower} = -1 OR YEAR(b.week) >= ${lower}) AND
-    (${upper} = -1 OR YEAR(b.week) <= ${upper})
+    AND (YEAR(b.week) >= ${lower} AND YEAR(b.week) <= ${upper === -1 ? 999999:upper})
   )
   
   SELECT word, ROUND(COUNT(song_id)/(SELECT COUNT(DISTINCT song_id) FROM temp), 3) as count
@@ -117,7 +116,7 @@ const topWordsByRankAndTime = (req, res) => {
   LIMIT ${limit};
   `;
 
-  connection.query(query, (err, rows, fields) => {
+  conn2.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
@@ -185,7 +184,7 @@ const topGenresByRankAndTime = (req, res) => {
   `;
 
   console.log(query);
-  connection.query(query, (err, rows, fields) => {
+  conn2.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
@@ -232,7 +231,7 @@ const topPosOfGenre = (req, res) => {
     LIMIT ${limit}
   `;
 
-  connection.query(query, (err, rows, fields) => {
+  conn2.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);

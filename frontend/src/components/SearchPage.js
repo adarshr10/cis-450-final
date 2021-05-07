@@ -1,6 +1,5 @@
 import React from 'react';
 import '../style/SearchPage.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
 import ContentCol from "./SearchPage/searchCol"
@@ -124,7 +123,6 @@ class SearchPage extends React.Component {
   showSongs(event) {
     event.preventDefault();
     this.showLoader();
-    alert(`http://localhost:8080/searchData/${this.state.limit}/${encodeURIComponent(this.state.genre)}/${this.state.lower}/${this.state.upper}/${this.state.position}/${encodeURIComponent(this.state.keyword)}`)
     fetch(`http://localhost:8080/searchData/${this.state.limit}/${encodeURIComponent(this.state.genre)}/${this.state.lower}/${this.state.upper}/${this.state.position}/${encodeURIComponent(this.state.keyword)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {

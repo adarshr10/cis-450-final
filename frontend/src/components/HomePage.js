@@ -96,26 +96,19 @@ export default class HomePage extends React.Component {
         console.log(err);
       }).then(genreList => {
         if (!genreList) return;
-        console.log("NOT POSSIBLE")
         const ret = genreList.map((obj, i) =>
           <option className="genresOption" value={obj.category}>{obj.category}</option>
         );
         this.setState({
           genres_0: ret
         });
+        this.fill_0();
+        this.fill_1();
+        this.fill_2();
+        this.fill_3();
       }, err => {
         console.log(err);
       });
-
-
-    this.fill_0();
-    console.log(0)
-    this.fill_1();
-    console.log(1)
-    this.fill_2();
-    console.log(2)
-    this.fill_3();
-    console.log(3)
   };
 
 
@@ -134,7 +127,7 @@ export default class HomePage extends React.Component {
       signal: this.controller.signal // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
-      return this.mounted ? res.json():null;
+      return res.json();
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -183,7 +176,7 @@ export default class HomePage extends React.Component {
       signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
-      return this.mounted ? res.json():null;
+      return res.json();
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -227,7 +220,7 @@ export default class HomePage extends React.Component {
       signal: this.controller.signal
     }).then(res => {
       // Convert the response data to a JSON.
-      return this.mounted ? res.json():null;
+      return res.json();
     }, err => {
       // Print the error if there is one.
       console.log(err);
@@ -270,7 +263,7 @@ export default class HomePage extends React.Component {
         signal: this.controller.signal
       }).then(res => {
         // Convert the response data to a JSON.
-        return this.mounted ? res.json():null;
+        return res.json();
       }, err => {
         // Print the error if there is one.
         console.log(err);
