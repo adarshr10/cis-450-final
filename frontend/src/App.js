@@ -55,21 +55,19 @@ function App() {
 							path="/"
 							component={HomePage}
 						/>
-						<Route path="/song/:songId?">
-                <SongRend />
-            </Route>
-						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?">
-                <SearchRend />
-            </Route>
-						<Route path="/lyric/:lyric?">
-              <LyricRend />
-            </Route>
-						<Route path="/genre/:genre?">
-              <GenreRend />
-            </Route>
-						<Route path="/artist/:artistName?">
-              <ArtRend />
-            </Route>
+            <Route exact path="/song"><SongPage songId={null} /> </Route>
+						<Route path="/song/:songId?" component={SongRend} />
+
+						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?" component={SearchRend} />
+
+            <Route exact path="/lyric"><LyricPage lyric={null} /> </Route>
+						<Route path="/lyric/:lyric?" component={LyricRend} />
+
+            <Route exact path="/genre"><GenrePage genre={null} /> </Route>
+						<Route path="/genre/:genre?" component={GenreRend} />
+
+            <Route exact path="/artist"><ArtistPage songId={null} /> </Route>
+						<Route path="/artist/:artistName?" component={ArtRend} />
             <Route path="*" render={() => <HomePage />} />
 					</Switch>
 				</Router>

@@ -13,7 +13,7 @@ export default class ArtistPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      artist: props.artist == null ? "Taylor Swift" : this.toTitleCase(props.artist),
+      artist: props.artist == null ? "Taylor Swift" : props.artist,
       genres: [],
       topLyrics: [],
       topSongs: [],

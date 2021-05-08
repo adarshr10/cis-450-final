@@ -19,12 +19,11 @@ export default class SongPage extends React.Component {
       songs: [],
       info: "",
       billboard: "",
-      songId: props.songId || "",
+      songId: props.songId,
       songName: "",
       sampleLink: "", 
       sound: ""
     };
-
     this.showLyrics = this.showLyrics.bind(this);
     this.showSongs = this.showSongs.bind(this);
     this.showInformation = this.showInformation.bind(this);
