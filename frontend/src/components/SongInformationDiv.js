@@ -20,6 +20,7 @@ export default class SongInformationDiv extends React.Component {
         {!this.props.isGenre &&
         <div>
         <div className="album">Album: {this.props.album}</div>
+        <div className="artist">Artist: <a href = {"/artist/" + encodeURIComponent(this.props.artist)}>{this.props.artist}</a></div>
 				<div className="explicit">Explicit: {this.props.explicit}</div>
         </div>}
 				<div className="length">Length: {this.props.length} min</div>

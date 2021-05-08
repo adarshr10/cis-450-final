@@ -55,7 +55,7 @@ export default class SongPage extends React.Component {
     let upperLyric = this.state.upperLyric;
     let lowerLyric = this.state.lowerLyric;
     if (!genre) {
-      genre = 'rap';
+      genre = 'pop';
     } 
     this.setState({genre: genre})
     this.showInformation(genre);
