@@ -30,7 +30,7 @@ html, body{
 .pageContainer {
     display: grid;
     grid-template-columns: minmax(9rem, 15%) 1fr 1fr 1fr;
-    grid-template-rows: minmax(500px, 23%) 1fr 1fr;
+    grid-template-rows: minmax(500px, max-content) 1fr 1fr;
     gap: 0px 0px;
     grid-template-areas:
       "sidebarContainer timelineContainer timelineContainer timelineContainer"
@@ -48,20 +48,19 @@ html, body{
 
 .timelineContainer {
     grid-area: timelineContainer;
-    padding: 10px;
 }
 
 .statsContainer {
     grid-area: statsContainer;
-    padding: 3% 0 3% 0;
+    padding: 2% 0 2% 0;
 }
 
 .contentDiv{
   font-size: 1.2em;
-  min-height: 70vh;
-  overflow-y:auto; 
-  height: 100%;
-  background-color: #535353
+  min-height: 450px;
+  height: 80vh;
+  overflow-y: auto; 
+  background-color:#535353;
 }
 
 .contentDiv::-webkit-scrollbar {
@@ -74,7 +73,7 @@ html, body{
 
 .contentDiv::-webkit-scrollbar-thumb {
 background-color: darkgrey;
-outline: 1px solid slategrey;
+border-radius: 2px;
 }
 
 a{

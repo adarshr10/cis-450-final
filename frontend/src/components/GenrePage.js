@@ -1,20 +1,19 @@
 import React from 'react';
-import "../style/GenrePage.css"
-import { Row, Table } from 'react-bootstrap';
+
+import { Row, Table, Button, Col } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import Sidebar from "./Sidebar";
 import SongInformationDiv from './SongInformationDiv';
 import SongLyricDiv from './SongLyricDiv';
 import SongBillboardDiv from './SongBillboardDiv';
 import '../style/PageLayout.css'
-
+import "../style/GenrePage.css"
 
 export default class SongPage extends React.Component {
   
   constructor(props) {
     super(props);
     var d = new Date();
-
     this.state = {
       lyrics: [],
       songs: [],
@@ -112,10 +111,12 @@ export default class SongPage extends React.Component {
       genreOverview.length = length;
       const genreInfoDiv = 
             <SongInformationDiv 
+              isGenre={true}
               id={`${genreOverview.category}`} 
               length={genreOverview.length}
               popularity={parseFloat(genreOverview.popularity).toFixed(4)}
               energy={parseFloat(genreOverview.energy).toFixed(4)}
+              mode={"NaN"}
               acousticness={parseFloat(genreOverview.acousticness).toFixed(4)}
               danceability={parseFloat(genreOverview.danceability).toFixed(4)}
               instrumental={parseFloat(genreOverview.instrumental).toFixed(4)}
@@ -254,7 +255,7 @@ export default class SongPage extends React.Component {
             text: 'Month',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           },
         },
@@ -263,7 +264,7 @@ export default class SongPage extends React.Component {
             text: 'Appearances in Month',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           }
         }
@@ -287,6 +288,10 @@ export default class SongPage extends React.Component {
   };
 
   render() {  
+    const colStyle={
+      height: "80%"
+    }
+
     return (
       <div className="pageContainer">
         <Sidebar curPage="/genre" className="sidebarContainer"></Sidebar>
@@ -296,11 +301,12 @@ export default class SongPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{margin: 0}}>
-            <ContentCol title="Information" padding={true}>
+            <ContentCol title="Information" height={"65vh"} padding={true}>
+              <h4>Averages for {this.state.genre}</h4>
+              <hr style={{backgroundColor: "white"}}></hr>
               {this.state.info}
             </ContentCol>
-            <ContentCol title={"Popular Lyrics in "+(this.state.genre)}>
-
+            <ContentCol title={"Popular Lyrics in "+(this.state.genre)} height={"65vh"}>
               <div className="dropdown-container">
                 Lower Year: 
                 <select value={this.state.lowerLyric} onChange={this.handleLowerLyricChange} name="dropdown">
@@ -312,7 +318,7 @@ export default class SongPage extends React.Component {
                   <option value=" "> </option>
                   {this.state.yearsLyric}
                 </select>
-                <button className="submit-btn" onClick={this.showLyrics.bind(this, this.state.genre, this.state.lowerLyric, this.state.upperLyric)}>Submit</button>
+                <Button variant="outline-light" onClick={this.showLyrics.bind(this, this.state.genre, this.state.lowerLyric, this.state.upperLyric)}>Submit</Button>
               </div>
               <Table borderless responsive="sm">
                 <tbody>
@@ -325,19 +331,19 @@ export default class SongPage extends React.Component {
                 </tbody>
               </Table>
             </ContentCol>
-            <ContentCol title={`Popular ${this.state.genre} Songs`}>
+            <ContentCol title={`Popular ${this.state.genre} Songs`} height={"65vh"}>
               <div className="dropdown-container">
-                Lower Year: 
-                <select value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown">
+                <span className="mr-2">Lower Year:</span>
+                <select className="mr-4" value={this.state.lower} onChange={this.handleLowerAppChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsApp}
                 </select>
-                Upper Year: 
+                <span className="mr-2">Upper Year:</span>
                 <select value={this.state.upper} onChange={this.handleUpperAppChange} name="dropdown">
                   <option value=" "> </option>
                   {this.state.yearsApp}
                 </select>
-                <button className="submit-btn" onClick={this.showSongs.bind(this, this.state.genre, this.state.lowerApp, this.state.upperApp)}>Submit</button>
+                <Button variant="outline-light" onClick={this.showSongs.bind(this, this.state.genre, this.state.lowerApp, this.state.upperApp)}>Submit</Button>
               </div>
               
               <Table borderless responsive="sm">
@@ -350,20 +356,28 @@ export default class SongPage extends React.Component {
                 </tbody>
               </Table>
             </ContentCol>
-            
           </Row>
-          <Row>
-            <ContentCol title={`Popular ${this.state.genre} Artists`}>
-              <Table>
-                <tbody>
-                  <tr className='headerRow'>
-                    <th>Performer</th>
-                    <th>Weeks in Top 100</th>
-                  </tr>
-                  {this.state.popularArtists}
-                </tbody>
-              </Table>
-            </ContentCol>
+          <Row className="justify-content-md-center" style={{margin: 0}}>
+            <Col lg={6} md={8}>
+              <h3>{`Popular ${this.state.genre} Artists`}</h3>
+              <div className={"contentDiv"} style={{
+                fontSize: "1.2em",
+                minHeight: "450px",
+                height: "65vh",
+                overflowY: "auto", 
+                backgroundColor: "#535353"
+              }}>
+                <Table>
+                  <tbody>
+                    <tr className='headerRow'>
+                      <th>Performer</th>
+                      <th>Weeks in Top 100</th>
+                    </tr>
+                    {this.state.popularArtists}
+                  </tbody>
+                </Table>
+              </div>
+            </Col>
           </Row>
         </div>
       </div>

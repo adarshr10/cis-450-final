@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
 	BrowserRouter as Router,
 	Route,
@@ -21,27 +20,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SongRend(){
   let {songId} = useParams();
-  return <SongPage songId={songId} />
+  return <SongPage songId={songId == null ? null:decodeURIComponent(songId)} />
 }
 
 function LyricRend(){
   let {lyric} = useParams();
-  return <LyricPage lyric={lyric} />
+  return <LyricPage lyric={lyric == null ? null:decodeURIComponent(lyric)} />
 }
 function GenreRend(){
 	let {genre} = useParams();
-	return <GenrePage genre={genre} />
+	return <GenrePage genre={genre == null ? null: decodeURIComponent(genre)} />
   }
 
 function ArtRend(){
   let {artistName} = useParams();
-  return <ArtistPage artist={artistName} />
+  return <ArtistPage artist={artistName == null ? null:decodeURIComponent(artistName)} />
 }
 
 function SearchRend(){
   let {lim, gen, low, up, pos, key} = useParams();
 
-  return <SearchPage lim={lim} gen={gen} low={low} up={up} pos={pos} key={key}/>
+  return <SearchPage lim={lim} gen={gen} low={low} up={up} pos={pos} key={key==null ? null:decodeURIComponent(key)}/>
 }
 
 function App() {

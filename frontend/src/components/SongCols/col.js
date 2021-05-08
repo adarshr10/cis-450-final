@@ -9,10 +9,14 @@ function contentCol(props){
     marginBottom: "1em"
   }
 
+  const divStyles = {
+    height: props.height || "80vh",
+  }
+
   return (
     <Col style={colStyles}>
       <h3>{props.title}</h3>
-      <div className={`contentDiv ${props.padding ? "col-pad": ""}`}>
+      <div className={`${props.className || "contentDiv"} ${props.padding && "col-pad"}`} style={divStyles}>
         {'subtitle' in props && 
           <div>
             <h4>{props.subtitle}</h4>

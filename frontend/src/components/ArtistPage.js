@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Row, Table } from 'react-bootstrap';
+import { Row, Table, Col } from 'react-bootstrap';
 import ContentCol from "./SongCols/col"
 import '../style/PageLayout.css'
 import '../style/ArtistPage.css'
@@ -252,32 +252,24 @@ export default class ArtistPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{margin: 0}}>
-            <ContentCol title="Information">
-              <h4 className="mt-3 mx-3">{this.state.artist}</h4>
-              <hr className="mx-3"style={{backgroundColor: "white"}}></hr>
-              <div className='info-col m-3'>
-                <div id="genre-list" className="mb-2"><em>Genres:</em> {this.state.genres}</div>
-                <div className="mb-2"><em>Total Weeks in Top 100:</em> {this.state.top100Weeks} weeks</div>             
-                <div>
+            <Col>
+              <h3>Information</h3>
+              <div id="artInfoContainer">
+                <div class="artInfo mb-4 p-3">
+                  <h4>{this.state.artist}</h4>
+                  <hr style={{backgroundColor: "white"}}></hr>
+                  <div id="genre-list" className="mb-2"><em>Genres:</em> {this.state.genres}</div>
+                  <div><em>Total Weeks in Top 100:</em> {this.state.top100Weeks} weeks</div>
+                </div>
+                    
+                <div className='similarArt p-3'>
                   <em>Similar Artists:</em>
-                  <ul id="similarArtDiv">
+                  <ul>
                     {this.state.similarArtists}
                   </ul>
                 </div>
               </div>
-          </ContentCol>
-            <ContentCol title="Top Songs">
-              <Table borderless responsive="sm">
-                <tbody>
-                  <tr className='headerRow'>
-                    <th>Song</th>
-                    <th>Peak Position</th>
-                    <th>Weeks on Chart</th>
-                  </tr>
-                  {this.state.topSongs}
-                </tbody>
-              </Table>
-            </ContentCol>
+            </Col>
             <ContentCol title="Top Lyrics">
               <Table borderless responsive="sm">
                 <tbody>
@@ -287,6 +279,18 @@ export default class ArtistPage extends React.Component {
                     <th>Popularity</th>
                   </tr>
                   {this.state.topLyrics}
+                </tbody>
+              </Table>
+            </ContentCol>
+            <ContentCol title="Top Songs">
+              <Table borderless responsive="sm">
+                <tbody>
+                  <tr className='headerRow'>
+                    <th>Song</th>
+                    <th>Peak Position</th>
+                    <th>Weeks on Chart</th>
+                  </tr>
+                  {this.state.topSongs}
                 </tbody>
               </Table>
             </ContentCol>

@@ -1,39 +1,86 @@
-.title {
-  text-align: center;
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #121212;
 }
 
-.contentDiv{
-  font-size: 1.2em;
-  min-height: 70vh;
-  overflow-y:auto; 
+#spinner-div{
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(237, 242, 240, .7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+}
+
+#spinner-obj{
+  height: 150px;
+  width: 150px;
+}
+
+.App{
+  z-index: 1;
+}
+
+.homeStatsContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.info-div{
+  margin-bottom: 1.5rem;
+}
+
+.info-title{
+  margin-left: 15px;
+}
+
+.dropdown-container {
+  padding: 1% 15px 1% 15px;
+}
+
+.info-row{
+  font-size: 18px;
   height: 100%;
   background-color: #535353
 }
 
-.contentDiv::-webkit-scrollbar {
-  width: 0.3em;
+.homeColScroll::-webkit-scrollbar {
+  width: 0.4em;
 }
 
-.contentDiv::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 0.3em rgba(0,0,0,0.3);
+.homeColScroll::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 0.4em rgba(0,0,0,0.3);
 }
 
-.contentDiv::-webkit-scrollbar-thumb {
-background-color: darkgrey;
-outline: 1px solid slategrey;
+.homeColScroll::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: darkgrey;
 }
 
-  .dropdown-container {
-    grid-area: dropdownContainer;
-    /* border: white 2px solid; */
-    /* background-color: #535353; */
-    padding: 1% 1% 1% 1%;
+a{
+  color: white !important;
+}
+
+a:hover{
+  color:#1db954 !important;
+  text-decoration: none !important;
+}
+
+.title {
+  text-align: center;
 }
 
 .homePageContainer {
   display: grid;
   grid-template-columns: minmax(9rem, 15%) 1fr 1fr 1fr;
-  grid-template-rows: 450px 1fr 1fr;
+  grid-template-rows: minmax(420px, max-content) 1fr 1fr;
   gap: 0px 0px;
   grid-template-areas:
     "sidebarContainer homeTimelineContainer homeTimelineContainer homeTimelineContainer"
@@ -59,3 +106,4 @@ outline: 1px solid slategrey;
   grid-area: statsContainer;
   padding: 3% 0 3% 0;
 }
+

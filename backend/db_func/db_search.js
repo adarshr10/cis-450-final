@@ -1,5 +1,27 @@
-const {connection, conn2} = require('../config')
+const getConnection = require('../config')
+let baseConnection = null;
+getConnection(function(err, conn){
+  if(err) return null;
+  baseConnection = conn;
+})
 
+let conn1 = null; conn2 = null; conn3=null; conn4=null;
+getConnection(function(err, conn){
+  if(err) return null;
+  conn1 = conn;
+})
+getConnection(function(err, conn){
+  if(err) return null;
+  conn2 = conn;
+})
+getConnection(function(err, conn){
+  if(err) return null;
+  conn3 = conn;
+})
+getConnection(function(err, conn){
+  if(err) return null;
+  conn4 = conn;
+})
 //STEPS TO OPTIMIZE
 //performertitle song_id (p_song_id)
 
@@ -19,13 +41,12 @@ const getGenres = (req, res) => {
   FROM timeRangeCompiled
   ORDER BY category;
   `;
-
-  connection.query(query, (err, rows, fields) => {
+  conn4.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
     }
-  });
+  }); 
 };
 
 // 0: TOP WORDS BY GENRE
@@ -58,12 +79,12 @@ const topWordsByGenre = (req, res) => {
   LIMIT ${limit};
   `;
 
-  conn2.query(query, (err, rows, fields) => {
+  conn1.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
     }
-  });
+  }); 
 };
 
 // Top {limit} used lyrics in top {num} songs in the time range {lower} to {upper}
@@ -121,7 +142,7 @@ const topWordsByRankAndTime = (req, res) => {
     else {
       res.json(rows);
     }
-  });
+  }); 
 };
 
 // What portion of Top 100 songs dominated by a specific genre?
@@ -184,12 +205,12 @@ const topGenresByRankAndTime = (req, res) => {
   `;
 
   console.log(query);
-  conn2.query(query, (err, rows, fields) => {
+  conn3.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
     }
-  });
+  }); 
 };
 
 // Highest chart position of each genre in a certain time range?
@@ -231,12 +252,12 @@ const topPosOfGenre = (req, res) => {
     LIMIT ${limit}
   `;
 
-  conn2.query(query, (err, rows, fields) => {
+  conn4.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);
     }
-  });
+  }); 
 };
 
 
@@ -332,7 +353,7 @@ const searchEverything = (req, res) => {
   LIMIT ${limit};
   `;
   console.log(query);
-  connection.query(query, (err, rows, fields) => {
+  baseConnection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
       res.json(rows);

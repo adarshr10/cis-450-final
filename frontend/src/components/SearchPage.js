@@ -2,7 +2,7 @@ import React from 'react';
 import '../style/SearchPage.css';
 import '../style/PageLayout.css'
 import Sidebar from './Sidebar';
-import ContentCol from "./SearchPage/searchCol"
+import ContentCol from "./SongCols/col"
 import { Row, Table, Form, Button, Col} from 'react-bootstrap';
 import SearchDiv from './SearchPage/SearchDiv';
 import {withRouter} from 'react-router-dom'

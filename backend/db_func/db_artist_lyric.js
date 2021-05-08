@@ -1,5 +1,9 @@
-const {connection} = require('../config')
-
+const getConnection = require('../config')
+let connection = null;
+getConnection((err, conn) => {
+  if(err) return null;
+  connection = conn;
+})
 
 // methods for artist and lyrics
 // ----------------------------- ARTIST METHODS --------------------------
@@ -34,7 +38,7 @@ const artistTotalTop100 = (req, res) =>{
   const query = `
   SELECT COUNT(DISTINCT b.week) as count
   FROM BillboardAppearance b JOIN PerformerTitle p 
-  ON p.performer LIKE '%${artist}%' AND p.song_id=b.song_id;
+  ON p.performer = '${artist}' AND p.song_id=b.song_id;
   `
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);

@@ -1,28 +1,30 @@
 import React from 'react'
-import {Col} from 'react-bootstrap'
+import {Col, Table} from 'react-bootstrap'
 
-function contentCol(props){
+function ContentCol(props){
   const colStyles = {
-    color: "white",
-    display: "flex",
-    flexDirection: "column",
-    marginBottom: "0em"
+    overflowY: "auto",
+    overflowX: "hidden",
+    height: "350px",
+    border: "1px solid #b3b3b3"
   }
 
   return (
-    <Col style={colStyles}>
-      <h3>{props.title}</h3>
-      <div className={`contentDiv ${props.padding ? "col-pad": ""}`}>
-        {'subtitle' in props && 
-          <div>
-            <h4>{props.subtitle}</h4>
-            <hr style={{backgroundColor: "white"}}></hr>
-          </div>
-        }
-        {props.children}
+    <Col sm={6} lg={3} style={{marginBottom: "1.25rem"}}>
+      <div style={colStyles} className="homeColScroll">
+      <Table borderless responsive="sm">
+        <tbody>
+          <tr className='headerRow'>
+            <th>#</th>
+            <th>{props.name}</th>
+            <th>%</th>
+          </tr>
+          {props.children}
+        </tbody>
+      </Table>
       </div>
     </Col>
   );
 }
 
-export default contentCol;
+export default ContentCol;

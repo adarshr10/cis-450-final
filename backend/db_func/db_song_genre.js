@@ -1,4 +1,9 @@
-const {connection} = require('../config')
+const getConnection = require('../config')
+let connection = null;
+getConnection((err, conn) => {
+  if(err) return null;
+  connection = conn;
+})
 
 /**
  * 
@@ -217,12 +222,13 @@ const genrePopularArtists = (req, res) => {
   var query = `
   WITH artists_in_genre AS (
     SELECT p.song_id, p.performer FROM Genre g JOIN PerformerTitle p ON g.song_id = p.song_id
-    WHERE g.category = 'rap' 
+    WHERE g.category = '${genre}' 
       AND LOWER(performer) NOT LIKE '%featuring%' 
       AND LOWER(performer) NOT LIKE '%Feat.'
   ),
   arist_counts AS (
-    SELECT ag.performer AS performer, count(ag.performer) AS weeks_in_top FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
+    SELECT ag.performer AS performer, COUNT(DISTINCT b.week) AS weeks_in_top 
+    FROM artists_in_genre ag JOIN BillboardAppearance b ON ag.song_id = b.song_id
     GROUP BY (ag.performer)
   )
   SELECT * FROM arist_counts ORDER BY weeks_in_top DESC;

@@ -136,15 +136,16 @@ export default class LyricPage extends React.Component {
       console.error(err);
     }).then(billboardData => {
       if (!billboardData) return;
-      let weeks = [];
-      let counts = [];
+      let weeks = [], counts = [], urls=[];
       billboardData.forEach((obj, i) => {
         weeks.push(obj.week);
         counts.push(obj.song_count);
+        urls.push(obj.url)
       });
       let plotData = [{
         x: weeks,
         y: counts,
+        customdata: urls,
         type: "bar",
         line: {
           color: '#7F7F7F'
@@ -165,7 +166,7 @@ export default class LyricPage extends React.Component {
             text: 'Time Period on the Billboard Top 100',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           },
         },
@@ -174,7 +175,7 @@ export default class LyricPage extends React.Component {
             text: 'Number of Songs',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           }
         }
@@ -184,6 +185,12 @@ export default class LyricPage extends React.Component {
         data={plotData}
         id={lyric}
         layout={configuration}
+        onClick={function(data){
+          if(data.points.length === 1){
+              window.open(data.points[0].customdata, "_blank", "");
+            }
+          }
+        }
       />
       this.setState({
         billboard: billboardDiv
