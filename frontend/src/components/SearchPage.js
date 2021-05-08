@@ -196,7 +196,7 @@ class SearchPage extends React.Component {
                 <Col>
                   <Form.Group controlId="searchKeyword">
                     <Form.Label>Keywords</Form.Label>
-                    <Form.Control type="text" placeholder="Artist/Album Keywords" value={this.state.keyword} onChange={this.handleKeywordChanged}></Form.Control>
+                    <Form.Control type="text" placeholder="Artist/Album/Lyric/Title Keywords" value={this.state.keyword} onChange={this.handleKeywordChanged}></Form.Control>
                   </Form.Group>
                 </Col>
               </Row>
