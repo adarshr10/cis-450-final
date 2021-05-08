@@ -31,7 +31,7 @@ export default class SongPage extends React.Component {
     this.showBillboard = this.showBillboard.bind(this);
   };
   componentWillUnmount() {
-    this.state.sound.stop();
+    if(this.state.sound) this.state.sound.stop();
   }
 
   componentDidMount() {
@@ -42,6 +42,7 @@ export default class SongPage extends React.Component {
     if (!songId) {
       songId = '...baby one more timebritney spears';
     } 
+    console.log(songId)
     this.setState({songId: songId})
     this.showInformation(songId);
     this.showLyrics(songId);
@@ -52,7 +53,7 @@ export default class SongPage extends React.Component {
   showInformation(id) {
     var songOverview = ""
     var genres = "";
-    fetch(`http://localhost:8080/songOverview/${id}`, {
+    fetch(`http://localhost:8080/songOverview/${encodeURIComponent(id)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -88,7 +89,7 @@ export default class SongPage extends React.Component {
       });
 
 
-      fetch(`http://localhost:8080/songGenres/${id}`, {
+      fetch(`http://localhost:8080/songGenres/${encodeURIComponent(id)}`, {
         method: 'GET' // The type of HTTP request.
       }).then(res => {
         // Convert the response data to a JSON.
@@ -133,7 +134,7 @@ export default class SongPage extends React.Component {
   };
 
   showLyrics(id) {
-    fetch(`http://localhost:8080/songLyrics/${id}`, {
+    fetch(`http://localhost:8080/songLyrics/${encodeURIComponent(id)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -168,7 +169,7 @@ export default class SongPage extends React.Component {
   };
 
   showSongs(id) {
-    fetch(`http://localhost:8080/songSimilar/${id}`, {
+    fetch(`http://localhost:8080/songSimilar/${encodeURIComponent(id)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.
@@ -194,7 +195,7 @@ export default class SongPage extends React.Component {
   };
 
   showBillboard(id) {
-    fetch(`http://localhost:8080/songBillboard/${id}`, {
+    fetch(`http://localhost:8080/songBillboard/${encodeURIComponent(id)}`, {
       method: 'GET' // The type of HTTP request.
     }).then(res => {
       // Convert the response data to a JSON.

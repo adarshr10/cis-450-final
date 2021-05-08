@@ -289,8 +289,8 @@ export default class HomePage extends React.Component {
         this.setState({
           custom_3: dataInfo
         });
+        this.hideLoader()
       });
-      this.hideLoader()
     };
 
   render() {
@@ -342,6 +342,70 @@ export default class HomePage extends React.Component {
 
         <div className="statsContainer">
           <div className="homeStatsContainer">
+            <div className="info-div">
+              <h3 className="info-title">Top Genres By Decade</h3>
+              <div className="info-row">
+                <div className="dropdown-container">
+                  <span className="mr-3">Lower Decade:</span>
+                  <Form.Control as="select" value={this.state.low_2} onChange={this.handleLowChange_2} style={styles.selectForm} custom>
+                      <option key={0} value=""> </option>
+                      {this.state.decades_1}
+                  </Form.Control>
+                  <span className="mx-3">Upper Decade:</span>
+                  <Form.Control as="select" value={this.state.up_2} onChange={this.handleUpChange_2} style={styles.selectForm} custom>
+                      <option key={0} value=""> </option>
+                      {this.state.decades_1}
+                  </Form.Control>
+                  <Button variant="outline-light" onClick={this.show_2}>Submit</Button>
+                </div>
+                <Row style={styles.row}>
+                  <ContentCol name="Custom">
+                    {this.state.custom_2}
+                  </ContentCol>
+                  <ContentCol name="1950-1970">
+                    {this.state.dec0_2}
+                  </ContentCol>
+                  <ContentCol name="1970-1990">
+                    {this.state.dec1_2}
+                  </ContentCol>
+                  <ContentCol name="1990-2010">
+                    {this.state.dec2_2}
+                  </ContentCol>
+                </Row>
+              </div>
+            </div>
+            <div className="info-div">
+              <h3 className="info-title">Top Ranks of Genres By Decade</h3>
+              <div className="info-row">
+                <div className="dropdown-container">
+                  <span className="mr-3">Lower Decade:</span>
+                  <Form.Control as="select" value={this.state.low_3} onChange={this.handleLowChange_3} style={styles.selectForm} custom>
+                      <option key={0} value=""> </option>
+                      {this.state.decades_1}
+                  </Form.Control>
+                  <span className="mx-3">Upper Decade:</span>
+                  <Form.Control as="select" value={this.state.up_3} onChange={this.handleUpChange_3} style={styles.selectForm} custom>
+                      <option key={0} value=""> </option>
+                      {this.state.decades_1}
+                  </Form.Control>
+                  <Button variant="outline-light" onClick={this.show_3}>Submit</Button>
+                </div>
+                <Row style={styles.row}>
+                  <ContentCol name="Custom">
+                    {this.state.custom_3}
+                  </ContentCol>
+                  <ContentCol name="1950-1970">
+                    {this.state.dec0_3}
+                  </ContentCol>
+                  <ContentCol name="1970-1990">
+                    {this.state.dec1_3}
+                  </ContentCol>
+                  <ContentCol name="1990-2010">
+                    {this.state.dec2_3}
+                  </ContentCol>
+                </Row>
+              </div>
+            </div>
             <div className="info-div">
               <h3 className="info-title">Top Lyrics By Genre</h3>
               <div className="info-row">
@@ -397,70 +461,6 @@ export default class HomePage extends React.Component {
                   </ContentCol>
                   <ContentCol name="1990-2010">
                     {this.state.dec2_1}
-                  </ContentCol>
-                </Row>
-              </div>
-            </div>
-            <div className="info-div">
-              <h3 className="info-title">Top Genres By Decade</h3>
-              <div className="info-row">
-                <div className="dropdown-container">
-                  <span className="mr-3">Lower Decade:</span>
-                  <Form.Control as="select" value={this.state.low_2} onChange={this.handleLowChange_2} style={styles.selectForm} custom>
-                      <option key={0} value=""> </option>
-                      {this.state.decades_1}
-                  </Form.Control>
-                  <span className="mx-3">Upper Decade:</span>
-                  <Form.Control as="select" value={this.state.up_2} onChange={this.handleUpChange_2} style={styles.selectForm} custom>
-                      <option key={0} value=""> </option>
-                      {this.state.decades_1}
-                  </Form.Control>
-                  <Button variant="outline-light" onClick={this.show_2}>Submit</Button>
-                </div>
-                <Row style={styles.row}>
-                  <ContentCol name="Custom">
-                    {this.state.custom_2}
-                  </ContentCol>
-                  <ContentCol name="1950-1970">
-                    {this.state.dec0_2}
-                  </ContentCol>
-                  <ContentCol name="1970-1990">
-                    {this.state.dec1_2}
-                  </ContentCol>
-                  <ContentCol name="1990-2010">
-                    {this.state.dec2_2}
-                  </ContentCol>
-                </Row>
-              </div>
-            </div>
-            <div className="info-div">
-              <h3 className="info-title">Top Ranks of Genres By Decade</h3>
-              <div className="info-row">
-                <div className="dropdown-container">
-                  <span className="mr-3">Lower Decade:</span>
-                  <Form.Control as="select" value={this.state.up_3} onChange={this.handleUpChange_3} style={styles.selectForm} custom>
-                      <option key={0} value=""> </option>
-                      {this.state.decades_1}
-                  </Form.Control>
-                  <span className="mx-3">Upper Decade:</span>
-                  <Form.Control as="select" value={this.state.up_3} onChange={this.handleUpChange_3} style={styles.selectForm} custom>
-                      <option key={0} value=""> </option>
-                      {this.state.decades_1}
-                  </Form.Control>
-                  <Button variant="outline-light" onClick={this.show_3}>Submit</Button>
-                </div>
-                <Row style={styles.row}>
-                  <ContentCol name="Custom">
-                    {this.state.custom_3}
-                  </ContentCol>
-                  <ContentCol name="1950-1970">
-                    {this.state.dec0_3}
-                  </ContentCol>
-                  <ContentCol name="1970-1990">
-                    {this.state.dec1_3}
-                  </ContentCol>
-                  <ContentCol name="1990-2010">
-                    {this.state.dec2_3}
                   </ContentCol>
                 </Row>
               </div>

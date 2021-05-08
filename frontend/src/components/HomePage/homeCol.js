@@ -4,7 +4,7 @@ import {Col, Table} from 'react-bootstrap'
 function ContentCol(props){
   const colStyles = {
     overflowY: "auto",
-    overflowX: "hidden",
+    overflowX: "auto",
     height: "350px",
     border: "1px solid #b3b3b3"
   }

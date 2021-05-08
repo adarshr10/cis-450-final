@@ -288,10 +288,6 @@ export default class SongPage extends React.Component {
   };
 
   render() {  
-    const colStyle={
-      height: "80%"
-    }
-
     return (
       <div className="pageContainer">
         <Sidebar curPage="/genre" className="sidebarContainer"></Sidebar>

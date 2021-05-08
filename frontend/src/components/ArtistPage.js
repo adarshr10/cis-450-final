@@ -46,7 +46,7 @@ export default class ArtistPage extends React.Component {
   };
 
   getGenres(artist){
-    fetch(`http://localhost:8080/artist/artistGenres/${artist}`, {
+    fetch(`http://localhost:8080/artist/artistGenres/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
@@ -66,7 +66,7 @@ export default class ArtistPage extends React.Component {
   }
 
   getTopLyrics(artist){
-    fetch(`http://localhost:8080/artist/topLyrics/${artist}`, {
+    fetch(`http://localhost:8080/artist/topLyrics/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
@@ -94,7 +94,7 @@ export default class ArtistPage extends React.Component {
   }
 
   getTop100Weeks(artist){
-    fetch(`http://localhost:8080/artist/top100Weeks/${artist}`, {
+    fetch(`http://localhost:8080/artist/top100Weeks/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
@@ -109,7 +109,7 @@ export default class ArtistPage extends React.Component {
   }
 
   getTopSongs(artist){
-    fetch(`http://localhost:8080/artist/topSongs/${artist}`, {
+    fetch(`http://localhost:8080/artist/topSongs/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
@@ -121,7 +121,7 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => 
         <tr key={i}>
-          <td className="topSong title"><a href={"/song/"+obj.title.toLowerCase()+this.state.artist.toLowerCase()}>{obj.title}</a></td>
+          <td className="topSong title"><a href={"/song/"+encodeURIComponent(obj.title.toLowerCase()+this.state.artist.toLowerCase())}>{obj.title}</a></td>
           <td className="topSong">{obj.peak === 999999 ? "N/A":obj.peak}</td>
           <td className="topSong">{obj.weeks === -1 ? "N/A":obj.weeks}</td>
         </tr>
@@ -131,7 +131,7 @@ export default class ArtistPage extends React.Component {
   }
 
   getSimilarArtists(artist){
-    fetch(`http://localhost:8080/artist/similarArtists/${artist}`, {
+    fetch(`http://localhost:8080/artist/similarArtists/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
@@ -143,7 +143,7 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => {
         return (
-				  <li key={i} className="mb-2"><a href={'/artist/' + obj.artist}>{obj.artist}</a></li>
+				  <li key={i} className="mb-2"><a href={'/artist/' + encodeURIComponent(obj.artist)}>{obj.artist}</a></li>
         )
       })
       this.setState({similarArtists: divs})
@@ -151,7 +151,7 @@ export default class ArtistPage extends React.Component {
   }
 
   getBillboard(artist){
-    fetch(`http://localhost:8080/artist/billboardPerformance/${artist}`, {
+    fetch(`http://localhost:8080/artist/billboardPerformance/${encodeURIComponent(artist)}`, {
       method: "GET"
     }).then(res => {
       // Convert the response data to a JSON.
