@@ -16,7 +16,7 @@ function contentCol(props){
   return (
     <Col style={colStyles}>
       <h3>{props.title}</h3>
-      <div className={`${props.className || "contentDiv"} ${props.padding && "col-pad"}`} style={divStyles}>
+      <div className={`${props.className || "contentDiv"} ${props.padding ? "col-pad":""}`} style={divStyles}>
         {'subtitle' in props && 
           <div>
             <h4>{props.subtitle}</h4>

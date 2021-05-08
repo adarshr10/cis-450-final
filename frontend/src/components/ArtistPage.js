@@ -255,7 +255,7 @@ export default class ArtistPage extends React.Component {
             <Col style={{marginBottom: "1em"}}>
               <h3>Information</h3>
               <div id="artInfoContainer">
-                <div class="artInfo mb-4 p-3">
+                <div className="artInfo mb-4 p-3">
                   <h4>{this.state.artist}</h4>
                   <hr style={{backgroundColor: "white"}}></hr>
                   <div id="genre-list" className="mb-2"><em>Genres:</em> {this.state.genres}</div>
