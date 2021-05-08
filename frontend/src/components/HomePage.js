@@ -4,7 +4,8 @@ import TopWordsByRankAndTimeDiv from './HomePage/TopWordsByRankAndTimeDiv';
 import TopGenresByRankAndTimeDiv from './HomePage/TopGenresByRankAndTimeDiv';
 import TopPosOfGenreDiv from './HomePage/TopPosOfGenreDiv';
 import Sidebar from './Sidebar';
-import ContentCol from "./HomePage/homeCol"
+import ContentCol from "./HomePage/homeColPercent"
+import ContentColPeak from "./HomePage/homeColPeak"
 import {Row, Form, Button} from 'react-bootstrap';
 import '../style/HomePage.css'
 
@@ -391,18 +392,18 @@ export default class HomePage extends React.Component {
                   <Button variant="outline-light" onClick={this.show_3}>Submit</Button>
                 </div>
                 <Row style={styles.row}>
-                  <ContentCol name="Custom">
+                  <ContentColPeak name="Custom">
                     {this.state.custom_3}
-                  </ContentCol>
-                  <ContentCol name="1950-1970">
+                  </ContentColPeak>
+                  <ContentColPeak name="1950-1970">
                     {this.state.dec0_3}
-                  </ContentCol>
-                  <ContentCol name="1970-1990">
+                  </ContentColPeak>
+                  <ContentColPeak name="1970-1990">
                     {this.state.dec1_3}
-                  </ContentCol>
-                  <ContentCol name="1990-2010">
+                  </ContentColPeak>
+                  <ContentColPeak name="1990-2010">
                     {this.state.dec2_3}
-                  </ContentCol>
+                  </ContentColPeak>
                 </Row>
               </div>
             </div>

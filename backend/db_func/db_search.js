@@ -234,7 +234,7 @@ const topGenresByRankAndTime = (req, res) => {
 //test query: 2010, 2020, 50
 //time from 2.83 to 1.44 sec
 const topPosOfGenre = (req, res) => {
-  const limit = 100;
+  // const limit = 1000;
   const lower = parseInt(req.params.low) || -1;
   const upper = parseInt(req.params.up) || -1;
 
@@ -244,9 +244,9 @@ const topPosOfGenre = (req, res) => {
     SELECT g.category, MIN(r.position) as high 
     FROM Genre g JOIN ranges r ON g.song_id=r.song_id
     GROUP BY g.category
-    ORDER BY COUNT(*) DESC, high ASC
-    LIMIT ${limit};  
+    ORDER BY high ASC, COUNT(*) DESC
   `
+  // LIMIT ${limit};  
   conn4.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
     else {
