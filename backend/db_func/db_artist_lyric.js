@@ -163,7 +163,7 @@ const lyricTopArtist = (req, res, limit) => {
 const lyricTopSongs = (req, res, limit) => {
   const lyric = req.params.lyric.toLowerCase().replace("'", "\\'");
   const query = `
-  SELECT p.performer, p.title, h.count 
+  SELECT p.song_id, p.performer, p.title, h.count 
   FROM PerformerTitle p JOIN HasLyric h on LOWER(h.word)='${lyric}' AND p.song_id=h.song_id
   ORDER BY h.count DESC LIMIT ${limit};
   `

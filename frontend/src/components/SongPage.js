@@ -30,6 +30,9 @@ export default class SongPage extends React.Component {
     this.showInformation = this.showInformation.bind(this);
     this.showBillboard = this.showBillboard.bind(this);
   };
+  componentWillUnmount() {
+    this.state.sound.stop();
+  }
 
   componentDidMount() {
     // var songId = "";
