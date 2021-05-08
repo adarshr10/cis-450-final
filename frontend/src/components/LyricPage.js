@@ -33,7 +33,7 @@ export default class LyricPage extends React.Component {
     if (!lyric) {
       lyric = 'love';
     } 
-    lyric = stemmer(lyric);
+    // lyric = stemmer(lyric);
     this.setState({lyric: lyric})
     // this.showInformation(lyric);
     this.showTopArtists(lyric);

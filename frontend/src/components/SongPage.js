@@ -40,7 +40,7 @@ export default class SongPage extends React.Component {
     // var id = url.substring(url.lastIndexOf("/")+1)
     let songId = this.state.songId;
     if (!songId) {
-      songId = '...baby one more timebritney spears';
+      songId = 'no onealicia keys';
     } 
     console.log(songId)
     this.setState({songId: songId})
@@ -108,6 +108,7 @@ export default class SongPage extends React.Component {
               key={songOverview.key}
               id={`${songOverview.id}`} 
               album={songOverview.album}
+              artist={songOverview.performer}
               explicit={songOverview.explicit}
               length={songOverview.length}
               popularity={songOverview.popularity}
