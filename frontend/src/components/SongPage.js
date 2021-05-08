@@ -237,7 +237,7 @@ export default class SongPage extends React.Component {
             text: 'Time Period on the Billboard Top 100',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           },
         },
@@ -246,7 +246,7 @@ export default class SongPage extends React.Component {
             text: 'Ranking',
             font: {
               size: 18,
-              color: '#7f7f7f'
+              color: 'white'
             }
           },
           autorange: 'reversed'
