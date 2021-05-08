@@ -252,7 +252,7 @@ export default class ArtistPage extends React.Component {
         </div>
         <div className="statsContainer">
           <Row style={{margin: 0}}>
-            <Col>
+            <Col style={{marginBottom: "1em"}}>
               <h3>Information</h3>
               <div id="artInfoContainer">
                 <div class="artInfo mb-4 p-3">

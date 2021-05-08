@@ -14,10 +14,11 @@ getConnection((err, conn) => {
 // - earliest/latest songs
 
 // number of songs and peak position on billboard for each week 
+// for taylor swift, use of distinct and subqueries: 1.12 -> 0.06 sec
 const billboardPerformance = (req, res) => {
   const artist = req.params.artistName.toLowerCase().replace("'", "\\'");
   const query = `
-  WITH songs AS (SELECT song_id FROM PerformerTitle WHERE LOWER(performer)='${artist}'),
+  WITH songs AS (SELECT DISTINCT song_id FROM PerformerTitle WHERE LOWER(performer)='${artist}'),
   billboard AS (SELECT b.week, b.position, b.url 
     FROM BillboardAppearance b JOIN songs s ON b.song_id=s.song_id)
   SELECT b.week, b.url, MIN(IF(b.position = 0, 999999, b.position)) as peak, COUNT(b.week) as count
@@ -48,15 +49,17 @@ const artistTotalTop100 = (req, res) =>{
   });
 }
 
+
+// distinct, subquery with taylor: 1.57 sec to 0.81sec
 const topLyrics = (req, res, limit) => {
   const artist = req.params.artistName.toLowerCase().replace("'", "\\'");
   const query = `
-  WITH songs AS (SELECT song_id FROM PerformerTitle WHERE LOWER(performer)='${artist}')
+  WITH songs AS (SELECT DISTINCT song_id FROM PerformerTitle WHERE LOWER(performer)='${artist}'),
+    hasLyrics AS (SELECT word, count FROM HasLyric WHERE song_id IN (SELECT * from songs))
   SELECT h.word, SUM(h.count) as count, l.popularity as popularity
-  FROM songs s JOIN HasLyric h ON s.song_id=h.song_id 
-  JOIN Lyric l ON l.word=h.word
+  FROM hasLyrics h JOIN Lyric l ON l.word=h.word
   GROUP BY h.word
-  ORDER BY count DESC LIMIT ${limit};
+  ORDER BY count DESC LIMIT 50;
   `
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
@@ -118,7 +121,7 @@ const topSongs = (req, res, limit) => {
     WHERE LOWER(p.performer) = '${artist}'
     GROUP BY p.title
     ORDER BY peak ASC, weeks DESC
-    LIMIT ${limit};
+    LIMIT 50;
   `
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);
