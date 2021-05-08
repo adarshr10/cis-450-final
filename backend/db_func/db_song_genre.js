@@ -88,31 +88,31 @@ const songSimilarSongs = (req, res) => {
       if (numberOfResponses) {
         query = `
           WITH song_genres AS (
-            SELECT s.id, g.category FROM Song s JOIN Genre g ON s.id = g.song_id WHERE s.id = '${songId}'
+            SELECT g.song_id, g.category, g.genre_id FROM Genre g WHERE g.song_id = '${songId}'
           ), genre_matches AS (
-            SELECT g.song_id, count(g.song_id) FROM song_genres sg JOIN Genre g ON sg.category = g.category 
-            WHERE g.song_id != sg.id
-            GROUP BY g.song_id HAVING count(g.song_id) > 0
+            SELECT g.song_id, count(g.song_id) AS count FROM song_genres sg JOIN Genre g ON sg.genre_id = g.genre_id 
+            WHERE g.song_id != sg.song_id
+            GROUP BY g.song_id
           ), top_lyrics AS (
-            SELECT s.id, h.word FROM Song s JOIN HasLyric h ON s.id = h.song_id WHERE s.id = '${songId}'
+            SELECT h.song_id, h.word FROM HasLyric h WHERE h.song_id = '${songId}'
             ORDER BY h.count DESC LIMIT 20
           ), similar_songs AS (
-            SELECT gm.song_id, h.word, h.count FROM genre_matches gm JOIN HasLyric h ON  gm.song_id = h.song_id JOIN top_lyrics tl ON h.word = tl.word
-            WHERE gm.song_id != tl.id
+            SELECT gm.song_id, count(gm.song_id) AS count, gm.count AS gCount FROM genre_matches gm JOIN HasLyric h ON gm.song_id = h.song_id JOIN top_lyrics tl ON h.word = tl.word
+            WHERE gm.song_id != tl.song_id
             GROUP BY gm.song_id HAVING count(gm.song_id) > 5
           )
-          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id;
+          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id ORDER BY s.gCount DESC, s.count DESC;
         `;
       } else {
         query = `
           WITH song_genres AS (
-            SELECT s.id, g.category FROM Song s JOIN Genre g ON s.id = g.song_id WHERE s.id = '${songId}'
+            SELECT g.song_id, g.category, g.genre_id FROM Genre g WHERE g.song_id = '${songId}'
           ), similar_songs AS (
-            SELECT g.song_id, count(g.song_id) FROM song_genres sg JOIN Genre g ON sg.category = g.category 
-            WHERE g.song_id != sg.id
+            SELECT g.song_id, count(g.song_id) AS count FROM song_genres sg JOIN Genre g ON sg.genre_id = g.genre_id 
+            WHERE g.song_id != sg.song_id
             GROUP BY g.song_id HAVING count(g.song_id) > 1
           )
-          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id;
+          SELECT s.song_id, p.title, p.performer FROM similar_songs s JOIN PerformerTitle p ON s.song_id = p.song_id ORDER BY s.count DESC;
         `;
       }
       connection.query(query, (err, rows, fields) => {
