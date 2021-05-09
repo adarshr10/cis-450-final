@@ -20,21 +20,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SongRend(){
   let {songId} = useParams();
-  return <SongPage songId={songId == null ? null:decodeURIComponent(songId)} />
+  const propInp = songId == null ? null:decodeURIComponent(songId);
+  return <SongPage songId={propInp} key={propInp} />
 }
 
 function LyricRend(){
   let {lyric} = useParams();
-  return <LyricPage lyric={lyric == null ? null:decodeURIComponent(lyric)} />
+  const propInp = lyric == null ? null:decodeURIComponent(lyric);
+  return <LyricPage lyric={propInp} key={propInp} />
 }
 function GenreRend(){
 	let {genre} = useParams();
-	return <GenrePage genre={genre == null ? null: decodeURIComponent(genre)} />
+  const propInp = genre == null ? null:decodeURIComponent(genre);
+	return <GenrePage genre={propInp} key={propInp} />
   }
 
 function ArtRend(){
   let {artistName} = useParams();
-  return <ArtistPage artist={artistName == null ? null:decodeURIComponent(artistName)} />
+  const propInp = artistName == null ? null:decodeURIComponent(artistName);
+  return <ArtistPage artist={propInp} key={propInp} />
 }
 
 function SearchRend(){
@@ -55,18 +59,18 @@ function App() {
 							path="/"
 							component={HomePage}
 						/>
-            <Route exact path="/song"><SongPage songId={null} /> </Route>
+            {/* <Route exact path="/song"><SongPage songId={null} /> </Route> */}
 						<Route path="/song/:songId?" component={SongRend} />
 
 						<Route path="/search/:lim?/:gen?/:low?/:up?/:pos?/:key?" component={SearchRend} />
 
-            <Route exact path="/lyric"><LyricPage lyric={null} /> </Route>
+            {/* <Route exact path="/lyric"><LyricPage lyric={null} /> </Route> */}
 						<Route path="/lyric/:lyric?" component={LyricRend} />
 
-            <Route exact path="/genre"><GenrePage genre={null} /> </Route>
+            {/* <Route exact path="/genre"><GenrePage genre={null} /> </Route> */}
 						<Route path="/genre/:genre?" component={GenreRend} />
 
-            <Route exact path="/artist"><ArtistPage songId={null} /> </Route>
+            {/* <Route exact path="/artist"><ArtistPage songId={null} /> </Route> */}
 						<Route path="/artist/:artistName?" component={ArtRend} />
             <Route path="*" render={() => <HomePage />} />
 					</Switch>

@@ -29,7 +29,7 @@ export default class LyricPage extends React.Component {
   };
 
   componentDidMount() {
-    let lyric = this.state.lyric;
+    let lyric = this.props.lyric;
     if (!lyric) {
       lyric = 'love';
     } 

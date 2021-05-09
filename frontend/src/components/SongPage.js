@@ -51,7 +51,7 @@ export default class SongPage extends React.Component {
     // var songId = "";
     // const url = decodeURIComponent(window.location.pathname)
     // var id = url.substring(url.lastIndexOf("/")+1)
-    let songId = this.state.songId;
+    let songId = this.props.songId;
     if (!songId) {
       songId = 'no onealicia keys';
     } 
