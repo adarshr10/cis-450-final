@@ -115,13 +115,13 @@ const artistGenres = (req, res) => {
 const topSongs = (req, res, limit) => {
   const artist = req.params.artistName.toLowerCase().replace("'", "\\'");
   const query = `
-  WITH Billboard AS (SELECT song_id, peak_position, weeks_on_chart FROM BillboardAppearance)
-  SELECT p.title, MIN(IF(b.peak_position = 0, 999999, b.peak_position)) as peak, MAX(IF(b.weeks_on_chart=0, -1, b.weeks_on_chart)) as weeks 
+  WITH Billboard AS (SELECT song_id, position, weeks_on_chart FROM BillboardAppearance)
+  SELECT p.title, MIN(IF(b.position = 0, 999999, b.position)) as peak, MAX(IF(b.weeks_on_chart=0, -1, b.weeks_on_chart)) as weeks 
     FROM PerformerTitle p JOIN Billboard b ON p.song_id=b.song_id
     WHERE LOWER(p.performer) = '${artist}'
     GROUP BY p.title
     ORDER BY peak ASC, weeks DESC
-    LIMIT 50;
+    LIMIT ${limit};
   `
   connection.query(query, (err, rows, fields) => {
     if  (err) console.log(err);

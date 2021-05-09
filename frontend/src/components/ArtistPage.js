@@ -45,6 +45,19 @@ export default class ArtistPage extends React.Component {
     this.getBillboard(this.state.artist)
   };
 
+  // componentDidUpdate(prevProps){
+  //   if(prevProps.artist !== this.props.artist){
+  //     const artist = this.props.artist || "Taylor Swift";
+  //     this.setState({artist:artist});
+  //     this.getGenres(artist);
+  //     this.getTopLyrics(artist);
+  //     this.getTop100Weeks(artist);
+  //     this.getTopSongs(artist);
+  //     this.getSimilarArtists(artist)
+  //     this.getBillboard(artist)
+  //   }
+  // }
+
   getGenres(artist){
     fetch(`http://localhost:8080/artist/artistGenres/${encodeURIComponent(artist)}`, {
       method: "GET"
