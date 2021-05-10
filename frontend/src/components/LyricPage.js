@@ -15,7 +15,7 @@ export default class LyricPage extends React.Component {
     super(props);
 
     this.state = {
-      lyric: this.props.lyric || "",
+      lyric: this.props.lyric,
       topGenres: [],
       topArtists: [],
       topSongs: [],
@@ -29,7 +29,7 @@ export default class LyricPage extends React.Component {
   };
 
   componentDidMount() {
-    let lyric = this.state.lyric;
+    let lyric = this.props.lyric;
     if (!lyric) {
       lyric = 'love';
     } 
@@ -41,6 +41,22 @@ export default class LyricPage extends React.Component {
     this.showTopGenres(lyric);
     this.showBillboard(lyric);
   };
+
+  // componentDidUpdate(prevProps){
+  //   if(prevProps.lyric !== this.props.lyric){
+  //     let lyric = this.props.lyric;
+  //     if (!lyric) {
+  //       lyric = 'love';
+  //     } 
+  //     // lyric = stemmer(lyric);
+  //     this.setState({lyric: lyric})
+  //     // this.showInformation(lyric);
+  //     this.showTopArtists(lyric);
+  //     this.showTopSongs(lyric);
+  //     this.showTopGenres(lyric);
+  //     this.showBillboard(lyric);
+  //   }
+  // }
 
   //performer
   showTopArtists(lyric) {

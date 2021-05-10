@@ -13,7 +13,7 @@ export default class ArtistPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      artist: props.artist == null ? "Taylor Swift" : props.artist,
+      artist: props.artist,
       genres: [],
       topLyrics: [],
       topSongs: [],
@@ -37,13 +37,28 @@ export default class ArtistPage extends React.Component {
 
   // React function that is called when the page load.
   componentDidMount() {
-    this.getGenres(this.state.artist);
-    this.getTopLyrics(this.state.artist);
-    this.getTop100Weeks(this.state.artist);
-    this.getTopSongs(this.state.artist);
-    this.getSimilarArtists(this.state.artist)
-    this.getBillboard(this.state.artist)
+    const artist = this.props.artist == null ? "Taylor Swift" : this.props.artist;
+    this.setState({artist: artist})
+    this.getGenres(artist);
+    this.getTopLyrics(artist);
+    this.getTop100Weeks(artist);
+    this.getTopSongs(artist);
+    this.getSimilarArtists(artist)
+    this.getBillboard(artist)
   };
+
+  // componentDidUpdate(prevProps){
+  //   if(prevProps.artist !== this.props.artist){
+  //     const artist = this.props.artist || "Taylor Swift";
+  //     this.setState({artist:artist});
+  //     this.getGenres(artist);
+  //     this.getTopLyrics(artist);
+  //     this.getTop100Weeks(artist);
+  //     this.getTopSongs(artist);
+  //     this.getSimilarArtists(artist)
+  //     this.getBillboard(artist)
+  //   }
+  // }
 
   getGenres(artist){
     fetch(`http://localhost:8080/artist/artistGenres/${encodeURIComponent(artist)}`, {
@@ -121,7 +136,7 @@ export default class ArtistPage extends React.Component {
       if(!rows) return;
       const divs = rows.map((obj, i) => 
         <tr key={i}>
-          <td className="topSong title"><a href={"/song/"+encodeURIComponent(obj.title.toLowerCase()+this.state.artist.toLowerCase())}>{obj.title}</a></td>
+          <td className="topSong title"><a href={"/song/"+encodeURIComponent(obj.title.toLowerCase()+artist.toLowerCase())}>{obj.title}</a></td>
           <td className="topSong">{obj.peak === 999999 ? "N/A":obj.peak}</td>
           <td className="topSong">{obj.weeks === -1 ? "N/A":obj.weeks}</td>
         </tr>

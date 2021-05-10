@@ -7,7 +7,6 @@ import { Row, Table, Form, Button, Col} from 'react-bootstrap';
 import SearchDiv from './SearchPage/SearchDiv';
 import {withRouter} from 'react-router-dom'
 
-// TODO: EDIT AND MODIFY AS NEEDED. (will need to do lots of modifications)
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);

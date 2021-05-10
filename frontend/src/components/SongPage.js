@@ -33,15 +33,28 @@ export default class SongPage extends React.Component {
     if(this.state.sound) this.state.sound.stop();
   }
 
+  // componentDidUpdate(prevProps){
+  //   if(prevProps.songId !== this.props.songId){
+  //     let songId = this.props.songId;
+  //     if (!songId) {
+  //       songId = 'no onealicia keys';
+  //     } 
+  //     this.setState({songId: songId})
+  //     this.showInformation(songId);
+  //     this.showLyrics(songId);
+  //     this.showSongs(songId);
+  //     this.showBillboard(songId);
+  //   }
+  // }
+
   componentDidMount() {
     // var songId = "";
     // const url = decodeURIComponent(window.location.pathname)
     // var id = url.substring(url.lastIndexOf("/")+1)
-    let songId = this.state.songId;
+    let songId = this.props.songId;
     if (!songId) {
       songId = 'no onealicia keys';
     } 
-    console.log(songId)
     this.setState({songId: songId})
     this.showInformation(songId);
     this.showLyrics(songId);
