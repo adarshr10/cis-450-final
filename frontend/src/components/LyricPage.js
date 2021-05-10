@@ -58,7 +58,7 @@ export default class LyricPage extends React.Component {
   //   }
   // }
 
-  //performer
+  // displays top artists for this lyric
   showTopArtists(lyric) {
     fetch(`http://localhost:8080/lyric/topArtists/${lyric}`, {
       method: 'GET'
@@ -87,6 +87,7 @@ export default class LyricPage extends React.Component {
     });
   }
 
+  // displays top genres for this lyric
   showTopGenres(lyric) {
     fetch(`http://localhost:8080/lyric/topGenres/${lyric}`, {
       method: 'GET'
@@ -115,6 +116,7 @@ export default class LyricPage extends React.Component {
     });
   };
 
+  // displays top songs for this lyric
   showTopSongs(lyric) {
     fetch(`http://localhost:8080/lyric/topSongs/${lyric}`, {
       method: 'GET'
@@ -143,6 +145,7 @@ export default class LyricPage extends React.Component {
 
 
   // week, url, word_count, song_count
+  // displays billboard performance for this lyric
   showBillboard(lyric) {
     fetch(`http://localhost:8080/lyric/billboardPlot/${lyric}`, {
       method: 'GET'
