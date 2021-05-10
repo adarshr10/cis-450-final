@@ -62,6 +62,7 @@ export default class SongPage extends React.Component {
       console.log(err);
     }).then(songStuff => {
       if (!songStuff) return;
+      // Handle the song information object and make information presentable; it will just be 1 row
       songOverview = songStuff[0]
       if (songOverview.explicit === 1) {
         songOverview.explicit = "Y";
@@ -81,13 +82,17 @@ export default class SongPage extends React.Component {
       this.setState({
         songName: title, 
         sampleLink: link, 
+        // Create a howler object to play the music if we have it
         sound: link ? new Howl({
             src: [link],
             html5: true
           }) : null
       });
 
-
+      /**
+       * Genres are not part of the normal song information in our table due to 3NF so we need a separate query to 
+       *  retrieve and display
+       */
       fetch(`http://localhost:8080/songGenres/${encodeURIComponent(id)}`, {
         method: 'GET' // The type of HTTP request.
       }).then(res => {
@@ -145,6 +150,7 @@ export default class SongPage extends React.Component {
     }).then(songLyrics => {
       let lyricsInfo = "";
       if (songLyrics.length === 0) {
+        // Handle cases for when we have lyrical information available from our data and when we don't
         lyricsInfo = <tr>
           <td>No</td>
           <td>Data</td>
@@ -205,6 +211,7 @@ export default class SongPage extends React.Component {
       console.log(err);
     }).then(billboardData => {
       if (!billboardData) return;
+      // Load the data and configurations for the graph object we are making
       let weeks = [];
       let positions = [];
       let urls = [];

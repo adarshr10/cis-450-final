@@ -28,7 +28,7 @@ export default class SongPage extends React.Component {
       genre: props.genre || "",
       popularArtists: []
     };
-
+    // Fill the ranges so that users can get a more granular search for historic data on this genre
     for (var i = 1950; i < parseInt(d.getFullYear()) + 1; i++) {
       this.state.yearsApp.push(<option className="genresOption" value={i}>{i}</option>);
       this.state.yearsLyric.push(<option className="genresOption" value={i}>{i}</option>);
@@ -54,6 +54,7 @@ export default class SongPage extends React.Component {
     let lowerApp = this.state.lowerApp;
     let upperLyric = this.state.upperLyric;
     let lowerLyric = this.state.lowerLyric;
+    // default for when no genre specified
     if (!genre) {
       genre = 'pop';
     } 
@@ -101,7 +102,7 @@ export default class SongPage extends React.Component {
     }).then(genreOverview => {
       if (!genreOverview) return;
       genreOverview = genreOverview[0];
-
+      // summarized statistics over a particular genre
       let length = parseFloat(genreOverview.length);
       var minutes = Math.floor(length / 60000);
       var seconds = ((length % 60000) / 1000).toFixed(0);
